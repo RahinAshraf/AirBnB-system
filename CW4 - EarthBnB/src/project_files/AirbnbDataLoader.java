@@ -11,15 +11,6 @@ import java.net.URISyntaxException;
 
 public class AirbnbDataLoader {
 
-    /**
-     * Just for initial testing
-     */
-    public static void main (String[] args)
-    {
-        AirbnbDataLoader loader = new AirbnbDataLoader();
-        loader.load();
-    }
-
     /** 
      * Return an ArrayList containing the rows in the AirBnB London data set csv file.
      */
