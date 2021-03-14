@@ -19,10 +19,11 @@ public class StatAccommodationType extends Statistic {
     /**
      * Update the statistic.
      * @param listings A list of listings the statistic should be calculated for.
+     * @return
      */
-    public void updateStatistic(ArrayList<AirbnbListing> listings)
+    protected String updateStatistic(ArrayList<AirbnbListing> listings)
     {
         long numHouses = listings.stream().filter(listing -> listing.getRoom_type().equals("Entire home/apt")).count();
-        statistic = "" + numHouses;
+        return "" + numHouses;
     }
 }

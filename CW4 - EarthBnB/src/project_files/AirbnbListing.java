@@ -145,6 +145,12 @@ public class AirbnbListing {
         return availability365;
     }
 
+    /**
+     * The average price of a listing is calculated by the price per night * the minimum nights
+     * @return The average price
+     */
+    public int getAveragePrice() { return price * minimumNights; }
+
     @Override
     public String toString() {
         return "AirbnbListing{" +

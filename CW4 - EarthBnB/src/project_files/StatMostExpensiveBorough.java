@@ -1,6 +1,7 @@
 package project_files;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Class MostExpensiveBoroughStat is the statistic finding the most expensive borough in the given set of data.
@@ -21,9 +22,12 @@ public class StatMostExpensiveBorough extends Statistic {
     /**
      * Update the statistic.
      * @param listings A list of listings the statistic should be calculated for.
+     * @return
      */
-    public void updateStatistic(ArrayList<AirbnbListing> listings)
+    protected String updateStatistic(ArrayList<AirbnbListing> listings)
     {
-
+        return listings.stream()
+                .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.averagingDouble(AirbnbListing::getAveragePrice))) // Create a map mapping each borough to its average price
+                .entrySet().stream().max((borough1, borough2) -> borough1.getValue() > borough2.getValue() ? 1 : -1).get().getKey(); // Get the name (the key) of that map with the largest average price (value)
     }
 }

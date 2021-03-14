@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * The specific implementations of the statistics are provided in the inheriting subclasses.
  */
 public abstract class Statistic {
-    protected String statistic; // The result of the calculation of the statistic. A String so adding multiple numbers or text is possible.
     protected String name; // The name of the statistic. Displayed as the label of each statistic.
 
     /**
@@ -23,15 +22,16 @@ public abstract class Statistic {
      * Get the result of the statistics calculation.
      * @return
      */
-    public String getStatistic()
+    public String getStatistic(ArrayList<AirbnbListing> listings)
     {
-        return statistic;
+        return updateStatistic(listings);
     }
 
     /**
      * Update the current statistic.
      * @param listings
+     * @return
      */
-    public abstract void updateStatistic(ArrayList<AirbnbListing> listings);
+    protected abstract String updateStatistic(ArrayList<AirbnbListing> listings);
 
 }

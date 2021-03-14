@@ -11,9 +11,14 @@ public class StatisticsTester {
 
     public static void main(String[] args)
     {
+        StatisticsTester tester = new StatisticsTester();
+        tester.test();
+    }
+
+    private static void test() {
+
         AirbnbDataLoader loader = new AirbnbDataLoader();
         ArrayList<AirbnbListing> testListing = loader.load();
-
         Statistic avgReview = new StatAverageNumReviews(testListing);
         Statistic properties = new StatAvailableProperties(testListing);
         Statistic accType = new StatAccommodationType(testListing);
@@ -23,7 +28,9 @@ public class StatisticsTester {
 
         for (Statistic s : statistics)
         {
-            System.out.println(s.getName() + ": " + s.getStatistic());
+            System.out.println(s.getName() + ": " + s.getStatistic(testListing));
         }
+
+
     }
 }
