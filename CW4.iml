@@ -8,7 +8,6 @@
     <orderEntry type="jdk" jdkName="15" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="+libs" level="project" />
-    <orderEntry type="library" name="JavaFX 11" level="project" />
-    <orderEntry type="library" name="JavaFX 16" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
