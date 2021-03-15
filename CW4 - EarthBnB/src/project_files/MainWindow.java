@@ -11,16 +11,23 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 
-
 public class MainWindow extends Application {
 
 private ArrayList<AirbnbListing> listings = new ArrayList();
+
+private Panel statisticsPanel;
+private Panel welcomePanel;
+
+private ArrayList<Panel> panels;
 
 //Panel statsPanel = new S
     @Override
     public void start(Stage primaryStage) throws Exception {
         load("airbnb-london.csv");
-        Parent root = FXMLLoader.load(getClass().getResource("panelGUI.fxml"));
+
+        buildPanels();
+
+        Parent root = FXMLLoader.load(getClass().getResource("MainFrameGUI.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
@@ -28,23 +35,43 @@ private ArrayList<AirbnbListing> listings = new ArrayList();
 
     private void load(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
-
         listings = loader.load(filename);
+    }
+
+    /**
+     * Build the panels. Add here for more panels.
+     */
+    private void buildPanels()
+    {
+        welcomePanel = new WelcomePanel();
+        statisticsPanel = new StatisticsPanel();
+
+        panels = new ArrayList<>();
+
+        //Put in in the right order.
+        panels.add(welcomePanel);
+        panels.add(statisticsPanel);
+    }
 
 
+    @FXML
+    private void setNextPane(ActionEvent e)
+    {
+        //setPanel(panel);
     }
 
     @FXML
-    private void leftButton(ActionEvent event) {
-        System.out.println("You have clicked the left button");
-
-
+    private void setPrevPane(ActionEvent e)
+    {
+        //setPanel(panel);
     }
 
-
-    public void rightButton(ActionEvent event) {
-        System.out.println("You have clicked the right button");
-
+    /**
+     * Set a panel to be shown
+     * @param panel The panel
+     */
+    private void setPanel(Panel panel)
+    {
 
     }
 
