@@ -29,7 +29,8 @@ private ArrayList<Panel> panels;
 
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 600, 500));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
