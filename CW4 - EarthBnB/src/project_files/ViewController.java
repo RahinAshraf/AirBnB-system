@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ViewController implements Initializable {
+
+    private int currentPage = 0;
 
 
     @FXML
@@ -28,27 +31,50 @@ public class ViewController implements Initializable {
     @FXML
     BorderPane bottomPane;
     @FXML
-    BorderPane welcomePane;
+    BorderPane welcomePanel;
 
 
     @FXML
     private void setNextPane(ActionEvent event) throws IOException {
 
 
+        if(currentPage == 0) {
+            System.out.println(currentPage);
+            BorderPane statsPageParent = FXMLLoader.load(getClass().getResource("welcomePanelGUI.fxml"));
+            rootPane.setCenter(statsPageParent);
 
-        BorderPane statsPageParent = FXMLLoader.load(getClass().getResource("welcomePanelGUI.fxml"));
-//
+
+//            Scene statsPageScene = new Scene(statsPageParent);
+//            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            //statsPageScene.setBottom(rootPane.getBottom());
+//            statsPageParent.setBottom(rootPane.getBottom());
+//            window.setScene(statsPageScene);
+//            window.show();
+
+    //            statsPageParent.setBottom(bottomPane);
+    //            //statsPageParent.setCenter(welcomePanel.getCenter());
+    //            rootPane.getChildren().setAll(statsPageParent);
+    //            //System.out.println("asd");
+
+            currentPage = 1;
+        } else if (currentPage == 1) {
+            VBox statsPageParent = FXMLLoader.load(getClass().getResource("statisticsGUI.fxml"));
+            rootPane.setCenter(statsPageParent);
 
 
-//        Scene statsPageScene = new Scene(borderPane);
-//        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        statsPageScene.setRoot(rootPane);
-//        window.setScene(statsPageScene);
-//        window.show();
+//            Scene statsPageScene = new Scene(statsPageParent);
+//            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            //statsPageScene.setBottom(rootPane.getBottom());
+//            window.setScene(statsPageScene);
+//            window.show();
+            currentPage = 2;
+        } else {
+            BorderPane root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
 
-        statsPageParent.setBottom(bottomPane);
-        rootPane.getChildren().setAll(statsPageParent);
-        System.out.println("asd");
+            rootPane.setCenter(root);
+
+            currentPage = 0;
+        }
 
     }
 
