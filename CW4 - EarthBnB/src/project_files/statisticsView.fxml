@@ -22,43 +22,49 @@
           <RowConstraints maxHeight="35.39999999999999" minHeight="0.0" prefHeight="27.39999999999999" vgrow="SOMETIMES" />
         </rowConstraints>
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
          </padding>
          <children>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <left>
-                  <Button fx:id="prevBtn1" mnemonicParsing="false" onAction="#leftButton" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn1" mnemonicParsing="false" onAction="#leftButton1" text="&lt;" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn1" mnemonicParsing="false" onAction="#rightButton" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn1" mnemonicParsing="false" onAction="#rightButton1" text="&gt;" BorderPane.alignment="CENTER" />
                </right>
                <top>
                   <Label fx:id="statNameLbl1" text="Label" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <Label fx:id="statLbl1" text="Label" BorderPane.alignment="CENTER" />
+                  <Label fx:id="statLbl1" text="Label" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding></Label>
                </center>
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <left>
-                  <Button fx:id="prevBtn2" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn2" mnemonicParsing="false" onAction="#leftButton2" text="&lt;" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn2" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn2" mnemonicParsing="false" text="&gt;" BorderPane.alignment="CENTER" />
                </right>
                <top>
                   <Label fx:id="statNameLbl2" text="Label" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <Label fx:id="statLbl2" text="Label" BorderPane.alignment="CENTER" />
+                  <Label fx:id="statLbl2" text="Label" BorderPane.alignment="CENTER">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding></Label>
                </center>
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <left>
-                  <Button fx:id="prevBtn3" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn3" mnemonicParsing="false" onAction="#leftButton3" text="&lt;" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn3" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn3" mnemonicParsing="false" text="&gt;" BorderPane.alignment="CENTER" />
                </right>
                <top>
                   <Label fx:id="statNameLbl3" text="Label" BorderPane.alignment="CENTER" />
@@ -69,10 +75,10 @@
             </BorderPane>
             <BorderPane prefHeight="19.0" prefWidth="286.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <left>
-                  <Button fx:id="prevBtn4" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn4" mnemonicParsing="false" onAction="#leftButton4" text="&lt;" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn4" mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn4" mnemonicParsing="false" onAction="#rightButton4" text="&gt;" BorderPane.alignment="CENTER" />
                </right>
                <top>
                   <Label fx:id="statNameLbl4" text="Label" BorderPane.alignment="CENTER" />

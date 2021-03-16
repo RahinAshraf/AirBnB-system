@@ -1,5 +1,7 @@
 package project_files;
 
+import javafx.fxml.FXML;
+
 /**
  * Represents one listing of a property for rental on Airbnb.
  * This is essentially one row in the data table. Each column
@@ -7,6 +9,7 @@ package project_files;
  */ 
 
 public class AirbnbListing {
+
     /**
      * The id and name of the individual property
      */
@@ -171,4 +174,8 @@ public class AirbnbListing {
                 ", availability365=" + availability365 +
                 '}';
     }
+
+    // statLbl1.setText(controller.getID());
 }
+
+

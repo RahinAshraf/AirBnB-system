@@ -17,9 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+
+
 public class MainWindowController extends Application {
 
-    private ArrayList<AirbnbListing> listings = new ArrayList();
+    private ArrayList<AirbnbListing> listings = new ArrayList<>();
 
     //The panels and their roots
     //private Panel statisticsPanel;
@@ -54,10 +56,12 @@ public class MainWindowController extends Application {
 
     }
 
-    private void load(String filename){
+    public void load(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = loader.load(filename);
     }
+
+
 
     /**
      * Build the panels. Add here for more panels.

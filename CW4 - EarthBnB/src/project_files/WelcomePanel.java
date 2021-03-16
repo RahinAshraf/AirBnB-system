@@ -10,4 +10,6 @@ public class WelcomePanel extends Panel {
     public void changeLabel(ActionEvent actionEvent) {
 
     }
+
+
 }
