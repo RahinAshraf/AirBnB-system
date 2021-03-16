@@ -12,6 +12,7 @@ public class StatisticsPanel extends Panel {
     Statistic availableProperties;
     Statistic averageNumReviews;
     Statistic mostExpensiveBorough;
+    ArrayList<AirbnbListing> listings;
 
 
     @FXML
@@ -66,19 +67,23 @@ public class StatisticsPanel extends Panel {
     Button nextBtn4;
 
 
-    public StatisticsPanel(ArrayList<AirbnbListing> listings) {
-        /*
+    public StatisticsPanel() {
+
+    }
+
+    public void initializeStats(ArrayList<AirbnbListing> listings)
+    {
         accommodationType = new StatAccommodationType(listings);
         availableProperties = new StatAvailableProperties(listings);
         averageNumReviews = new StatAverageNumReviews(listings);
         mostExpensiveBorough = new StatMostExpensiveBorough(listings);
-
-         */
+        this.listings = listings;
     }
 
 
     @FXML
-    private void leftButton1(ActionEvent event) { System.out.println("Hello world");}
+    private void leftButton1(ActionEvent event) {
+        displaySinglePanel(statNameLbl1, statLbl1, accommodationType);}
 
     @FXML
     public void rightButton1(ActionEvent event) {
@@ -118,24 +123,11 @@ public class StatisticsPanel extends Panel {
     private void displaySinglePanel(Label titleLbl, Label textLbl, Statistic stat) // Get correct stat at runtime
     {
         titleLbl.setText(stat.getName());
-        //textLbl.setText(stat.getStatistic());
+        textLbl.setText(stat.getStatistic(listings));
     }
 
     public void updateValues() {
 
     }
 
-    //@FXML
-    //private Label statLbl1;
-    //private StatAvailableProperties statistic = new StatAvailableProperties();
-
-
-
-/*
-    private void showData(){
-        statLbl1.setText(controller.getID());
-        statLbl1.setText("Average number of reviews");
-
-    }
-*/
 }

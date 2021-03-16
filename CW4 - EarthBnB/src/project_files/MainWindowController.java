@@ -45,7 +45,6 @@ public class MainWindowController extends Application {
     public void start(Stage primaryStage) throws Exception {
         load("airbnb-london.csv");
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
-        buildPanels();
         //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
         primaryStage.setTitle("EarthBnB");
         primaryStage.setScene(new Scene(root, 600, 500));
@@ -60,39 +59,21 @@ public class MainWindowController extends Application {
 
 
 
-    /**
-     * Build the panels. Add here for more panels.
-     */
-    private void buildPanels() throws IOException
-    {
-        //welcomePanel = new WelcomePanel();
-        //statisticsPanel = new StatisticsPanel();
-
-        //welcomePanelRoot = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
-        //statsPanelRoot = FXMLLoader.load(getClass().getResource("statisticsView.fxml"));
-
-
-        //panelRoots = new ArrayList<>();
-
-        //Put in in the right order.
-        //panelRoots.add(welcomePanelRoot);
-        //panelRoots.add(statsPanelRoot);
-
-        contentPane = new BorderPane();
-        //contentPane.setCenter(welcomePanelRoot);
-    }
-
-
     @FXML
     private void setNextPane(ActionEvent e) throws IOException
     {
-        Node nextPanel;
+        Parent nextPanel;
         switch (currentPage)
         {
             case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                     currentPage++;
                     break;
-            case 1: nextPanel = FXMLLoader.load(getClass().getResource("statisticsView.fxml"));
+            case 1: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
+                    nextPanel = statsLoader.load();
+                    StatisticsPanel statisticsPanel = statsLoader.getController();
+                    AirbnbDataLoader loader = new AirbnbDataLoader();
+                    listings = loader.load("airbnb-london.csv");
+                    statisticsPanel.initializeStats(listings);
                     currentPage++;
                     break;
             case 2: nextPanel = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
