@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -52,8 +51,6 @@ public class MainWindowController extends Application {
         primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.setResizable(false);
         primaryStage.show();
-
-
     }
 
     public void load(String filename){
@@ -105,29 +102,6 @@ public class MainWindowController extends Application {
                     break;
         }
         contentPane.setCenter(nextPanel);
-
-        /*
-        if(currentPage == 0) {
-            System.out.println(currentPage);
-            BorderPane statsPageParent = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
-            contentPane.setCenter(statsPageParent);
-
-            currentPage = 1;
-        } else if (currentPage == 1) {
-            VBox statsPageParent = FXMLLoader.load(getClass().getResource("statisticsView.fxml"));
-            contentPane.setCenter(statsPageParent);
-
-            currentPage = 2;
-        } else {
-            BorderPane root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
-
-            contentPane.setCenter(root);
-
-            currentPage = 0;
-        }
-
-         */
-
     }
 
     @FXML

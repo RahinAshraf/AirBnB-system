@@ -8,7 +8,7 @@
    <bottom>
       <BorderPane fx:id="bottomPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <left>
-            <Button mnemonicParsing="false" onAction="#setPrevPane" text="&lt;" BorderPane.alignment="CENTER" />
+            <Button fx:id="prevPaneBtn" mnemonicParsing="false" onAction="#setPrevPane" text="&lt;" BorderPane.alignment="CENTER" />
          </left>
          <right>
             <Button fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#setNextPane" text="&gt;" BorderPane.alignment="CENTER" />

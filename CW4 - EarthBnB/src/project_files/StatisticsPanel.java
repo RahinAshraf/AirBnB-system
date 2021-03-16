@@ -13,63 +13,67 @@ public class StatisticsPanel extends Panel {
     Statistic averageNumReviews;
     Statistic mostExpensiveBorough;
 
-    @FXML
-    private Label statLbl1;
 
     @FXML
-    private Label statLbl2;
+    Label statLbl1;
 
     @FXML
-    private Label statLbl3;
+    Label statLbl2;
 
     @FXML
-    private Label statLbl4;
+    Label statLbl3;
 
     @FXML
-    private Label statNameLbl1;
+    Label statLbl4;
 
     @FXML
-    private Label statNameLbl2;
+    Label statNameLbl1;
 
     @FXML
-    private Label statNameLbl3;
+    Label statNameLbl2;
 
     @FXML
-    private Label statNameLbl4;
+    Label statNameLbl3;
 
     @FXML
-    private Button prevBtn1, prevBtn2, prevBtn3, prevBtn4, nextBtn1, nextBtn2, nextBtn3, nextBtn4;
+    Label statNameLbl4;
 
     //@FXML
-    //private Button prevBtn2;
-
-    //@FXML
-    //private Button prevBtn3;
-
-    //@FXML
-    //private Button prevBtn4;
-
-    /*
-    @FXML
-    private Button nextBtn1;
+    //private Button prevBtn1, prevBtn2, prevBtn3, prevBtn4, nextBtn1, nextBtn2, nextBtn3, nextBtn4;
 
     @FXML
-    private Button nextBtn2;
+    Button prevBtn1;
 
     @FXML
-    private Button nextBtn3;
+    Button prevBtn2;
 
     @FXML
-    private Button nextBtn4;
+    Button prevBtn3;
 
-     */
+    @FXML
+    Button prevBtn4;
+
+    @FXML
+    Button nextBtn1;
+
+    @FXML
+    Button nextBtn2;
+
+    @FXML
+    Button nextBtn3;
+
+    @FXML
+    Button nextBtn4;
 
 
     public StatisticsPanel(ArrayList<AirbnbListing> listings) {
+        /*
         accommodationType = new StatAccommodationType(listings);
         availableProperties = new StatAvailableProperties(listings);
         averageNumReviews = new StatAverageNumReviews(listings);
         mostExpensiveBorough = new StatMostExpensiveBorough(listings);
+
+         */
     }
 
 
