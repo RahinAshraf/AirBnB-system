@@ -2,10 +2,13 @@ package project_files;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class StatisticsPanel extends Panel {
     Statistic accommodationType;
@@ -13,6 +16,8 @@ public class StatisticsPanel extends Panel {
     Statistic averageNumReviews;
     Statistic mostExpensiveBorough;
     ArrayList<AirbnbListing> listings;
+
+    LinkedList<Statistic> panel1, panel2, panel3, panel4;
 
 
     @FXML
@@ -39,33 +44,6 @@ public class StatisticsPanel extends Panel {
     @FXML
     Label statNameLbl4;
 
-    //@FXML
-    //private Button prevBtn1, prevBtn2, prevBtn3, prevBtn4, nextBtn1, nextBtn2, nextBtn3, nextBtn4;
-
-    @FXML
-    Button prevBtn1;
-
-    @FXML
-    Button prevBtn2;
-
-    @FXML
-    Button prevBtn3;
-
-    @FXML
-    Button prevBtn4;
-
-    @FXML
-    Button nextBtn1;
-
-    @FXML
-    Button nextBtn2;
-
-    @FXML
-    Button nextBtn3;
-
-    @FXML
-    Button nextBtn4;
-
 
     public StatisticsPanel() {
 
@@ -82,42 +60,32 @@ public class StatisticsPanel extends Panel {
 
 
     @FXML
-    private void leftButton1(ActionEvent event) {
-        displaySinglePanel(statNameLbl1, statLbl1, accommodationType);}
-
-    @FXML
-    public void rightButton1(ActionEvent event) {
-        System.out.println("You have clicked the right button");
+    private void buttonClicked(ActionEvent event) {
+        Node selectedPane = (Node) event.getSource();
+        switch(selectedPane.getId())
+        {
+            case "nextBtn1": displaySinglePanel(statNameLbl1, statLbl1, getNext(statLbl1));
+                break;
+            case "prevBtn1": displaySinglePanel(statNameLbl1, statLbl1, accommodationType);
+                break;
+            case "nextBtn2": displaySinglePanel(statNameLbl2, statLbl2, accommodationType);
+                break;
+            case "prevBtn2": displaySinglePanel(statNameLbl2, statLbl2, availableProperties);
+                break;
+            case "nextBtn3": displaySinglePanel(statNameLbl3, statLbl3, accommodationType);
+                break;
+            case "prevBtn3": displaySinglePanel(statNameLbl3, statLbl3, accommodationType);
+                break;
+            case "nextBtn4": displaySinglePanel(statNameLbl4, statLbl4, accommodationType);
+                break;
+            case "prevBtn4": displaySinglePanel(statNameLbl4, statLbl4, accommodationType);
+                break;
+        }
     }
 
-    @FXML
-    private void leftButton2(ActionEvent event) {
-        System.out.println("You have clicked the left button");
-    }
-
-    @FXML
-    public void rightButton2(ActionEvent event) {
-        System.out.println("You have clicked the right button");
-    }
-
-    @FXML
-    private void leftButton3(ActionEvent event) {
-        System.out.println("You have clicked the left button");
-    }
-
-    @FXML
-    public void rightButton3(ActionEvent event) {
-        System.out.println("You have clicked the right button");
-    }
-
-    @FXML
-    private void leftButton4(ActionEvent event) {
-        System.out.println("You have clicked the left button");
-    }
-
-    @FXML
-    public void rightButton4(ActionEvent event) {
-        System.out.println("You have clicked the right button");
+    private Statistic getNext(Label labelNumber)
+    {
+        return accommodationType; //Just some bs to make it run
     }
 
     private void displaySinglePanel(Label titleLbl, Label textLbl, Statistic stat) // Get correct stat at runtime
@@ -125,9 +93,4 @@ public class StatisticsPanel extends Panel {
         titleLbl.setText(stat.getName());
         textLbl.setText(stat.getStatistic(listings));
     }
-
-    public void updateValues() {
-
-    }
-
 }
