@@ -43,7 +43,7 @@ public class MainWindowController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        load("airbnb-london.csv");
+        load("listings.csv");
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
         //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
         primaryStage.setTitle("EarthBnB");
@@ -72,7 +72,7 @@ public class MainWindowController extends Application {
                     nextPanel = statsLoader.load();
                     StatisticsPanel statisticsPanel = statsLoader.getController();
                     AirbnbDataLoader loader = new AirbnbDataLoader();
-                    listings = loader.load("airbnb-london.csv");
+                    listings = loader.load("listings.csv");
                     statisticsPanel.initializeStats(listings);
                     currentPage++;
                     break;
