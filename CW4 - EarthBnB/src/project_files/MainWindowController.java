@@ -81,9 +81,7 @@ public class MainWindowController extends Application {
             case 3: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
                     nextPanel = mapLoader.load();
                     MapController mapController = mapLoader.getController();
-                    listings = loader.load("airbnb-london.csv");
                     mapController.initializeMap(listings);
-
                     currentPage = 0;
                     break;
             default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));

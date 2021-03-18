@@ -209,6 +209,11 @@ public class AirbnbListing {
         return neighbourhood;
     }
 
+    public void chopNeighbourhoodName() {
+        String tempString[] = neighbourhood.split(" ", 2);
+        neighbourhood = tempString[0];
+    }
+
     public double getLatitude() {
         return latitude;
     }
