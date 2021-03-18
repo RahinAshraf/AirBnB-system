@@ -23,7 +23,7 @@ public class StatAccommodationType extends Statistic {
      */
     protected String updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        long numHouses = listings.stream().filter(listing -> listing.getRoom_type().equals("Entire home/apt")).count();
+        long numHouses = listings.stream().filter(listing -> listing.getRoomType().equals("Entire home/apt")).count();
         return "" + numHouses;
     }
 }

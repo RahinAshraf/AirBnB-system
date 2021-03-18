@@ -2,6 +2,9 @@ package project_files;
 
 import javafx.fxml.FXML;
 
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * Represents one listing of a property for rental on Airbnb.
  * This is essentially one row in the data table. Each column
@@ -15,13 +18,44 @@ public class AirbnbListing {
      */
     private String id;
     private String name;
+
+    /**
+     * Overview of neighbourhood
+     */
+    private String neighbourhoodOverview;
+
+    /**
+     * Url of picture showing the property
+     */
+    private URL pictureUrl;
+
     /**
      * The id and name of the host for this listing.
      * Each listing has only one host, but one host may
      * list many properties.
      */
-    private String host_id;
-    private String host_name;
+    private String hostID;
+    private String hostName;
+
+    /**
+     * The time a host usually takes to respond. (Descriptions like "within a few hours")
+     * Can be N/A
+     */
+    private String hostResponseTime;
+
+    /**
+     * Whether the host has reached the status of superhost.
+     */
+    private boolean hostIsSuperhost;
+
+    private URL hostThumbnail;
+    private URL hostPicture;
+
+
+    /**
+     * The total number of listings the host holds across AirBnB
+     */
+    private int hostListingsCount;
 
     /**
      * The grouped location to where the listed property is situated.
@@ -38,7 +72,28 @@ public class AirbnbListing {
     /**
      * The type of property, either "Private room" or "Entire Home/apt".
      */
-    private String room_type;
+    private String roomType;
+
+    /**
+     * The maximum number of guests this property can accommodate.
+     */
+    private int maxGuests;
+
+    /**
+     * A Description of the available bathrooms.
+     * Strings have some differences in spelling and can be null.
+     */
+    private String bathroomsText;
+
+    /**
+     * The amount of available beds.
+     */
+    private int bedrooms;
+
+    /**
+     * A list of the amenities the host provides
+     */
+    private ArrayList<String> amenities;
 
     /**
      * The price per night's stay
@@ -46,47 +101,65 @@ public class AirbnbListing {
     private int price;
 
     /**
-     * The minimum number of nights the listed property must be booked for.
+     * The minimum and maximum number of nights the listed property must and can be booked for.
      */
     private int minimumNights;
-    private int numberOfReviews;
+    private int maximumNights;
 
-    /**
-     * The date of the last review, but as a String
-     */
-    private String lastReview;
-    private double reviewsPerMonth;
-
-    /**
-     * The total number of listings the host holds across AirBnB
-     */
-    private int calculatedHostListingsCount;
     /**
      * The total number of days in the year that the property is available for
      */
     private int availability365;
 
-    public AirbnbListing(String id, String name, String host_id,
-                         String host_name, String neighbourhood, double latitude,
-                         double longitude, String room_type, int price,
-                         int minimumNights, int numberOfReviews, String lastReview,
-                         double reviewsPerMonth, int calculatedHostListingsCount, int availability365) {
+    /**
+     * Stats related to the rating of a property
+     */
+    private int numberOfReviews;
+    private int reviewScoresRating;
+    private int reviewScoresCleanliness;
+    private int reviewScoresCommunication;
+    private int reviewScoresLocation;
+    private double reviewsPerMonth;
+
+
+    public AirbnbListing(String id, String name, String neighbourhoodOverview, URL pictureUrl, String hostID,
+                         String hostName, String hostResponseTime, boolean hostIsSuperhost, URL hostThumbnail, URL hostPicture,
+                         int hostListingsCount, String neighbourhood, double latitude, double longitude, String roomType,
+                         int maxGuests, String bathroomsText, int bedrooms, ArrayList<String> amenities, int price,
+                         int minimumNights, int maximumNights, int availability365, int numberOfReviews,
+                         int reviewScoresRating, int reviewScoresCleanliness, int reviewScoresCommunication,
+                         int reviewScoresLocation, double reviewsPerMonth) {
         this.id = id;
         this.name = name;
-        this.host_id = host_id;
-        this.host_name = host_name;
+        this.neighbourhoodOverview = neighbourhoodOverview;
+        this.pictureUrl = pictureUrl;
+        this.hostID = hostID;
+        this.hostName = hostName;
+        this.hostResponseTime = hostResponseTime;
+        this.hostIsSuperhost = hostIsSuperhost;
+        this.hostThumbnail = hostThumbnail;
+        this.hostPicture = hostPicture;
+        this.hostListingsCount = hostListingsCount;
         this.neighbourhood = neighbourhood;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.room_type = room_type;
+        this.roomType = roomType;
+        this.maxGuests = maxGuests;
+        this.bathroomsText = bathroomsText;
+        this.bedrooms = bedrooms;
+        this.amenities = amenities;
         this.price = price;
         this.minimumNights = minimumNights;
-        this.numberOfReviews = numberOfReviews;
-        this.lastReview = lastReview;
-        this.reviewsPerMonth = reviewsPerMonth;
-        this.calculatedHostListingsCount = calculatedHostListingsCount;
+        this.maximumNights = maximumNights;
         this.availability365 = availability365;
+        this.numberOfReviews = numberOfReviews;
+        this.reviewScoresRating = reviewScoresRating;
+        this.reviewScoresCleanliness = reviewScoresCleanliness;
+        this.reviewScoresCommunication = reviewScoresCommunication;
+        this.reviewScoresLocation = reviewScoresLocation;
+        this.reviewsPerMonth = reviewsPerMonth;
     }
+
 
     public String getId() {
         return id;
@@ -96,12 +169,40 @@ public class AirbnbListing {
         return name;
     }
 
-    public String getHost_id() {
-        return host_id;
+    public String getNeighbourhoodOverview() {
+        return neighbourhoodOverview;
     }
 
-    public String getHost_name() {
-        return host_name;
+    public URL getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public String getHostID() {
+        return hostID;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public String getHostResponseTime() {
+        return hostResponseTime;
+    }
+
+    public boolean isHostIsSuperhost() {
+        return hostIsSuperhost;
+    }
+
+    public URL getHostThumbnail() {
+        return hostThumbnail;
+    }
+
+    public URL getHostPicture() {
+        return hostPicture;
+    }
+
+    public int getHostListingsCount() {
+        return hostListingsCount;
     }
 
     public String getNeighbourhood() {
@@ -116,8 +217,24 @@ public class AirbnbListing {
         return longitude;
     }
 
-    public String getRoom_type() {
-        return room_type;
+    public String getRoomType() {
+        return roomType;
+    }
+
+    public int getMaxGuests() {
+        return maxGuests;
+    }
+
+    public String getBathroomsText() {
+        return bathroomsText;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    public ArrayList<String> getAmenities() {
+        return amenities;
     }
 
     public int getPrice() {
@@ -128,24 +245,36 @@ public class AirbnbListing {
         return minimumNights;
     }
 
-    public int getNumberOfReviews() {
-        return numberOfReviews;
-    }
-
-    public String getLastReview() {
-        return lastReview;
-    }
-
-    public double getReviewsPerMonth() {
-        return reviewsPerMonth;
-    }
-
-    public int getCalculatedHostListingsCount() {
-        return calculatedHostListingsCount;
+    public int getMaximumNights() {
+        return maximumNights;
     }
 
     public int getAvailability365() {
         return availability365;
+    }
+
+    public int getNumberOfReviews() {
+        return numberOfReviews;
+    }
+
+    public int getReviewScoresRating() {
+        return reviewScoresRating;
+    }
+
+    public int getReviewScoresCleanliness() {
+        return reviewScoresCleanliness;
+    }
+
+    public int getReviewScoresCommunication() {
+        return reviewScoresCommunication;
+    }
+
+    public int getReviewScoresLocation() {
+        return reviewScoresLocation;
+    }
+
+    public double getReviewsPerMonth() {
+        return reviewsPerMonth;
     }
 
     /**
@@ -154,6 +283,7 @@ public class AirbnbListing {
      */
     public int getAveragePrice() { return price * minimumNights; }
 
+    /*
     @Override
     public String toString() {
         return "AirbnbListing{" +
@@ -175,7 +305,7 @@ public class AirbnbListing {
                 '}';
     }
 
-    // statLbl1.setText(controller.getID());
+     */
 }
 
 

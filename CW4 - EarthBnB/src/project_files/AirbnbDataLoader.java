@@ -3,11 +3,15 @@ package project_files;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
 import com.opencsv.CSVReader;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 
 public class AirbnbDataLoader {
 
@@ -26,24 +30,39 @@ public class AirbnbDataLoader {
             while ((line = reader.readNext()) != null) {
                 String id = line[0];
                 String name = line[1];
-                String host_id = line[2];
-                String host_name = line[3];
-                String neighbourhood = line[4];
-                double latitude = convertDouble(line[5]);
-                double longitude = convertDouble(line[6]);
-                String room_type = line[7];
-                int price = convertInt(line[8]);
-                int minimumNights = convertInt(line[9]);
-                int numberOfReviews = convertInt(line[10]);
-                String lastReview = line[11];
-                double reviewsPerMonth = convertDouble(line[12]);
-                int calculatedHostListingsCount = convertInt(line[13]);
-                int availability365 = convertInt(line[14]);
+                String neighbourhoodOverview = line[2];
+                URL pictureURL = convertURL(line[3]);
+                String hostID = line[4];
+                String hostName = line[5];
+                String hostResponseTime = line[6];
+                boolean hostIsSuperhost = convertBoolean(line[7]);
+                URL hostThumbnail = convertURL(line[8]);
+                URL hostPicture = convertURL(line[9]);
+                int hostListingsCount = convertInt(line[10]);
+                String neighbourhood = line[11];
+                double latitude = convertDouble(line[12]);
+                double longitude = convertDouble(line[13]);
+                String roomType = line[14];
+                int maxGuests = convertInt(line[15]);
+                String bathroomsText = line[16];
+                int bedrooms = convertInt(line[17]);
+                ArrayList<String> amenities = convertStringArrayList(line[18]);
+                int price = convertInt(line[19]);
+                int minimumNights = convertInt(line[20]);
+                int maximumNights = convertInt(line[21]);
+                int availability365 = convertInt(line[22]);
+                int numberOfReviews = convertInt(line[23]);
+                int reviewScoresRating = convertInt(line[24]);
+                int reviewScoresCleanliness = convertInt(line[25]);
+                int reviewScoresCommunication = convertInt(line[26]);
+                int reviewScoresLocation = convertInt(line[27]);
+                double reviewsPerMonth = convertDouble(line[28]);
 
-                AirbnbListing listing = new AirbnbListing(id, name, host_id,
-                        host_name, neighbourhood, latitude, longitude, room_type,
-                        price, minimumNights, numberOfReviews, lastReview,
-                        reviewsPerMonth, calculatedHostListingsCount, availability365
+                AirbnbListing listing = new AirbnbListing(id, name, neighbourhoodOverview, pictureURL, hostID, hostName,
+                        hostResponseTime, hostIsSuperhost, hostThumbnail, hostPicture, hostListingsCount, neighbourhood,
+                        latitude, longitude, roomType, maxGuests, bathroomsText, bedrooms, amenities, price, minimumNights,
+                        maximumNights, availability365, numberOfReviews, reviewScoresRating, reviewScoresCleanliness,
+                        reviewScoresCommunication, reviewScoresLocation, reviewsPerMonth
                     );
                 listings.add(listing);
             }
@@ -69,6 +88,20 @@ public class AirbnbDataLoader {
     }
 
     /**
+     * Converts a string separated by commas into an ArrayList. Existing double quotes and whitespaces
+     * in between the strings are deleted before the process.
+     * @param arrayListString The string to be converted
+     * @return The ArrayList of Strings.
+     */
+    private ArrayList<String> convertStringArrayList(String arrayListString)
+    {
+        arrayListString = arrayListString.replace("\"", ""); // Remove the double quotes
+        String[] elements = arrayListString.split("\\s*" + "," + "\\s*"); // Remove spaces and split into Array
+        List<String> listFixedLength = Arrays.asList(elements); // Convert into list
+        return new ArrayList<String>(listFixedLength); // Convert into ArrayList and return
+    }
+
+    /**
      *
      * @param intString the string to be converted to Integer type
      * @return the Integer value of the string, or -1 if the string is 
@@ -79,6 +112,38 @@ public class AirbnbDataLoader {
             return Integer.parseInt(intString);
         }
         return -1;
+    }
+
+    /**
+     * Convert string to a boolean. The string value for true in the set of data being used is "t"
+     * @param bool A string. Returns true if the string is "t"
+     * @return The truth value of the field
+     */
+    private boolean convertBoolean(String bool)
+    {
+        if (bool != null && !bool.trim().equals(""))
+            return bool.equals("t");
+        else
+            return false;
+    }
+
+    /**
+     * @param urlString The string to be converted into an url
+     * @return The url or null if the link is invalid.
+     * @throws MalformedURLException
+     */
+    private URL convertURL(String urlString) throws MalformedURLException {
+        if (urlString != null && !urlString.trim().equals("")) {
+            try {
+                URI uri = new URI(urlString);
+                URL url = uri.toURL();
+                return url;
+            } catch (Exception e) {
+                System.out.println("URL could not be loaded");
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

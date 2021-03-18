@@ -16,6 +16,7 @@ public class StatAverageNumReviews extends Statistic {
         updateStatistic(listings);
     }
 
+
     /**
      * Update the statistic.
      * @param listings A list of airbnb properties the statistic should be calculated for.
