@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -70,7 +69,7 @@ public class MainWindowController extends Application {
                     break;
             case 1: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
                     nextPanel = statsLoader.load();
-                    StatisticsPanel statisticsPanel = statsLoader.getController();
+                    StatisticsPanelController statisticsPanel = statsLoader.getController();
                     AirbnbDataLoader loader = new AirbnbDataLoader();
                     listings = loader.load("listings.csv");
                     statisticsPanel.initializeStats(listings);

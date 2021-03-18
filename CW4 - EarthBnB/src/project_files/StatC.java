@@ -12,7 +12,7 @@ public class StatC extends Statistic {
      */
     public StatC(ArrayList<AirbnbListing> listings)
     {
-        name = "Number of entire home and apartments";
+        name = "C";
         updateStatistic(listings);
     }
 
@@ -23,7 +23,7 @@ public class StatC extends Statistic {
      */
     protected String updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        return "Hello world"; //used to get it to run - need changing
+        return "3"; //used to get it to run - need changing
 
     }
 }
