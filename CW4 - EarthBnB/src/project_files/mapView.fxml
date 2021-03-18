@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mapView" prefHeight="400.0" prefWidth="600.0" stylesheets="@mapStyle.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.MapController">
+   <children>
+      <Button fx:id="Enfield" layoutX="282.0" layoutY="40.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="ENFI">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Haringey" layoutX="259.0" layoutY="78.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HRGY">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Waltham" layoutX="305.0" layoutY="78.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="WALT">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Hackney" layoutX="329.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HACK">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Redbridge" layoutX="375.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="REDB">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Havering" layoutX="421.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HAVE">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Barking" layoutX="399.0" layoutY="156.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="BARK">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Bexley" layoutX="375.0" layoutY="194.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="BEXL">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="Newham" layoutX="353.0" layoutY="155.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="NEWH">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Greenwich" layoutX="329.0" layoutY="193.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="GWCH">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Southwark" layoutX="304.0" layoutY="230.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="STHW">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Lewisham" layoutX="351.0" layoutY="231.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="LEWS">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Bromley" layoutX="327.0" layoutY="268.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="BROM">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Croydon" layoutX="281.0" layoutY="268.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="CROY">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Sutton" layoutX="234.0" layoutY="267.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="SUTT">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Kingston" layoutX="188.0" layoutY="267.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="KING">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Lambeth" layoutX="258.0" layoutY="230.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="LAMB">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Merton" layoutX="212.0" layoutY="230.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="MERT">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Richmond" layoutX="166.0" layoutY="230.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="RICH">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="City" layoutX="282.0" layoutY="192.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="CITY">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Wandsworth" layoutX="236.0" layoutY="192.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="WAND">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Hammersmith" layoutX="190.0" layoutY="192.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HAMM">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Hounslow" layoutX="144.0" layoutY="192.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HOUN">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Tower" layoutX="307.0" layoutY="155.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="TOWH">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Westminster" layoutX="259.0" layoutY="155.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="WSTM">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Kensington" layoutX="213.0" layoutY="155.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="KENS">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Ealing" layoutX="167.0" layoutY="155.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="EALI">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Hillington" layoutX="121.0" layoutY="155.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HILL">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Islington" layoutX="283.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="ISLI">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Camden" layoutX="237.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="CAMD">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Brent" layoutX="191.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="BREN">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Harrow" layoutX="145.0" layoutY="117.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="HRRW">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <Button fx:id="Barnet" layoutX="213.0" layoutY="79.0" mnemonicParsing="false" onAction="#selectBorough" prefHeight="47.0" prefWidth="43.0" styleClass="octogon-button" text="BARN">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Button>
+      <VBox layoutX="-3.0" prefHeight="401.0" prefWidth="100.0">
+         <children>
+            <Label text="&gt; 0">
+               <VBox.margin>
+                  <Insets left="30.0" top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Slider fx:id="filterSlider" onDragDetected="#updateFilter" orientation="VERTICAL">
+               <VBox.margin>
+                  <Insets left="35.0" top="60.0" />
+               </VBox.margin>
+            </Slider>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

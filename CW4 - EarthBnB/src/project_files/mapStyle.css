@@ -1,0 +1,5 @@
+.octogon-button {
+    -fx-shape: "M86.60254037844386 0L173.20508075688772 50L173.20508075688772 150L86.60254037844386 200L0 150L0 50Z";
+    -fx-border-color: black;
+    -fx-background-color: white;
+}
