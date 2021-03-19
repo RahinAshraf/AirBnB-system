@@ -1,0 +1,31 @@
+
+
+.button{
+    -fx-font-size:8px;
+    -fx-padding:8;
+    -fx-spacing:10;
+}
+
+#gridPane{
+
+    -fx-padding:4;
+    -fx-spacing:50;
+
+}
+
+#borderTopLeft{
+
+    -fx-spacing:50;
+
+}
+
+#statisticsPane{
+
+    -fx-background-color: #616161;
+
+}
+
+#borderPane4{
+    -fx-spacing: 20;
+
+}
