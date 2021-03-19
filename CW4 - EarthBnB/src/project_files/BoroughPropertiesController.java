@@ -23,11 +23,24 @@ import java.util.ResourceBundle;
 
 public class BoroughPropertiesController implements Initializable {
 
+    TableColumn boroughHostCol;
+    TableColumn<AirbnbListing, Integer> boroughPriceCol;
+    TableColumn<AirbnbListing, Integer> reviewsCountCol;
+
+    private boolean isDropClicked;
+
     @FXML
     Button backNavigationbackNavigation;
 
     @FXML
     TableView propertiesTable;
+
+    @FXML
+    Button sortReviews;
+    @FXML
+    Button sortPrice;
+    @FXML
+    Button sortHost;
 
     private final ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
@@ -39,7 +52,7 @@ public class BoroughPropertiesController implements Initializable {
 
         loadData(selectedBoroughs);
 
-        TableColumn boroughHostCol = new TableColumn("Host Name");
+        boroughHostCol = new TableColumn("Host Name");
         boroughHostCol.setMinWidth(100);
         boroughHostCol.setMaxWidth(120);
         boroughHostCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -51,14 +64,14 @@ public class BoroughPropertiesController implements Initializable {
         boroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
-        TableColumn<AirbnbListing, Integer> boroughPriceCol = new TableColumn<>("Price");
+        boroughPriceCol = new TableColumn<>("Price");
         boroughPriceCol.setMinWidth(100);
         boroughPriceCol.setMaxWidth(120);
         //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
         PropertyValueFactory temp = new PropertyValueFactory<AirbnbListing, Integer> (("price"));
         boroughPriceCol.setCellValueFactory(temp);
 
-        TableColumn<AirbnbListing, Integer> reviewsCountCol = new TableColumn<>("# of Reviews");
+        reviewsCountCol = new TableColumn<>("# of Reviews");
         reviewsCountCol.setMinWidth(100);
         reviewsCountCol.setMaxWidth(120);
         //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -86,6 +99,26 @@ public class BoroughPropertiesController implements Initializable {
         }
     }
 
+    public void dropDownClicked(javafx.event.ActionEvent actionEvent) {
+        if(isDropClicked) {
+            sortReviews.setVisible(false);
+            sortPrice.setVisible(false);
+            sortHost.setVisible(false);
+            isDropClicked = false;
+        } else {
+            sortReviews.setVisible(true);
+            sortPrice.setVisible(true);
+            sortHost.setVisible(true);
+            isDropClicked = true;
+        }
+    }
+
+    public void updateSort(javafx.event.ActionEvent actionEvent) {
+        if(((Button) actionEvent.getSource()).getId().equals("sortReviews")) {
+            propertiesTable.getSortOrder().add(reviewsCountCol);
+        }
+    }
+
     public void backNavigation() {
         try {
             FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
@@ -106,6 +139,9 @@ public class BoroughPropertiesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        sortReviews.setVisible(false);
+        sortPrice.setVisible(false);
+        sortHost.setVisible(false);
+        isDropClicked = false;
     }
 }

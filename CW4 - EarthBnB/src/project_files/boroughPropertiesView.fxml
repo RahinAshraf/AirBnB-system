@@ -20,6 +20,33 @@
                               <Insets left="10.0" top="20.0" />
                            </VBox.margin>
                         </Button>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <Button id="sortDropButton" fx:id="sortDropButton" mnemonicParsing="false" onAction="#dropDownClicked" text="SORT BY">
+                                 <VBox.margin>
+                                    <Insets left="30.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button id="sortReviews" fx:id="sortReviews" mnemonicParsing="false" onAction="#updateSort" prefWidth="70.0" text="Reviews">
+                                 <VBox.margin>
+                                    <Insets left="30.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button id="sortPrice" fx:id="sortPrice" mnemonicParsing="false" prefWidth="70.0" text="Price">
+                                 <VBox.margin>
+                                    <Insets left="30.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <Button id="sortHost" fx:id="sortHost" mnemonicParsing="false" prefWidth="70.0" text="Host">
+                                 <VBox.margin>
+                                    <Insets left="30.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                </children></AnchorPane>

@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
@@ -30,6 +31,8 @@ public class MapController implements Initializable {
 
     private ArrayList<Button> selectedBoroughs;
 
+    @FXML
+    Slider filterSlider;
 
     @FXML
     AnchorPane mapView;
@@ -42,8 +45,6 @@ public class MapController implements Initializable {
         selectedBoroughs = new ArrayList<>();
 
     }
-
-
 
     public void selectBorough(javafx.event.ActionEvent actionEvent) {
         selectNewBorough((Button)actionEvent.getSource());
@@ -61,6 +62,15 @@ public class MapController implements Initializable {
             newStage.setScene(new Scene(root, 800, 500));
             newStage.setResizable(false);
             newStage.show();
+            String titleString = "";
+            for(int i = 0; i<selectedBoroughs.size(); i++) {
+                if(i == 0) {
+                    titleString = titleString + "" + selectedBoroughs.get(i).getId();
+                } else {
+                    titleString = titleString + ", " + selectedBoroughs.get(i).getId();
+                }
+            }
+            newStage.setTitle(titleString);
             BoroughPropertiesController boroughController = boroughLoader.getController();
             ArrayList<String> tempArray = new ArrayList<>();
             for(int i = 0; i<selectedBoroughs.size(); i++) {
@@ -76,7 +86,6 @@ public class MapController implements Initializable {
 
     public void initializeMap(ArrayList<AirbnbListing> listings)
     {
-        System.out.println("MapController Initialized");
         this.listings = listings;
         updateBoroughs();
         System.out.println(propertyCount.get("Westminster"));
@@ -122,6 +131,10 @@ public class MapController implements Initializable {
 
         String borough = button.getId();
         System.out.println(borough);
+    }
+
+    public void updateFilter(MouseEvent mouseEvent) {
+        filterValue = filterSlider.getValue();
     }
 
     private void updateBoroughs() // !! Change to only save the first word of the borough
