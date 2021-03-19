@@ -13,6 +13,9 @@
          <right>
             <Button fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#setNextPane" text="&gt;" BorderPane.alignment="CENTER" />
          </right>
+         <bottom>
+            <Button id="loginNavigation" fx:id="loginNavigation" mnemonicParsing="false" onAction="#loginNavigationClicked" text="LOGIN" BorderPane.alignment="CENTER" />
+         </bottom>
       </BorderPane>
    </bottom>
    <top>

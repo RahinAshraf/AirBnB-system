@@ -10,5 +10,14 @@
     <orderEntry type="library" name="+libs" level="project" />
     <orderEntry type="library" name="JavaFX 16" level="project" />
     <orderEntry type="library" name="JavaFX 11" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/mysql-connector-java-8.0.23.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

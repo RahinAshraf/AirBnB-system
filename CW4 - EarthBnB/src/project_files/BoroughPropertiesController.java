@@ -17,6 +17,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.ResourceBundle;
@@ -143,5 +147,7 @@ public class BoroughPropertiesController implements Initializable {
         sortPrice.setVisible(false);
         sortHost.setVisible(false);
         isDropClicked = false;
+
+
     }
 }

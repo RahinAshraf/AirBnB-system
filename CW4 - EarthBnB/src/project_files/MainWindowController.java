@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -138,6 +139,17 @@ public class MainWindowController extends Application {
 
     public void initializeListings(ArrayList<AirbnbListing> listings) {
         this.listings = listings;
+    }
+
+    public void loginNavigationClicked() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("loginPanel.fxml"));
+        //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
+        Stage newStage = new Stage();
+        newStage.setTitle("EarthBnB");
+        newStage.setScene(new Scene(root, 600, 500));
+        newStage.setResizable(false);
+        newStage.show();
+        contentPane.getScene().getWindow().hide();
     }
 
     public static void main(String[] args) {

@@ -10,4 +10,10 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="+libs" level="project" />
   </component>
+
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>x.y.z</version>
+</dependency>
 </module>
