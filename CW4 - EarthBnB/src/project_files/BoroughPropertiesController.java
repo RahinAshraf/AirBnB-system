@@ -29,17 +29,23 @@ public class BoroughPropertiesController implements Initializable {
 
     ArrayList<AirbnbListing> listings;
 
-    public void initializeMap(ArrayList<AirbnbListing> listings)
+    public void initializeListing(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs)
     {
         this.listings = listings;
 
-        loadData();
+        loadData(selectedBoroughs);
 
         TableColumn boroughHostCol = new TableColumn("Host Name");
         boroughHostCol.setMinWidth(100);
         boroughHostCol.setMaxWidth(120);
         boroughHostCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughHostCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("hostName"));
+
+        TableColumn boroughCol = new TableColumn("Borough");
+        boroughCol.setMinWidth(100);
+        boroughCol.setMaxWidth(120);
+        boroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        boroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
         TableColumn<AirbnbListing, Integer> boroughPriceCol = new TableColumn<>("Price");
         boroughPriceCol.setMinWidth(100);
@@ -48,14 +54,31 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory temp = new PropertyValueFactory<AirbnbListing, Integer> (("price"));
         boroughPriceCol.setCellValueFactory(temp);
 
-        propertiesTable.getColumns().addAll(boroughHostCol, boroughPriceCol);
+        TableColumn<AirbnbListing, Integer> reviewsCountCol = new TableColumn<>("# of Reviews");
+        reviewsCountCol.setMinWidth(100);
+        reviewsCountCol.setMaxWidth(120);
+        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        PropertyValueFactory reviewsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("numberOfReviews"));
+        reviewsCountCol.setCellValueFactory(reviewsTemp);
+
+        TableColumn<AirbnbListing, Integer> minimumNightsCol = new TableColumn<>("Minimum Nights");
+        minimumNightsCol.setMinWidth(100);
+        minimumNightsCol.setMaxWidth(120);
+        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        PropertyValueFactory nightsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("minimumNights"));
+        minimumNightsCol.setCellValueFactory(nightsTemp);
+
+        propertiesTable.getColumns().addAll(boroughHostCol, boroughPriceCol, boroughCol, reviewsCountCol, minimumNightsCol);
         propertiesTable.setItems(data);
 
     }
 
-    public void loadData() {
-        for(int i = 0; i<50; i++) {
-            data.add(listings.get(i));
+    public void loadData(ArrayList<String> selectedBoroughs) {
+        for(int i = 0; i<listings.size(); i++) {
+            if(selectedBoroughs.contains(listings.get(i).getNeighbourhood())) {
+                data.add(listings.get(i));
+            }
+
         }
     }
 

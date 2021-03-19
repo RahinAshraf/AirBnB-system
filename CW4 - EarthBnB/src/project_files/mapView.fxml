@@ -192,5 +192,6 @@
             </Slider>
          </children>
       </VBox>
+      <Button id="searchButton" fx:id="searchButton" layoutX="442.0" layoutY="338.0" mnemonicParsing="false" onAction="#searchProperties" style="-fx-background-color: #ffb399#ffb399;" text="Search Properties" />
    </children>
 </AnchorPane>

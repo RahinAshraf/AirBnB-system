@@ -29,6 +29,8 @@ public class MapController implements Initializable {
     private Map<String, Long> propertyCount = new HashMap<String, Long>();
     private String boroughs[] = new String[32];
 
+    private ArrayList<Button> selectedBoroughs;
+
     @FXML
     Slider filterSlider;
 
@@ -40,11 +42,37 @@ public class MapController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        selectedBoroughs = new ArrayList<>();
 
     }
 
     public void selectBorough(javafx.event.ActionEvent actionEvent) {
         selectNewBorough((Button)actionEvent.getSource());
+    }
+
+    public void searchProperties(javafx.event.ActionEvent actionEvent) {
+        for(int i = 0; i<selectedBoroughs.size(); i++) {
+            System.out.println(selectedBoroughs.get(i));
+        }
+
+        try {
+            FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("boroughPropertiesView.fxml"));
+            Parent root = boroughLoader.load();
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(root, 800, 500));
+            newStage.setResizable(false);
+            newStage.show();
+            BoroughPropertiesController boroughController = boroughLoader.getController();
+            ArrayList<String> tempArray = new ArrayList<>();
+            for(int i = 0; i<selectedBoroughs.size(); i++) {
+                tempArray.add(selectedBoroughs.get(i).getId());
+            }
+            boroughController.initializeListing(listings, tempArray);
+            mapView.getScene().getWindow().hide();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void initializeMap(ArrayList<AirbnbListing> listings)
@@ -83,27 +111,15 @@ public class MapController implements Initializable {
 
     public void selectNewBorough(Button button) {
 
-        if (selectedBorough != null) {
-            selectedBorough.setStyle("-fx-background-color: #FFFFFF");
+        if (selectedBoroughs.contains(button)) {
+            selectedBoroughs.remove(button);
+            button.setStyle("-fx-background-color: #FFFFFF");
+        } else {
+            selectedBoroughs.add(button);
+            button.setStyle("-fx-background-color: #50B4D4");
         }
 
-        button.setStyle("-fx-background-color: #50B4D4");
 
-        try {
-            FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("boroughPropertiesView.fxml"));
-            Parent root = boroughLoader.load();
-            Stage newStage = new Stage();
-            newStage.setScene(new Scene(root, 600, 500));
-            newStage.setResizable(false);
-            newStage.show();
-            BoroughPropertiesController boroughController = boroughLoader.getController();
-            boroughController.initializeMap(listings);
-            mapView.getScene().getWindow().hide();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        selectedBorough = button;
         String borough = button.getId();
         System.out.println(borough);
     }
