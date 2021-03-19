@@ -3,7 +3,10 @@ package project_files;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
@@ -11,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -78,6 +82,23 @@ public class BoroughPropertiesController implements Initializable {
             if(selectedBoroughs.contains(listings.get(i).getNeighbourhood())) {
                 data.add(listings.get(i));
             }
+
+        }
+    }
+
+    public void backNavigation() {
+        try {
+            FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
+            Parent root = boroughLoader.load();
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(root, 600, 500));
+            newStage.setResizable(false);
+            newStage.show();
+            MainWindowController mainWindowController = boroughLoader.getController();
+            mainWindowController.initializeListings(listings);
+            mainWindowController.updatePanel(3);
+            propertiesTable.getScene().getWindow().hide();
+        } catch (Exception e) {
 
         }
     }

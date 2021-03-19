@@ -105,6 +105,41 @@ public class MainWindowController extends Application {
 
     }
 
+    public void updatePanel(Integer pageNumber) throws IOException {
+        Parent nextPanel;
+        currentPage = 3;
+        switch (currentPage)
+        {
+            case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
+                currentPage++;
+                break;
+            case 1: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
+                nextPanel = statsLoader.load();
+                StatisticsPanelController statisticsPanel = statsLoader.getController();
+                AirbnbDataLoader loader = new AirbnbDataLoader();
+                listings = loader.load("listings.csv");
+                statisticsPanel.initializeStats(listings);
+                currentPage++;
+                break;
+            case 2: nextPanel = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
+                currentPage++;
+                break;
+            case 3: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
+                nextPanel = mapLoader.load();
+                MapController mapController = mapLoader.getController();
+                mapController.initializeMap(listings);
+                currentPage = 0;
+                break;
+            default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
+                break;
+        }
+        contentPane.setCenter(nextPanel);
+    }
+
+    public void initializeListings(ArrayList<AirbnbListing> listings) {
+        this.listings = listings;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
