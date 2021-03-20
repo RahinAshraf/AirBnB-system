@@ -80,7 +80,13 @@ public class LoginPanelController implements Initializable {
        if(queryResult.next()) {
             System.out.println("Logged In");
             accountID = queryResult.getInt(1);
-            System.out.println("Account ID:" + accountID);
+            Account user = new Account(
+                    queryResult.getInt(1),
+                    queryResult.getString(2),
+                    queryResult.getString(3),
+                    queryResult.getString(4)
+            );
+           System.out.println("Email: " + user.getEmailAddress());
         } else {
            System.out.println("Incorrect Login Details");
        }
