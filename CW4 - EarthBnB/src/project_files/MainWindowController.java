@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class MainWindowController extends Application {
     private ArrayList<AirbnbListing> listings = new ArrayList<>();
 
     Account currentUser;
+    private boolean accountOpen;
 
     //The panels and their roots
     //private Panel statisticsPanel;
@@ -55,11 +57,39 @@ public class MainWindowController extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
         currentUser = null;
+        accountOpen = false;
     }
 
     public void load(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = loader.load(filename);
+    }
+
+    public void navigateToAccount(ActionEvent e) throws IOException {
+        if(currentUser != null) {
+            Parent nextPanel;
+            if(accountOpen == false) {
+
+                FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
+                nextPanel = accountLoader.load();
+                AccountPanelController accountPanelController = accountLoader.getController();
+                accountPanelController.initializeAccount(listings, currentUser);
+                //bookingController.initializeMap(listings);
+                currentPage = 0;
+                accountOpen = true;
+                accountButton.setText("Exit");
+                nextPaneBtn.setDisable(true);
+            } else {
+                nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
+                //updatePanel(3);
+                accountOpen = false;
+                accountButton.setText(currentUser.getUsername());
+                nextPaneBtn.setDisable(false);
+            }
+            contentPane.setCenter(nextPanel);
+        } else {
+            System.out.println("You have to log in before you can go to your dashboard!");
+        }
     }
 
 
