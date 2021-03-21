@@ -146,6 +146,7 @@ public class StatisticsPanelController extends Panel {
         return nextStat;
     }
 
+
     private Statistic getPrev(StatsPanelElement panel){
 
         Statistic nextStat;

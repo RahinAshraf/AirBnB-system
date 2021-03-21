@@ -150,4 +150,5 @@ public class MapController implements Initializable {
            listings.get(i).chopNeighbourhoodName();
         }
     }
+
 }
