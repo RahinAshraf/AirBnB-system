@@ -11,8 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -263,5 +265,31 @@ public class BoroughPropertiesController implements Initializable {
         sortPrice.setVisible(false);
         sortHost.setVisible(false);
         isDropClicked = false;
+    }
+
+    @FXML
+    public void rowClicked(MouseEvent e) throws IOException {
+        if (e.getClickCount() == 2)
+        {
+            Object chosenObject = propertiesTable.getSelectionModel().getSelectedItem();
+            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
+                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+                openPropertyDisplayView(chosenProperty);
+            }
+        }
+    }
+
+    // Change this
+    private void openPropertyDisplayView(AirbnbListing property) throws IOException {
+        //Parent root
+        FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("PropertyDisplayerView.fxml"));
+        Parent root = displayerLoader.load();
+        Stage newStage = new Stage();
+        newStage.setTitle("Property");
+        newStage.setScene(new Scene(root, 600, 500));
+
+        PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
+        propertyDisplayer.loadData(property);
+        newStage.show();
     }
 }
