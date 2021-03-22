@@ -8,11 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
@@ -57,6 +53,15 @@ public class BoroughPropertiesController implements Initializable {
     @FXML
     Button sortHost;
 
+    @FXML
+    CheckBox wifiBox;
+    @FXML
+    CheckBox poolBox;
+    @FXML
+    CheckBox superBox;
+    @FXML
+    CheckBox roomBox;
+
 
     //
     private final ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
@@ -64,6 +69,9 @@ public class BoroughPropertiesController implements Initializable {
     private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
     //
     ArrayList<AirbnbListing> listings;
+
+    // An Array List that stores check boxes that hold filters.
+    private ArrayList<CheckBox> filters = new ArrayList<>();
 
     /**
      *
@@ -73,6 +81,12 @@ public class BoroughPropertiesController implements Initializable {
         this.listings = listings;
         //
         loadData(selectedBoroughs);
+        // Adding all the check boxes.
+        filters.add(wifiBox);
+        filters.add(superBox);
+        filters.add(roomBox);
+        filters.add(poolBox);
+
         //
         boroughHostCol = new TableColumn("Host Name");
         boroughHostCol.setMinWidth(100);
@@ -128,7 +142,6 @@ public class BoroughPropertiesController implements Initializable {
         }
     }
 
-    /*
     public void dropDownClicked(javafx.event.ActionEvent actionEvent) {
         if(isDropClicked) {
             sortReviews.setVisible(false);
@@ -142,8 +155,6 @@ public class BoroughPropertiesController implements Initializable {
             isDropClicked = true;
         }
     }
-
-     */
 
     /**
      *
@@ -185,10 +196,62 @@ public class BoroughPropertiesController implements Initializable {
      */
     @FXML
     public void filterWifi(ActionEvent event){
-        displayData = data.stream()
-        .filter(airbnbListing -> airbnbListing.getAmenities().contains("Wifi"))
-        .collect(Collectors.toCollection(FXCollections::observableArrayList));
-        propertiesTable.setItems(displayData);
+        if (wifiBox.isSelected()){
+            displayData = data.stream()
+                    .filter(airbnbListing -> airbnbListing.getAmenities().contains("Wifi"))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            propertiesTable.setItems(displayData);
+        }
+        else {
+            propertiesTable.setItems(data);
+        }
+    }
+
+    /**
+     * A method which filters houses that are hosted by a super host.
+     */
+    @FXML
+    public void filterSuperHost(ActionEvent event){
+        if (superBox.isSelected()){
+            displayData = data.stream()
+                    .filter(airbnbListing -> airbnbListing.isHostSuperhost() == true)
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            propertiesTable.setItems(displayData);
+        }
+        else {
+            propertiesTable.setItems(data);
+        }
+    }
+    /**
+     * A method which filters houses that are private.
+     */
+    @FXML
+    public void filterPrivateRoom(ActionEvent event){
+        if (roomBox.isSelected()){
+            displayData = data.stream()
+                    .filter(airbnbListing -> airbnbListing.getRoomType().equals("Private room"))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            propertiesTable.setItems(displayData);
+        }
+        else {
+            propertiesTable.setItems(data);
+        }
+    }
+
+    /**
+     * A method which filters houses that have pool as amenities.
+     */
+    @FXML
+    public void filterPool(ActionEvent event){
+        if (poolBox.isSelected()){
+            displayData = data.stream()
+                    .filter(airbnbListing -> airbnbListing.getAmenities().contains("Pool"))
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            propertiesTable.setItems(displayData);
+        }
+            else{
+            propertiesTable.setItems(data);
+        }
     }
 
     /**
