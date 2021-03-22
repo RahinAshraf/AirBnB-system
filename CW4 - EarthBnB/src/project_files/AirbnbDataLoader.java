@@ -30,7 +30,7 @@ public class AirbnbDataLoader {
             while ((line = reader.readNext()) != null) {
                 String id = line[0];
                 String name = line[1];
-                String neighbourhoodOverview = line[2];
+                String neighbourhoodOverview = convertHTMLSymbols(line[2]);
                 URL pictureURL = convertURL(line[3]);
                 String hostID = line[4];
                 String hostName = line[5];
@@ -75,6 +75,26 @@ public class AirbnbDataLoader {
     }
 
     /**
+     * Remove html symbols contained in the string. A break is converted to a new line.
+     * Italic, bold and underlining are removed.
+     * @param s The string to be converted.
+     * @return The converted string.
+     */
+    private String convertHTMLSymbols(String s)
+    {
+        s = s.replace("<br />", "\n");
+        s = s.replace("<u>", "");
+        s = s.replace("</u>", "");
+        s = s.replace("<i>", "");
+        s = s.replace("</i>", "");
+        s = s.replace("<em>", "");
+        s = s.replace("</em>", "");
+        s = s.replace("<b>", "");
+        s = s.replace("</b>", "");
+        return s;
+    }
+
+    /**
      *
      * @param doubleString the string to be converted to Double type
      * @return the Double value of the string, or -1.0 if the string is 
@@ -84,7 +104,7 @@ public class AirbnbDataLoader {
         if(doubleString != null && !doubleString.trim().equals("")){
             return Double.parseDouble(doubleString);
         }
-        return -1.0;
+        return 0.0;
     }
 
     /**
@@ -111,7 +131,7 @@ public class AirbnbDataLoader {
         if(intString != null && !intString.trim().equals("")){
             return Integer.parseInt(intString);
         }
-        return -1;
+        return 0;
     }
 
     /**

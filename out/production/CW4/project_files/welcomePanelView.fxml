@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane id="welcomePanel" fx:id="welcomePanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.WelcomePanel">
-   <center>
-      <Label text="Welcome" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-border-color: &quot;red&quot;;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.WelcomePanel">
+   <children>
+      <Label fx:id="welcomeLabel" layoutX="100.0" layoutY="55.0" text="Welcome to airbnb" textFill="#ee0b0b">
+         <font>
+            <Font name="Arial" size="48.0" />
+         </font>
+      </Label>
+      <Label fx:id="enterLabel" layoutX="71.0" layoutY="153.0" text="Enter your check-in information to get started!" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <VBox layoutX="371.0" layoutY="188.0" prefHeight="147.0" prefWidth="160.0">
+         <children>
+            <DatePicker fx:id="checkIn" editable="false" prefHeight="52.0" prefWidth="160.0" promptText="Check-In Date" showWeekNumbers="true" style="-fx-border-color: &quot;red&quot;;" />
+            <DatePicker fx:id="checkOut" editable="false" prefHeight="49.0" prefWidth="163.0" promptText="Check-Out date" style="-fx-border-color: &quot;red&quot;;" />
+            <TextField prefHeight="42.0" prefWidth="159.0" promptText="Number of guests" style="-fx-border-color: &quot;red&quot;;" />
+         </children>
+      </VBox>
+      <Label layoutX="264.0" layoutY="209.0" text="Check In Date:">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="246.0" layoutY="255.0" text="Check Out Date:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="240.0" layoutY="304.0" text="Number Of Guests:">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <Button layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#checkDate" prefHeight="33.0" prefWidth="59.0" style="-fx-background-radius: 24;" text="Login" />
+   </children>
+</Pane>
