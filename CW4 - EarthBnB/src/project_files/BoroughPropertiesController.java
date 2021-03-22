@@ -9,61 +9,85 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BoroughPropertiesController implements Initializable {
 
+    //
     TableColumn boroughHostCol;
+    //
     TableColumn<AirbnbListing, Integer> boroughPriceCol;
+    //
     TableColumn<AirbnbListing, Integer> reviewsCountCol;
 
+    //
     private boolean isDropClicked;
 
+    //
     @FXML
-    Button backNavigationbackNavigation;
-
+    Button backNavigation;
+    //
     @FXML
     TableView propertiesTable;
-
+    //
     @FXML
     Button sortReviews;
+    //
     @FXML
     Button sortPrice;
+    //
     @FXML
     Button sortHost;
 
-    private final ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
+    //
+    private final ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
+    //
+    private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
+    //
     ArrayList<AirbnbListing> listings;
 
+    /**
+     *
+     */
     public void initializeListing(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs)
     {
         this.listings = listings;
-
+        //
         loadData(selectedBoroughs);
-
+        //
         boroughHostCol = new TableColumn("Host Name");
         boroughHostCol.setMinWidth(100);
         boroughHostCol.setMaxWidth(120);
         boroughHostCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughHostCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("hostName"));
 
+        //
         TableColumn boroughCol = new TableColumn("Borough");
         boroughCol.setMinWidth(100);
         boroughCol.setMaxWidth(120);
         boroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
+        //
         boroughPriceCol = new TableColumn<>("Price");
         boroughPriceCol.setMinWidth(100);
         boroughPriceCol.setMaxWidth(120);
@@ -71,6 +95,7 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory temp = new PropertyValueFactory<AirbnbListing, Integer> (("price"));
         boroughPriceCol.setCellValueFactory(temp);
 
+        //
         reviewsCountCol = new TableColumn<>("# of Reviews");
         reviewsCountCol.setMinWidth(100);
         reviewsCountCol.setMaxWidth(120);
@@ -78,6 +103,7 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory reviewsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("numberOfReviews"));
         reviewsCountCol.setCellValueFactory(reviewsTemp);
 
+        //
         TableColumn<AirbnbListing, Integer> minimumNightsCol = new TableColumn<>("Minimum Nights");
         minimumNightsCol.setMinWidth(100);
         minimumNightsCol.setMaxWidth(120);
@@ -85,20 +111,24 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory nightsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("minimumNights"));
         minimumNightsCol.setCellValueFactory(nightsTemp);
 
+        //
         propertiesTable.getColumns().addAll(boroughHostCol, boroughPriceCol, boroughCol, reviewsCountCol, minimumNightsCol);
         propertiesTable.setItems(data);
 
     }
 
+    /**
+     *
+     */
     public void loadData(ArrayList<String> selectedBoroughs) {
         for(int i = 0; i<listings.size(); i++) {
             if(selectedBoroughs.contains(listings.get(i).getNeighbourhood())) {
                 data.add(listings.get(i));
             }
-
         }
     }
 
+    /*
     public void dropDownClicked(javafx.event.ActionEvent actionEvent) {
         if(isDropClicked) {
             sortReviews.setVisible(false);
@@ -113,12 +143,26 @@ public class BoroughPropertiesController implements Initializable {
         }
     }
 
+     */
+
+    /**
+     *
+     */
     public void updateSort(javafx.event.ActionEvent actionEvent) {
         if(((Button) actionEvent.getSource()).getId().equals("sortReviews")) {
             propertiesTable.getSortOrder().add(reviewsCountCol);
         }
+     else if (((Button) actionEvent.getSource()).getId().equals("sortPrice")){
+            propertiesTable.getSortOrder().add(boroughPriceCol);
+        }
+        // else if (((Button) actionEvent.getSource()).getId().equals("sortHost")){
+           // propertiesTable.getSortOrder().add(boroughHostCol);
+        // }
     }
 
+    /**
+     *
+     */
     public void backNavigation() {
         try {
             FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
@@ -129,45 +173,32 @@ public class BoroughPropertiesController implements Initializable {
             newStage.show();
             MainWindowController mainWindowController = boroughLoader.getController();
             mainWindowController.initializeListings(listings);
-            mainWindowController.updatePanel(1);
+            mainWindowController.updatePanel(3);
             propertiesTable.getScene().getWindow().hide();
         } catch (Exception e) {
 
         }
     }
 
+    /**
+     * A method which filters houses that have wi-fi as amenities.
+     */
+    @FXML
+    public void filterWifi(ActionEvent event){
+        displayData = data.stream()
+        .filter(airbnbListing -> airbnbListing.getAmenities().contains("Wifi"))
+        .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        propertiesTable.setItems(displayData);
+    }
 
+    /**
+     *
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         sortReviews.setVisible(false);
         sortPrice.setVisible(false);
         sortHost.setVisible(false);
         isDropClicked = false;
-    }
-
-    @FXML
-    public void rowClicked(MouseEvent e) throws IOException {
-        if (e.getClickCount() == 2)
-        {
-            Object chosenObject = propertiesTable.getSelectionModel().getSelectedItem();
-            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
-                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
-                openPropertyDisplayView(chosenProperty);
-            }
-        }
-    }
-
-    // Change this
-    private void openPropertyDisplayView(AirbnbListing property) throws IOException {
-        //Parent root
-        FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("PropertyDisplayerView.fxml"));
-        Parent root = displayerLoader.load();
-        Stage newStage = new Stage();
-        newStage.setTitle("Property");
-        newStage.setScene(new Scene(root, 600, 500));
-
-        PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
-        propertyDisplayer.loadData(property);
-        newStage.show();
     }
 }

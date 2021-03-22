@@ -23,6 +23,7 @@
                      <children>
                         <TextField id="usernameTextField" fx:id="usernameTextField" promptText="Username" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="100.0" />
                         <TextField id="passwordTextField" fx:id="passwordTextField" promptText="Password" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="160.0" />
+                        <Button id="backButton" fx:id="backButton" layoutX="13.0" layoutY="162.0" mnemonicParsing="false" onAction="#goBack" text="Back" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" />
                      </children>
                   </AnchorPane>
                </left>

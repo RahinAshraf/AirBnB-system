@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ import java.util.ArrayList;
 public class MainWindowController extends Application {
 
     private ArrayList<AirbnbListing> listings = new ArrayList<>();
+
+    Account currentUser;
+    private boolean accountOpen;
 
     //The panels and their roots
     //private Panel statisticsPanel;
@@ -36,6 +40,8 @@ public class MainWindowController extends Application {
     BorderPane contentPane;
     @FXML
     BorderPane bottomPane;
+    @FXML
+    Button accountButton;
 
     private int currentPage = 0;
 
@@ -50,11 +56,40 @@ public class MainWindowController extends Application {
         primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.setResizable(false);
         primaryStage.show();
+        currentUser = null;
+        accountOpen = false;
     }
 
     public void load(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = loader.load(filename);
+    }
+
+    public void navigateToAccount(ActionEvent e) throws IOException {
+        if(currentUser != null) {
+            Parent nextPanel;
+            if(accountOpen == false) {
+
+                FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
+                nextPanel = accountLoader.load();
+                AccountPanelController accountPanelController = accountLoader.getController();
+                accountPanelController.initializeAccount(listings, currentUser);
+                //bookingController.initializeMap(listings);
+                currentPage = 0;
+                accountOpen = true;
+                accountButton.setText("Exit");
+                nextPaneBtn.setDisable(true);
+            } else {
+                nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
+                //updatePanel(3);
+                accountOpen = false;
+                accountButton.setText(currentUser.getUsername());
+                nextPaneBtn.setDisable(false);
+            }
+            contentPane.setCenter(nextPanel);
+        } else {
+            System.out.println("You have to log in before you can go to your dashboard!");
+        }
     }
 
 
@@ -81,6 +116,13 @@ public class MainWindowController extends Application {
                     MapController mapController = mapLoader.getController();
                     listings = loader.load("listings.csv");
                     mapController.initializeMap(listings);
+                    currentPage++;
+                    break;
+            case 4: FXMLLoader bookingLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
+                    nextPanel = bookingLoader.load();
+                    BookingController bookingController = bookingLoader.getController();
+                    bookingController.initializeBooking(listings);
+                    //bookingController.initializeMap(listings);
                     currentPage = 0;
                     break;
             default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
@@ -93,6 +135,11 @@ public class MainWindowController extends Application {
     private void setPrevPane(ActionEvent e)
     {
         //setPanel(panel);
+    }
+
+    public void setCurrentUser(Account user) {
+        currentUser = user;
+        accountButton.setText(user.getUsername());
     }
 
     /**
@@ -124,6 +171,13 @@ public class MainWindowController extends Application {
                 nextPanel = mapLoader.load();
                 MapController mapController = mapLoader.getController();
                 mapController.initializeMap(listings);
+                currentPage = 4;
+                break;
+            case 4: FXMLLoader bookingLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
+                nextPanel = bookingLoader.load();
+                BookingController bookingController = bookingLoader.getController();
+                bookingController.initializeBooking(listings);
+                //bookingController.initializeMap(listings);
                 currentPage = 0;
                 break;
             default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
@@ -137,13 +191,14 @@ public class MainWindowController extends Application {
     }
 
     public void loginNavigationClicked() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("loginPanel.fxml"));
-        //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("loginPanel.fxml"));
+        Parent root = loginLoader.load();
         Stage newStage = new Stage();
-        newStage.setTitle("EarthBnB");
         newStage.setScene(new Scene(root, 600, 500));
         newStage.setResizable(false);
         newStage.show();
+        LoginPanelController loginPanelController = loginLoader.getController();
+        loginPanelController.initializeListings(listings);
         contentPane.getScene().getWindow().hide();
     }
 

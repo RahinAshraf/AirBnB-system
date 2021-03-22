@@ -10,14 +10,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class LoginPanelController implements Initializable {
+
+    private ArrayList<AirbnbListing> listings = new ArrayList<>();
+
+    private Account user;
 
     @FXML
     TextField usernameTextField;
@@ -44,6 +50,25 @@ public class LoginPanelController implements Initializable {
     public void loginButtonClicked(javafx.event.ActionEvent actionEvent) {
         validateLogin();
 
+    }
+
+
+    public void goBack() {
+        try {
+            FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
+            Parent root = boroughLoader.load();
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(root, 600, 500));
+            newStage.setResizable(false);
+            newStage.show();
+            MainWindowController mainWindowController = boroughLoader.getController();
+            mainWindowController.initializeListings(listings);
+            mainWindowController.setCurrentUser(user);
+            //mainWindowController.updatePanel(3);
+            signupMenu.getScene().getWindow().hide();
+        } catch (Exception e) {
+
+        }
     }
 
     public void navigateToRegister(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -80,13 +105,14 @@ public class LoginPanelController implements Initializable {
        if(queryResult.next()) {
             System.out.println("Logged In");
             accountID = queryResult.getInt(1);
-            Account user = new Account(
+            user = new Account(
                     queryResult.getInt(1),
                     queryResult.getString(2),
                     queryResult.getString(3),
                     queryResult.getString(4)
             );
            System.out.println("Email: " + user.getEmailAddress());
+           goBack();
         } else {
            System.out.println("Incorrect Login Details");
        }
@@ -98,9 +124,14 @@ public class LoginPanelController implements Initializable {
     }
     }
 
+    public void initializeListings(ArrayList<AirbnbListing> listings) {
+        this.listings = listings;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentPanel = false;
         signinMenu.setStyle("-fx-background-color: #FF5733");
+        user = null;
     }
 }
