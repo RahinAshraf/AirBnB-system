@@ -11,7 +11,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <VBox layoutX="5.0" layoutY="-2.0" prefHeight="500.0" prefWidth="156.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="-2.0">
+                  <VBox layoutX="5.0" layoutY="-2.0" prefHeight="501.0" prefWidth="148.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
                      <children>
                         <Button id="backNavigation" fx:id="backNavigation" mnemonicParsing="false" onAction="#backNavigation" text="Back To Map">
                            <VBox.margin>
@@ -56,38 +56,50 @@
                   </TableView>
                   <HBox layoutX="515.0" layoutY="2.0" prefHeight="27.0" prefWidth="127.0">
                      <children>
-                        <ComboBox prefHeight="27.0" prefWidth="124.0" promptText="Sort By" />
+                        <ComboBox fx:id="comboBox" onAction="#updateSort" prefHeight="27.0" prefWidth="124.0" promptText="Sort By" />
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
         </items>
       </SplitPane>
-      <VBox layoutX="3.0" layoutY="275.0" prefHeight="211.0" prefWidth="148.0" style="-fx-border-color: grey;">
+      <VBox layoutX="5.0" layoutY="280.0" prefHeight="191.0" prefWidth="140.0" style="-fx-border-color: red;">
          <children>
             <Label text="Filters:">
                <font>
                   <Font name="Arial" size="15.0" />
                </font>
             </Label>
-            <CheckBox alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#filterWifi" prefHeight="29.0" prefWidth="79.0" text="Wi-Fi">
+            <CheckBox alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#filterWifi" prefHeight="29.0" prefWidth="70.0" text="Wi-Fi">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-               </padding></CheckBox>
+               </padding>
+               <font>
+                  <Font size="11.0" />
+               </font></CheckBox>
             <CheckBox mnemonicParsing="false" prefHeight="29.0" prefWidth="110.0" text="Super host">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </CheckBox>
             <CheckBox mnemonicParsing="false" prefHeight="29.0" prefWidth="120.0" text="Private room">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </CheckBox>
             <CheckBox mnemonicParsing="false" prefHeight="29.0" prefWidth="70.0" text="Pool">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>
+               <font>
+                  <Font size="11.0" />
+               </font>
             </CheckBox>
          </children>
          <padding>
