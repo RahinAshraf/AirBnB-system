@@ -66,7 +66,7 @@ public class StatisticsPanelController extends Panel {
         availableProperties = new StatAvailableProperties(listings);
         averageNumReviews = new StatAverageNumReviews(listings);
         mostExpensiveBorough = new StatMostExpensiveBorough(listings);
-        statA = new StatA(listings);
+        statA = new StatClosestListingToAttraction(listings);
         statB = new StatB(listings);
         statC = new StatC(listings);
         statD = new StatD(listings);
