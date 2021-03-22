@@ -2,27 +2,23 @@ package project_files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 public class BoroughPropertiesController implements Initializable {
@@ -133,7 +129,7 @@ public class BoroughPropertiesController implements Initializable {
             newStage.show();
             MainWindowController mainWindowController = boroughLoader.getController();
             mainWindowController.initializeListings(listings);
-            mainWindowController.updatePanel(3);
+            mainWindowController.updatePanel(1);
             propertiesTable.getScene().getWindow().hide();
         } catch (Exception e) {
 
@@ -147,7 +143,31 @@ public class BoroughPropertiesController implements Initializable {
         sortPrice.setVisible(false);
         sortHost.setVisible(false);
         isDropClicked = false;
+    }
 
+    @FXML
+    public void rowClicked(MouseEvent e) throws IOException {
+        if (e.getClickCount() == 2)
+        {
+            Object chosenObject = propertiesTable.getSelectionModel().getSelectedItem();
+            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
+                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+                openPropertyDisplayView(chosenProperty);
+            }
+        }
+    }
 
+    // Change this
+    private void openPropertyDisplayView(AirbnbListing property) throws IOException {
+        //Parent root
+        FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("PropertyDisplayerView.fxml"));
+        Parent root = displayerLoader.load();
+        Stage newStage = new Stage();
+        newStage.setTitle("Property");
+        newStage.setScene(new Scene(root, 600, 500));
+
+        PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
+        propertyDisplayer.loadData(property);
+        newStage.show();
     }
 }

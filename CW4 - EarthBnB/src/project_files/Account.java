@@ -8,7 +8,7 @@ public class Account {
     private String username;
     private String password;
     private String emailAddress;
-    private ArrayList<Integer> selectedProperties;
+    private ArrayList<Integer> savedProperties;
 
     Account(int accountID, String username, String password, String emailAddress) {
         this.accountID = accountID;

@@ -52,7 +52,7 @@
                </children></AnchorPane>
           <AnchorPane id="secondPane" fx:id="secondPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView id="propertiesTable" fx:id="propertiesTable" layoutX="14.0" layoutY="14.0" prefHeight="390.0" prefWidth="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView id="propertiesTable" fx:id="propertiesTable" layoutX="14.0" layoutY="14.0" onMouseClicked="#rowClicked" prefHeight="390.0" prefWidth="475.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                     </columns>
                   </TableView>
