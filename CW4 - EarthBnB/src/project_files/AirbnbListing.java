@@ -189,7 +189,7 @@ public class AirbnbListing {
         return hostResponseTime;
     }
 
-    public boolean isHostIsSuperhost() {
+    public boolean isHostSuperhost() {
         return hostIsSuperhost;
     }
 

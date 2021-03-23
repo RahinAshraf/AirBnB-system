@@ -49,7 +49,7 @@ public class MainWindowController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        load("listings.csv");
+        //load("listings.csv");
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
         //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
         primaryStage.setTitle("EarthBnB");
@@ -97,26 +97,24 @@ public class MainWindowController extends Application {
     @FXML
     private void setNextPane(ActionEvent e) throws IOException
     {
+        AirbnbDataLoader loader = new AirbnbDataLoader();
         Parent nextPanel;
         switch (currentPage)
         {
             case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                     currentPage++;
                     break;
-            case 1: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
+            case 2: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
                     nextPanel = statsLoader.load();
                     StatisticsPanelController statisticsPanel = statsLoader.getController();
-                    AirbnbDataLoader loader = new AirbnbDataLoader();
                     listings = loader.load("listings.csv");
                     statisticsPanel.initializeStats(listings);
                     currentPage++;
                     break;
-            case 2: nextPanel = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
-                    currentPage++;
-                    break;
-            case 3: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
+            case 1: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
                     nextPanel = mapLoader.load();
                     MapController mapController = mapLoader.getController();
+                    listings = loader.load("listings.csv");
                     mapController.initializeMap(listings);
                     currentPage++;
                     break;
@@ -161,7 +159,7 @@ public class MainWindowController extends Application {
             case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                 currentPage++;
                 break;
-            case 1: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
+            case 2: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
                 nextPanel = statsLoader.load();
                 StatisticsPanelController statisticsPanel = statsLoader.getController();
                 AirbnbDataLoader loader = new AirbnbDataLoader();
@@ -169,10 +167,7 @@ public class MainWindowController extends Application {
                 statisticsPanel.initializeStats(listings);
                 currentPage++;
                 break;
-            case 2: nextPanel = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
-                currentPage++;
-                break;
-            case 3: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
+            case 1: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
                 nextPanel = mapLoader.load();
                 MapController mapController = mapLoader.getController();
                 mapController.initializeMap(listings);
