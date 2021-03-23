@@ -27,6 +27,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
 public class BoroughPropertiesController implements Initializable {
 
     //
@@ -65,11 +66,11 @@ public class BoroughPropertiesController implements Initializable {
     CheckBox roomBox;
 
 
-    //
+    // The list of data which is shown.
     private final ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
-    //
+    // The new data which will be set if any of the filters are chosen.
     private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
-    //
+    // The list of the properties.
     ArrayList<AirbnbListing> listings;
 
     // An Array List that stores check boxes that hold filters.
@@ -81,7 +82,7 @@ public class BoroughPropertiesController implements Initializable {
     public void initializeListing(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs)
     {
         this.listings = listings;
-        //
+        // Loads the data.
         loadData(selectedBoroughs);
         // Adding all the check boxes.
         filters.add(wifiBox);
@@ -89,21 +90,21 @@ public class BoroughPropertiesController implements Initializable {
         filters.add(roomBox);
         filters.add(poolBox);
 
-        //
+        // Creates a table column which contains the hosts' names.
         boroughHostCol = new TableColumn("Host Name");
         boroughHostCol.setMinWidth(100);
         boroughHostCol.setMaxWidth(120);
         boroughHostCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughHostCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("hostName"));
 
-        //
+        // Creates a table column which contains the borough's names.
         TableColumn boroughCol = new TableColumn("Borough");
         boroughCol.setMinWidth(100);
         boroughCol.setMaxWidth(120);
         boroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
-        //
+        // Creates a table column which contains the price of each property.
         boroughPriceCol = new TableColumn<>("Price");
         boroughPriceCol.setMinWidth(100);
         boroughPriceCol.setMaxWidth(120);
@@ -111,7 +112,7 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory temp = new PropertyValueFactory<AirbnbListing, Integer> (("price"));
         boroughPriceCol.setCellValueFactory(temp);
 
-        //
+        // Creates a table column which contains the reviews of each property.
         reviewsCountCol = new TableColumn<>("# of Reviews");
         reviewsCountCol.setMinWidth(100);
         reviewsCountCol.setMaxWidth(120);
@@ -119,7 +120,8 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory reviewsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("numberOfReviews"));
         reviewsCountCol.setCellValueFactory(reviewsTemp);
 
-        //
+        // Creates a table column which contains the minimum nights which you can stay
+        // at a property.
         TableColumn<AirbnbListing, Integer> minimumNightsCol = new TableColumn<>("Minimum Nights");
         minimumNightsCol.setMinWidth(100);
         minimumNightsCol.setMaxWidth(120);
@@ -127,14 +129,14 @@ public class BoroughPropertiesController implements Initializable {
         PropertyValueFactory nightsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("minimumNights"));
         minimumNightsCol.setCellValueFactory(nightsTemp);
 
-        //
+        // Sets all of the data into the table.
         propertiesTable.getColumns().addAll(boroughHostCol, boroughPriceCol, boroughCol, reviewsCountCol, minimumNightsCol);
         propertiesTable.setItems(data);
 
     }
 
     /**
-     *
+     * Loads the data from the csv file into the table.
      */
     public void loadData(ArrayList<String> selectedBoroughs) {
         for(int i = 0; i<listings.size(); i++) {
@@ -159,7 +161,7 @@ public class BoroughPropertiesController implements Initializable {
     }
 
     /**
-     *
+     * Sorts properties by number of reviews, price or host name.
      */
     public void updateSort(javafx.event.ActionEvent actionEvent) {
         if(((Button) actionEvent.getSource()).getId().equals("sortReviews")) {
