@@ -129,21 +129,27 @@ public class BoroughPropertiesController implements Initializable {
             sortHost.setVisible(true);
             isDropClicked = true;
         }
+
     }
 
     /**
      * Sorts properties by number of reviews, price or host name.
      */
     public void updateSort(javafx.event.ActionEvent actionEvent) {
+        propertiesTable.getSortOrder().clear();
+
         if(((Button) actionEvent.getSource()).getId().equals("sortReviews")) {
             propertiesTable.getSortOrder().add(reviewsCountCol);
+            propertiesTable.sort();
         }
      else if (((Button) actionEvent.getSource()).getId().equals("sortPrice")){
             propertiesTable.getSortOrder().add(boroughPriceCol);
+            propertiesTable.sort();
         }
-        // else if (((Button) actionEvent.getSource()).getId().equals("sortHost")){
-           // propertiesTable.getSortOrder().add(boroughHostCol);
-        // }
+         else if (((Button) actionEvent.getSource()).getId().equals("sortHost")){
+            propertiesTable.getSortOrder().add(boroughHostCol);
+            propertiesTable.sort();
+         }
     }
 
 
