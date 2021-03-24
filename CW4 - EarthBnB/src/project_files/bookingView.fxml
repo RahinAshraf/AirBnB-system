@@ -22,8 +22,10 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <DatePicker AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="30.0" />
-                  <DatePicker AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0" />
+                  <DatePicker fx:id="checkInDate" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="30.0" />
+                  <DatePicker fx:id="checkOutDate" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0" />
+                  <Label layoutX="170.0" layoutY="6.0" text="Check in" textFill="RED" />
+                  <Label layoutX="372.0" layoutY="6.0" text="Check out" textFill="RED" />
                </children>
             </AnchorPane>
          </center>
@@ -43,7 +45,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: #F2892C;" text="RESERVE">
+                  <Button mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: red;" text="RESERVE">
                      <VBox.margin>
                         <Insets left="200.0" top="50.0" />
                      </VBox.margin>
