@@ -28,16 +28,38 @@ public class PropertyDisplayerController implements Initializable {
 
     private AirbnbListing displayedListing;
     @FXML
-    ImageView propertyImg, hostLargeImg;
+    ImageView propertyImg;
+    @FXML
+    ImageView hostLargeImg;
 
     @FXML
-    Label propertyNameLbl, propertyTypeLbl, bedsLbl, bathroomsLbl, hostIsSuperhostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl;
+    Label propertyNameLbl;
+    @FXML
+    Label propertyTypeLbl;
+    @FXML
+    Label bedsLbl;
+    @FXML
+    Label bathroomsLbl;
+    @FXML
+    Label hostIsSuperHostLbl;
+    @FXML
+    Label hostNameLbl;
+    @FXML
+    Label boroughLbl;
+    @FXML
+    Label neighbourHoodDescriptionLbl;
 
     @FXML
     TextArea amenitiesText; // Expand thing, only show a couple
 
     @FXML
-    ProgressBar cleanlinessBar, communicationBar, locationBar, totalBar;
+    ProgressBar cleanlinessBar;
+    @FXML
+    ProgressBar communicationBar;
+    @FXML
+    ProgressBar locationBar;
+    @FXML
+    ProgressBar totalBar;
 
     @FXML
     WebView mapWebView; // View for displaying webEngine
@@ -85,7 +107,7 @@ public class PropertyDisplayerController implements Initializable {
         hostLargeImg.setImage(new Image (String.valueOf(listing.getHostPicture())));
         hostNameLbl.setText(listing.getHostName());
         if (listing.isHostSuperhost()) {
-            hostIsSuperhostLbl.setText("Is a Superhost");
+            hostIsSuperHostLbl.setText("Is a Superhost");
         }
 
         //Set progress bars for reviews
