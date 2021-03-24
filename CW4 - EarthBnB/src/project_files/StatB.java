@@ -18,7 +18,7 @@ public class StatB extends Statistic {
 
     /**
      * Update the statistic.
-     * @param listings A list of listings the statistic should be calculated for.
+     * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
     protected String updateStatistic(ArrayList<AirbnbListing> listings)

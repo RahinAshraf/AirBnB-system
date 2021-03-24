@@ -77,14 +77,14 @@
                   <Font name="Arial" size="15.0" />
                </font>
             </Label>
-            <CheckBox fx:id="wifiBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#filterWifi" prefHeight="29.0" prefWidth="70.0" text="Wi-Fi">
+            <CheckBox id="wifiBox" fx:id="wifiBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changeFilter" prefHeight="29.0" prefWidth="70.0" text="Wi-Fi">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>
                <font>
                   <Font size="11.0" />
                </font></CheckBox>
-            <CheckBox fx:id="superBox" mnemonicParsing="false" onAction="#filterSuperHost" prefHeight="29.0" prefWidth="110.0" text="Super host">
+            <CheckBox id="superBox" fx:id="superBox" mnemonicParsing="false" onAction="#changeFilter" prefHeight="29.0" prefWidth="110.0" text="Super host">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>
@@ -92,7 +92,7 @@
                   <Font size="11.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="roomBox" mnemonicParsing="false" onAction="#filterPrivateRoom" prefHeight="29.0" prefWidth="120.0" text="Private room">
+            <CheckBox id="roomBox" fx:id="roomBox" mnemonicParsing="false" onAction="#changeFilter" prefHeight="29.0" prefWidth="120.0" text="Private room">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>
@@ -100,7 +100,7 @@
                   <Font size="11.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="poolBox" mnemonicParsing="false" onAction="#filterPool" prefHeight="29.0" prefWidth="70.0" text="Pool">
+            <CheckBox id="poolBox" fx:id="poolBox" mnemonicParsing="false" onAction="#changeFilter" prefHeight="29.0" prefWidth="70.0" text="Pool">
                <padding>
                   <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                </padding>

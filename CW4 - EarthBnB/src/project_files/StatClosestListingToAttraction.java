@@ -26,7 +26,7 @@ public class StatClosestListingToAttraction extends Statistic {
 
     /**
      * Update the statistic.
-     * @param listings A list of listings the statistic should be calculated for.
+     * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
     protected String updateStatistic(ArrayList<AirbnbListing> listings)
@@ -34,19 +34,18 @@ public class StatClosestListingToAttraction extends Statistic {
         String result = "";
         for (Map.Entry<String, double[]> location : locationsList.entrySet())
         {
-            Pair<AirbnbListing, Integer> currentResult = getClosestTo(listings, location.getValue()[0], location.getValue()[1]); //Pass in the listings and the two location values stored in the array
+            Pair<AirbnbListing, Integer> currentResult = getClosestTo(listings, location.getValue()[0], location.getValue()[1]); //Pass in the boroughListings and the two location values stored in the array
             result += location.getKey() + ": " + "\n" + currentResult.getKey().getName() + " " + currentResult.getValue() + "m\n"; // Get the name of the original location, the nearest apartment and the distance in meters
         }
-        System.out.println(result);
         return result;
     }
 
     /**
      * Get the listing closest to the given location.
-     * @param listings The list of listings to perform the comparison on.
+     * @param listings The list of boroughListings to perform the comparison on.
      * @param latOrigin The latitude of the origin (e.g. the attraction)
      * @param lonOrigin The longitude of the origin
-     * @return A pair of the closest listing and the distance between the two listings.
+     * @return A pair of the closest listing and the distance between the two boroughListings.
      */
     private Pair<AirbnbListing, Integer> getClosestTo(ArrayList<AirbnbListing> listings, double latOrigin, double lonOrigin)
     {

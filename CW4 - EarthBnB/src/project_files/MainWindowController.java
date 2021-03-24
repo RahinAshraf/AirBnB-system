@@ -50,7 +50,7 @@ public class MainWindowController extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //load("listings.csv");
+        //load("boroughListings.csv");
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
         //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
         primaryStage.setTitle("EarthBnB");
@@ -75,7 +75,7 @@ public class MainWindowController extends Application {
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
                 accountPanelController.initializeAccount(listings, currentUser);
-                //bookingController.initializeMap(listings);
+                //bookingController.initializeMap(boroughListings);
                 currentPage = 0;
                 accountOpen = true;
                 accountButton.setText("Exit");
@@ -123,7 +123,7 @@ public class MainWindowController extends Application {
                     nextPanel = bookingLoader.load();
                     BookingController bookingController = bookingLoader.getController();
                     bookingController.initializeBooking(listings);
-                    //bookingController.initializeMap(listings);
+                    //bookingController.initializeMap(boroughListings);
                     currentPage = 0;
                     break;
             default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
@@ -164,7 +164,7 @@ public class MainWindowController extends Application {
                 nextPanel = statsLoader.load();
                 StatisticsPanelController statisticsPanel = statsLoader.getController();
                 AirbnbDataLoader loader = new AirbnbDataLoader();
-                listings = loader.load("listings.csv");
+                listings = loader.load("boroughListings.csv");
                 statisticsPanel.initializeStats(listings);
                 currentPage++;
                 break;
@@ -178,7 +178,7 @@ public class MainWindowController extends Application {
                 nextPanel = bookingLoader.load();
                 BookingController bookingController = bookingLoader.getController();
                 bookingController.initializeBooking(listings);
-                //bookingController.initializeMap(listings);
+                //bookingController.initializeMap(boroughListings);
                 currentPage = 0;
                 break;
             default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));

@@ -21,7 +21,7 @@ public class StatMostExpensiveBorough extends Statistic {
 
     /**
      * Update the statistic.
-     * @param listings A list of listings the statistic should be calculated for.
+     * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
     protected String updateStatistic(ArrayList<AirbnbListing> listings)
@@ -33,7 +33,7 @@ public class StatMostExpensiveBorough extends Statistic {
 
     public void lol(ArrayList<AirbnbListing>listings){
 
-       // listings.stream().collect(Collectors.groupingBy(AirbnbListing::getAmenities))
+       // boroughListings.stream().collect(Collectors.groupingBy(AirbnbListing::getAmenities))
 
 
     }
