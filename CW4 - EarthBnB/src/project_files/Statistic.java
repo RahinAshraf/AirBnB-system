@@ -33,5 +33,4 @@ public abstract class Statistic {
      * @return
      */
     protected abstract String updateStatistic(ArrayList<AirbnbListing> listings);
-
 }

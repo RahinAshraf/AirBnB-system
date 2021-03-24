@@ -38,6 +38,6 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <Button layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#checkDate" prefHeight="33.0" prefWidth="59.0" style="-fx-background-radius: 24;" text="Login" />
+      <Button layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#checkDate" prefHeight="33.0" prefWidth="68.0" style="-fx-background-radius: 24;" text="Submit" />
    </children>
 </Pane>
