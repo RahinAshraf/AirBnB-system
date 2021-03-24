@@ -2,10 +2,7 @@ package project_files;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -23,7 +20,7 @@ public class WelcomePanel extends Panel {
     @FXML
     DatePicker checkOut;
     @FXML
-    int numberOfPeople;
+    TextField numberOfPeople;
     @FXML
     Button submitButton;
 
@@ -87,7 +84,8 @@ public class WelcomePanel extends Panel {
     private void setSubmitButton(ActionEvent event){
         try {
             if (checkDate()) {
-                BookingData bookingData = new BookingData((Date) checkIn.getUserData() ,(Date) checkOut.getUserData(), numberOfPeople);
+                int people = Integer.parseInt(numberOfPeople.getText());
+                BookingData bookingData = new BookingData((Date) checkIn.getUserData() ,(Date) checkOut.getUserData(), people);
                 submitAlert();
             }
         }
