@@ -197,7 +197,7 @@ public class BoroughPropertiesController implements Initializable {
     @FXML
     public void filterWifi(ActionEvent event){
         if (wifiBox.isSelected()){
-            displayData = data.stream()
+            displayData = data.stream() //displayData
                     .filter(airbnbListing -> airbnbListing.getAmenities().contains("Wifi"))
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
             propertiesTable.setItems(displayData);
@@ -207,6 +207,7 @@ public class BoroughPropertiesController implements Initializable {
         }
     }
 
+
     /**
      * A method which filters houses that are hosted by a super host.
      */
@@ -214,7 +215,7 @@ public class BoroughPropertiesController implements Initializable {
     public void filterSuperHost(ActionEvent event){
         if (superBox.isSelected()){
             displayData = data.stream()
-                    .filter(airbnbListing -> airbnbListing.isHostSuperhost() == true)
+                    .filter(airbnbListing -> airbnbListing.isHostSuperhost())
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
             propertiesTable.setItems(displayData);
         }
@@ -222,6 +223,7 @@ public class BoroughPropertiesController implements Initializable {
             propertiesTable.setItems(data);
         }
     }
+
     /**
      * A method which filters houses that are private.
      */
