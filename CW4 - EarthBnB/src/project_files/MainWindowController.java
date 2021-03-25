@@ -24,7 +24,7 @@ public class MainWindowController extends Application implements Initializable {
     private ArrayList<AirbnbListing> listings;
 
     private Account currentUser;
-    private boolean accountOpen;
+    private boolean accountOpen; // If the account window has been opened
 
     // Stores names of all views that should be displayed in the main frame. Displayed in the order added.
     private static final String[] panelViews = new String[] {"welcomePanelView.fxml", "mapView.fxml", "statisticsView.fxml", "bookingView.fxml"};
@@ -47,13 +47,13 @@ public class MainWindowController extends Application implements Initializable {
         primaryStage.setScene(new Scene(root, 600, 500));
         primaryStage.setResizable(true);
         primaryStage.show();
-        currentUser = null;
-        accountOpen = false;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle bundle)
     {
+        currentUser = null;
+        accountOpen = false;
         try {
             load("listings.csv");
             contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
@@ -78,13 +78,11 @@ public class MainWindowController extends Application implements Initializable {
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
                 accountPanelController.initializeAccount(listings, currentUser);
-                currentPage = 0;
                 accountOpen = true;
                 accountButton.setText("Exit");
                 nextPaneBtn.setDisable(true);
             } else {
                 nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
-                //updatePanel(3);
                 accountOpen = false;
                 accountButton.setText(currentUser.getUsername());
                 nextPaneBtn.setDisable(false);

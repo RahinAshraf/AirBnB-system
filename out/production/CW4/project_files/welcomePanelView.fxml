@@ -22,9 +22,9 @@
       </Label>
       <VBox layoutX="371.0" layoutY="188.0" prefHeight="147.0" prefWidth="160.0">
          <children>
-            <DatePicker fx:id="checkIn" editable="false" prefHeight="52.0" prefWidth="160.0" promptText="Check-In Date" showWeekNumbers="true" style="-fx-border-color: &quot;red&quot;;" />
-            <DatePicker fx:id="checkOut" editable="false" prefHeight="49.0" prefWidth="163.0" promptText="Check-Out date" style="-fx-border-color: &quot;red&quot;;" />
-            <TextField fx:id="numberOfPeople" prefHeight="42.0" prefWidth="159.0" promptText="Number of guests" style="-fx-border-color: &quot;red&quot;;" />
+            <DatePicker id="checkIn" fx:id="checkIn" editable="false" onAction="#setDate" prefHeight="52.0" prefWidth="160.0" promptText="Check-In Date" showWeekNumbers="true" style="-fx-border-color: &quot;red&quot;;" />
+            <DatePicker id="checkOut" fx:id="checkOut" editable="false" onAction="#setDate" prefHeight="49.0" prefWidth="163.0" promptText="Check-Out date" style="-fx-border-color: &quot;red&quot;;" />
+            <TextField id="numPeople" fx:id="numberOfPeople" prefHeight="42.0" prefWidth="159.0" promptText="Number of guests" style="-fx-border-color: &quot;red&quot;;" />
          </children>
       </VBox>
       <Label layoutX="264.0" layoutY="209.0" text="Check In Date:">
@@ -42,6 +42,6 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="submitButton" layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#setSubmitButton" prefHeight="33.0" prefWidth="68.0" style="-fx-background-radius: 24;" text="Submit" />
+      <Button fx:id="submitButton" layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#setSubmitButton" prefHeight="33.0" prefWidth="68.0" style="-fx-background-radius: 24;" text="Search" />
    </children>
 </Pane>
