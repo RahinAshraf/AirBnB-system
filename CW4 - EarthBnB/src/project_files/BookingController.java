@@ -4,19 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 
-public class BookingController implements Initializable {
+public class BookingController extends MainframeContentPanel implements Initializable {
 
     ArrayList<String> testFavorit; // Delete later!!
 
@@ -34,6 +31,7 @@ public class BookingController implements Initializable {
         testFavorit.add("17506");
     }
 
+
     public void loadData(ArrayList<String> favoritBoroughs) {
         System.out.println(favoritBoroughs.size());
         System.out.println(listings.size());
@@ -46,7 +44,8 @@ public class BookingController implements Initializable {
         }
     }
 
-    public void initializeBooking(ArrayList<AirbnbListing> listings) {
+    @Override
+    public void initializeList(ArrayList<AirbnbListing> listings) {
         System.out.println("called");
         this.listings = listings;
         loadData(testFavorit);

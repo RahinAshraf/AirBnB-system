@@ -9,10 +9,10 @@
    <bottom>
       <BorderPane fx:id="bottomPane" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
-            <Button fx:id="prevPaneBtn" mnemonicParsing="false" onAction="#setPrevPane" text="&lt;" BorderPane.alignment="CENTER" />
+            <Button id = "prevPaneBtn" fx:id="prevPaneBtn" mnemonicParsing="false" onAction="#switchPanel" text="&lt;" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <Button fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#setNextPane" text="&gt;" BorderPane.alignment="CENTER" />
+            <Button id = "nextPaneBtn" fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#switchPanel" text="&gt;" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
             <Button id="loginNavigation" fx:id="loginNavigation" mnemonicParsing="false" onAction="#loginNavigationClicked" text="LOGIN" BorderPane.alignment="CENTER" />

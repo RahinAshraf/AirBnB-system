@@ -20,7 +20,7 @@ public class AirbnbDataLoader {
      */
     public ArrayList<AirbnbListing> load(String filename) {
         System.out.print("Begin loading Airbnb london dataset...");
-        ArrayList<AirbnbListing> listings = new ArrayList<AirbnbListing>();
+        ArrayList<AirbnbListing> listings = new ArrayList<>();
         try{
             URL url = getClass().getResource(filename);
             CSVReader reader = new CSVReader(new FileReader(new File(url.toURI()).getAbsolutePath()));

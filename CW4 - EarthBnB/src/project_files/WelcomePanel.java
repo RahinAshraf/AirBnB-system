@@ -5,10 +5,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 
-public class WelcomePanel extends Panel {
+public class WelcomePanel extends MainframeContentPanel {
 
 
     @FXML
@@ -41,6 +42,10 @@ public class WelcomePanel extends Panel {
         else {
             return true;
         }
+    }
+
+    @Override
+    public void initializeList(ArrayList<AirbnbListing> listings) {
     }
 
     /**
