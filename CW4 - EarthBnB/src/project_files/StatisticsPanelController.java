@@ -7,15 +7,13 @@ import javafx.scene.control.Label;
 
 import java.util.ArrayList;
 
-public class StatisticsPanelController extends Panel {
-    //The four default statistics
+public class StatisticsPanelController extends MainframeContentPanel {
     Statistic accommodationType;
     Statistic availableProperties;
     Statistic averageNumReviews;
     Statistic mostExpensiveBorough;
-    // Further not immediately
+    Statistic closestListingToAttraction;
     //dummy stats - used for now to be able to implement structure
-    Statistic statA;
     Statistic statB;
     Statistic statC;
     Statistic statD;
@@ -59,14 +57,15 @@ public class StatisticsPanelController extends Panel {
     public StatisticsPanelController() {
     }
 
-    public void initializeStats(ArrayList<AirbnbListing> listings)
+    @Override
+    public void initializeList(ArrayList<AirbnbListing> listings)
     {
         // Create and load the statistics
         accommodationType = new StatAccommodationType(listings);
         availableProperties = new StatAvailableProperties(listings);
         averageNumReviews = new StatAverageNumReviews(listings);
         mostExpensiveBorough = new StatMostExpensiveBorough(listings);
-        statA = new StatClosestListingToAttraction(listings);
+        closestListingToAttraction = new StatClosestListingToAttraction(listings);
         statB = new StatB(listings);
         statC = new StatC(listings);
         statD = new StatD(listings);
@@ -74,7 +73,7 @@ public class StatisticsPanelController extends Panel {
         // Just a temporary list, specifies all elements that are not being shown.
         // Would be better to derive them from the ones being displayed, making sure no bs can happen.
         ArrayList<Statistic> statisticsInQueue = new ArrayList<>();
-        statisticsInQueue.add(statA);
+        statisticsInQueue.add(closestListingToAttraction);
         statisticsInQueue.add(statB);
         statisticsInQueue.add(statC);
         statisticsInQueue.add(statD);
@@ -145,6 +144,7 @@ public class StatisticsPanelController extends Panel {
         panel.setCurrentStatistic(nextStat);
         return nextStat;
     }
+
 
     private Statistic getPrev(StatsPanelElement panel){
 

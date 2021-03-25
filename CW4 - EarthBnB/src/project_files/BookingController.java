@@ -13,10 +13,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class BookingController implements Initializable {
+public class BookingController extends MainframeContentPanel implements Initializable {
 
     ArrayList<String> testFavorit; // Delete later!!
-
 
     ArrayList<AirbnbListing> listings;
     TableColumn propertyIDCol;
@@ -32,6 +31,7 @@ public class BookingController implements Initializable {
         testFavorit.add("17506");
     }
 
+
     public void loadData(ArrayList<String> favoritBoroughs) {
         System.out.println(favoritBoroughs.size());
         System.out.println(listings.size());
@@ -44,7 +44,8 @@ public class BookingController implements Initializable {
         }
     }
 
-    public void initializeBooking(ArrayList<AirbnbListing> listings) {
+    @Override
+    public void initializeList(ArrayList<AirbnbListing> listings) {
         System.out.println("called");
         this.listings = listings;
         loadData(testFavorit);
@@ -57,4 +58,5 @@ public class BookingController implements Initializable {
         favoritTable.getColumns().addAll(propertyIDCol);
         favoritTable.setItems(data);
     }
+
 }

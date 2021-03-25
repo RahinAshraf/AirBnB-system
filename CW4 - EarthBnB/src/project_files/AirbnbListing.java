@@ -53,7 +53,7 @@ public class AirbnbListing {
 
 
     /**
-     * The total number of listings the host holds across AirBnB
+     * The total number of boroughListings the host holds across AirBnB
      */
     private int hostListingsCount;
 

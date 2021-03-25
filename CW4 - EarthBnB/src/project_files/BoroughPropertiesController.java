@@ -16,16 +16,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class BoroughPropertiesController implements Initializable {
@@ -42,53 +35,32 @@ public class BoroughPropertiesController implements Initializable {
 
     //
     @FXML
-    Button backNavigation;
+    Button backNavigation, sortReviews, sortPrice, sortHost;
     //
     @FXML
     TableView propertiesTable;
-    //
-    @FXML
-    Button sortReviews;
-    //
-    @FXML
-    Button sortPrice;
-    //
-    @FXML
-    Button sortHost;
 
     @FXML
-    CheckBox wifiBox;
-    @FXML
-    CheckBox poolBox;
-    @FXML
-    CheckBox superBox;
-    @FXML
-    CheckBox roomBox;
+    CheckBox wifiBox, poolBox, superBox, roomBox;
 
 
-    // The list of data which is shown.
-    private final ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
     // The new data which will be set if any of the filters are chosen.
     private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
-    // The list of the properties.
-    ArrayList<AirbnbListing> listings;
+
+    // The list of the properties in the selected boroughs
+    ArrayList<AirbnbListing> boroughListings;
 
     // An Array List that stores check boxes that hold filters.
-    private ArrayList<CheckBox> filters = new ArrayList<>();
+    private ArrayList<CheckBox> activeFilters = new ArrayList<>();
 
     /**
      *
      */
     public void initializeListing(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs)
     {
-        this.listings = listings;
         // Loads the data.
-        loadData(selectedBoroughs);
-        // Adding all the check boxes.
-        filters.add(wifiBox);
-        filters.add(superBox);
-        filters.add(roomBox);
-        filters.add(poolBox);
+        this.boroughListings = filterBoroughs(listings, selectedBoroughs);
+        displayData.addAll(boroughListings);
 
         // Creates a table column which contains the hosts' names.
         boroughHostCol = new TableColumn("Host Name");
@@ -131,19 +103,18 @@ public class BoroughPropertiesController implements Initializable {
 
         // Sets all of the data into the table.
         propertiesTable.getColumns().addAll(boroughHostCol, boroughPriceCol, boroughCol, reviewsCountCol, minimumNightsCol);
-        propertiesTable.setItems(data);
+        propertiesTable.setItems(displayData);
 
     }
 
+    // should be done with stream
     /**
      * Loads the data from the csv file into the table.
      */
-    public void loadData(ArrayList<String> selectedBoroughs) {
-        for(int i = 0; i<listings.size(); i++) {
-            if(selectedBoroughs.contains(listings.get(i).getNeighbourhood())) {
-                data.add(listings.get(i));
-            }
-        }
+    public ArrayList<AirbnbListing> filterBoroughs(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs) {
+
+        return listings.stream().filter(listing -> selectedBoroughs.contains(listing.getNeighbourhood()))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public void dropDownClicked(javafx.event.ActionEvent actionEvent) {
@@ -158,23 +129,31 @@ public class BoroughPropertiesController implements Initializable {
             sortHost.setVisible(true);
             isDropClicked = true;
         }
+
     }
 
     /**
      * Sorts properties by number of reviews, price or host name.
      */
     public void updateSort(javafx.event.ActionEvent actionEvent) {
+        propertiesTable.getSortOrder().clear();
+
         if(((Button) actionEvent.getSource()).getId().equals("sortReviews")) {
             propertiesTable.getSortOrder().add(reviewsCountCol);
+            propertiesTable.sort();
         }
      else if (((Button) actionEvent.getSource()).getId().equals("sortPrice")){
             propertiesTable.getSortOrder().add(boroughPriceCol);
+            propertiesTable.sort();
         }
-        // else if (((Button) actionEvent.getSource()).getId().equals("sortHost")){
-           // propertiesTable.getSortOrder().add(boroughHostCol);
-        // }
+         else if (((Button) actionEvent.getSource()).getId().equals("sortHost")){
+            propertiesTable.getSortOrder().add(boroughHostCol);
+            propertiesTable.sort();
+         }
     }
 
+
+    // Broken
     /**
      *
      */
@@ -187,7 +166,7 @@ public class BoroughPropertiesController implements Initializable {
             newStage.setResizable(false);
             newStage.show();
             MainWindowController mainWindowController = boroughLoader.getController();
-            mainWindowController.initializeListings(listings);
+            mainWindowController.initializeListings(boroughListings);
             mainWindowController.updatePanel(3);
             propertiesTable.getScene().getWindow().hide();
         } catch (Exception e) {
@@ -196,66 +175,85 @@ public class BoroughPropertiesController implements Initializable {
     }
 
     /**
-     * A method which filters houses that have wi-fi as amenities.
+     * Invoked every time a filter is checked or unchecked.
+     * Accordingly adds or removes the filter from the list of active filters which the list then is filtered by and
+     * then initiates the list to be filtered with the new composition of activated filters.
+     * @param e
      */
     @FXML
-    public void filterWifi(ActionEvent event){
-        if (wifiBox.isSelected()){
-            displayData = data.stream()
-                    .filter(airbnbListing -> airbnbListing.getAmenities().contains("Wifi"))
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            propertiesTable.setItems(displayData);
+    public void changeFilter(ActionEvent e)
+    {
+        CheckBox checkBox;
+        System.out.println(e.getSource());
+        if (e.getSource().getClass() == CheckBox.class) {
+            checkBox = (CheckBox) e.getSource();
+            if (activeFilters.contains(checkBox))
+                activeFilters.remove(checkBox);
+            else
+                activeFilters.add(checkBox);
         }
-        else {
-            propertiesTable.setItems(data);
-        }
+        filter(activeFilters);
     }
+
+
+    /**
+     * Filters the list by the filters passed in.
+     * Depends on the id of the checkboxes.
+     * @param activeFilters The filters to be applied.
+     */
+    private void filter(ArrayList<CheckBox> activeFilters){
+        //Reset the display data
+        displayData.clear();
+        displayData.addAll(boroughListings);
+
+        for (CheckBox filter : activeFilters)
+        {
+            switch(filter.getId())
+            {
+                case "wifiBox": displayData = filterAmenity(displayData, "Wifi"); break;
+                case "poolBox": displayData = filterAmenity(displayData, "Pool"); break;
+                case "roomBox": displayData = filterPrivateRoom(displayData); break;
+                case "superBox": displayData = filterSuperHost(displayData); break;
+            }
+        }
+        propertiesTable.setItems(displayData);
+    }
+
+
+    /**
+     * Filter the given list by an amenity.
+     * @param list The list to be filtered.
+     * @param filterString The amenity to be filtered by.
+     * @return A new list only containing the properties which supply the specified amenity.
+     */
+    private ObservableList<AirbnbListing> filterAmenity(ObservableList<AirbnbListing> list, String filterString)
+    {
+        return list.stream()
+            .filter(airbnbListing -> airbnbListing.getAmenities().contains(filterString))
+            .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
 
     /**
      * A method which filters houses that are hosted by a super host.
+     * @param list The list to be filtered.
+     * @return A new list only containing superhosts.
      */
-    @FXML
-    public void filterSuperHost(ActionEvent event){
-        if (superBox.isSelected()){
-            displayData = data.stream()
-                    .filter(airbnbListing -> airbnbListing.isHostSuperhost() == true)
+    public ObservableList<AirbnbListing> filterSuperHost(ObservableList<AirbnbListing> list){
+            return list.stream()
+                    .filter(airbnbListing -> airbnbListing.isHostSuperhost())
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            propertiesTable.setItems(displayData);
-        }
-        else {
-            propertiesTable.setItems(data);
-        }
-    }
-    /**
-     * A method which filters houses that are private.
-     */
-    @FXML
-    public void filterPrivateRoom(ActionEvent event){
-        if (roomBox.isSelected()){
-            displayData = data.stream()
-                    .filter(airbnbListing -> airbnbListing.getRoomType().equals("Private room"))
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            propertiesTable.setItems(displayData);
-        }
-        else {
-            propertiesTable.setItems(data);
-        }
     }
 
     /**
-     * A method which filters houses that have pool as amenities.
+     * A method which filters houses that are private.
+     * @param list The list to be filtered.
+     * @return A new list only containing private rooms.
      */
-    @FXML
-    public void filterPool(ActionEvent event){
-        if (poolBox.isSelected()){
-            displayData = data.stream()
-                    .filter(airbnbListing -> airbnbListing.getAmenities().contains("Pool"))
+    public ObservableList<AirbnbListing> filterPrivateRoom(ObservableList<AirbnbListing> list){
+           return list.stream()
+                    .filter(airbnbListing -> airbnbListing.getRoomType().equals("Private room"))
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            propertiesTable.setItems(displayData);
-        }
-            else{
-            propertiesTable.setItems(data);
-        }
     }
 
     /**
@@ -269,6 +267,12 @@ public class BoroughPropertiesController implements Initializable {
         isDropClicked = false;
     }
 
+    /**
+     * Initiated when a row in the tableview has been clicked. Initiates opening up a new window displaying further information
+     * about the property.
+     * @param e
+     * @throws IOException
+     */
     @FXML
     public void rowClicked(MouseEvent e) throws IOException {
         if (e.getClickCount() == 2)
@@ -281,7 +285,12 @@ public class BoroughPropertiesController implements Initializable {
         }
     }
 
-    // Change this
+
+    /**
+     * Opens up a new window displaying information about the property.
+     * @param property
+     * @throws IOException
+     */
     private void openPropertyDisplayView(AirbnbListing property) throws IOException {
         //Parent root
         FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("PropertyDisplayerView.fxml"));
@@ -291,7 +300,7 @@ public class BoroughPropertiesController implements Initializable {
         newStage.setScene(new Scene(root, 600, 500));
 
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
-        propertyDisplayer.loadData(property);
+        propertyDisplayer.loadData(property); // Load the data into the window.
         newStage.show();
     }
 }

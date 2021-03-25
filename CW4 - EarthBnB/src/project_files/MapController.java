@@ -3,26 +3,22 @@ package project_files;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 
-import java.awt.*;
 import java.util.*;
 
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class MapController implements Initializable {
+public class MapController extends MainframeContentPanel implements Initializable {
 
     private Button selectedBorough;
     private Double filterValue;
@@ -43,7 +39,6 @@ public class MapController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         selectedBoroughs = new ArrayList<>();
-
     }
 
     public void selectBorough(javafx.event.ActionEvent actionEvent) {
@@ -60,7 +55,7 @@ public class MapController implements Initializable {
             Parent root = boroughLoader.load();
             Stage newStage = new Stage();
             newStage.setScene(new Scene(root, 800, 500));
-            newStage.setResizable(false);
+            newStage.setResizable(true);
             newStage.show();
             String titleString = "";
             for(int i = 0; i<selectedBoroughs.size(); i++) {
@@ -84,7 +79,8 @@ public class MapController implements Initializable {
 
     }
 
-    public void initializeMap(ArrayList<AirbnbListing> listings)
+    @Override
+    public void initializeList(ArrayList<AirbnbListing> listings)
     {
         this.listings = listings;
         updateBoroughs();
@@ -150,4 +146,5 @@ public class MapController implements Initializable {
            listings.get(i).chopNeighbourhoodName();
         }
     }
+
 }
