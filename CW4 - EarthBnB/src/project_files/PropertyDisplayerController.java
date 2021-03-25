@@ -3,6 +3,7 @@ package project_files;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
@@ -12,6 +13,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 
 import static java.lang.Long.MAX_VALUE;
@@ -27,6 +31,7 @@ import static java.lang.Long.MAX_VALUE;
 public class PropertyDisplayerController implements Initializable {
 
     private AirbnbListing displayedListing;
+    Account currentUser;
     @FXML
     ImageView propertyImg;
     @FXML
@@ -48,6 +53,8 @@ public class PropertyDisplayerController implements Initializable {
     Label boroughLbl;
     @FXML
     Label neighbourHoodDescriptionLbl;
+    @FXML
+    Button saveButton;
 
     @FXML
     TextArea amenitiesText; // Expand thing, only show a couple
@@ -78,15 +85,30 @@ public class PropertyDisplayerController implements Initializable {
         webEngine = mapWebView.getEngine();
         mapWebView.setContextMenuEnabled(false);
         webEngine.load(urlGoogleMaps.toExternalForm()); // load google maps file into the webengine (nothing shown yet)
+        currentUser = null;
     }
+    public void saveProperty() {
+        if(currentUser.removeFavouriteProperty(displayedListing)) {
+            saveButton.setStyle("-fx-background-color: grey");
+            saveButton.setText("save");
+        } else {
+            currentUser.addFavouriteProperty(displayedListing);
+            saveButton.setStyle("-fx-background-color: #F75737");
+            saveButton.setText("unsave");
+        }
+    }
+
+
+
 
     /**
      * Load the specific data of the property into the panel.
      * @param listing The property that should be displayed.
      */
-    public void loadData(AirbnbListing listing)
+    public void loadData(AirbnbListing listing, Account currentUser)
     {
         displayedListing = listing;
+        this.currentUser = currentUser;
 
         // Displaying basic information at top
         propertyImg.setImage(new Image(String.valueOf(listing.getPictureUrl())));

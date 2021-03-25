@@ -52,11 +52,16 @@ public class LoginPanelController implements Initializable {
 
     }
 
+    public void createUser(Account user) {
+        this.user = user;
+    }
+
 
     public void goBack() {
         try {
             FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
             Parent root = boroughLoader.load();
+            usernameTextField.getScene().getWindow().hide();
             Stage newStage = new Stage();
             newStage.setScene(new Scene(root, 600, 500));
             newStage.setResizable(false);
@@ -65,7 +70,6 @@ public class LoginPanelController implements Initializable {
             mainWindowController.initializeListings(listings);
             mainWindowController.setCurrentUser(user);
             //mainWindowController.updatePanel(3);
-            signupMenu.getScene().getWindow().hide();
         } catch (Exception e) {
 
         }

@@ -18,6 +18,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     ArrayList<String> testFavorit; // Delete later!!
 
     ArrayList<AirbnbListing> listings;
+    Account currentUser;
     TableColumn propertyIDCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
@@ -29,6 +30,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
         testFavorit = new ArrayList<>();
         testFavorit.add("13913");
         testFavorit.add("17506");
+        currentUser = null;
     }
 
 
@@ -45,8 +47,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings) {
+    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser) {
         System.out.println("called");
+        this.currentUser = currentUser;
         this.listings = listings;
         loadData(testFavorit);
         propertyIDCol = new TableColumn("Property ID");

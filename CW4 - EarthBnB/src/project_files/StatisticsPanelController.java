@@ -24,6 +24,7 @@ public class StatisticsPanelController extends MainframeContentPanel {
     StatsPanelElement panel4;
 
     ArrayList<AirbnbListing> listings;
+    Account currentUser;
 
     ArrayList<StatsPanelElement> allStatPanels;
 
@@ -55,12 +56,14 @@ public class StatisticsPanelController extends MainframeContentPanel {
 
 
     public StatisticsPanelController() {
+        currentUser = null;
     }
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings)
+    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser)
     {
         // Create and load the statistics
+        this.currentUser = currentUser;
         accommodationType = new StatAccommodationType(listings);
         availableProperties = new StatAvailableProperties(listings);
         averageNumReviews = new StatAverageNumReviews(listings);

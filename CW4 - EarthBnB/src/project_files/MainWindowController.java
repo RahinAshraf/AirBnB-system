@@ -120,7 +120,7 @@ public class MainWindowController extends Application implements Initializable {
         FXMLLoader panelLoader = new FXMLLoader(getClass().getResource(viewName));
         Parent nextPanel = panelLoader.load();
         MainframeContentPanel controller = panelLoader.getController();
-        controller.initializeList(listings);
+        controller.initializeList(listings, currentUser);
         return nextPanel;
     }
 
@@ -168,7 +168,7 @@ public class MainWindowController extends Application implements Initializable {
             case 1: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
                 nextPanel = mapLoader.load();
                 MapController mapController = mapLoader.getController();
-                mapController.initializeList(listings);
+                mapController.initializeList(listings, currentUser);
                 currentPage = 4;
                 break;
 
@@ -177,14 +177,14 @@ public class MainWindowController extends Application implements Initializable {
                 StatisticsPanelController statisticsPanel = statsLoader.getController();
                 AirbnbDataLoader loader = new AirbnbDataLoader();
                 listings = loader.load("boroughListings.csv");
-                statisticsPanel.initializeList(listings);
+                statisticsPanel.initializeList(listings, currentUser);
                 currentPage++;
                 break;
 
             case 3: FXMLLoader bookingLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
                 nextPanel = bookingLoader.load();
                 BookingController bookingController = bookingLoader.getController();
-                bookingController.initializeList(listings);
+                bookingController.initializeList(listings, currentUser);
                 currentPage = 0;
                 break;
 
@@ -207,6 +207,7 @@ public class MainWindowController extends Application implements Initializable {
         newStage.show();
         LoginPanelController loginPanelController = loginLoader.getController();
         loginPanelController.initializeListings(listings);
+        loginPanelController.createUser(currentUser);
         contentPane.getScene().getWindow().hide();
     }
 

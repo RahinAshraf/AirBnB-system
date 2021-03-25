@@ -26,9 +26,15 @@ public class WelcomePanel extends MainframeContentPanel {
     @FXML
     Button submitButton;
 
+    Account currentUser;
+
+    public WelcomePanel() {
+        currentUser = null;
+    }
+
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings) {
+    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser) {
     }
 
     /**

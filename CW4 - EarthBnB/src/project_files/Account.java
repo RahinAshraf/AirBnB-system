@@ -8,13 +8,16 @@ public class Account {
     private String username;
     private String password;
     private String emailAddress;
-    private ArrayList<Integer> favouriteProperties;
+    private ArrayList<AirbnbListing> favouriteProperties;
     private ArrayList<Integer> reservedTrips;
 
     Account(int accountID, String username, String password, String emailAddress) {
         this.accountID = accountID;
         this.username = username;
+        this.password = password;
         this.emailAddress = emailAddress;
+        favouriteProperties = new ArrayList<>();
+        reservedTrips = new ArrayList<>();
     }
 
 
@@ -26,8 +29,16 @@ public class Account {
         reservedTrips.add(tripID);
     }
 
-    public void addFavouriteProperty(Integer propertyID) {
-        favouriteProperties.add(propertyID);
+    public void addFavouriteProperty(AirbnbListing property) {
+        favouriteProperties.add(property);
+    }
+
+    public boolean removeFavouriteProperty(AirbnbListing property) {
+        if(favouriteProperties.contains(property)) {
+            favouriteProperties.remove(property);
+            return true;
+        }
+        return false;
     }
 
 

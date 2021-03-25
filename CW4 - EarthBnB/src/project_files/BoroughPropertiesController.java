@@ -46,6 +46,7 @@ public class BoroughPropertiesController implements Initializable {
 
     // The new data which will be set if any of the filters are chosen.
     private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
+    Account currentUser;
 
     // The list of the properties in the selected boroughs
     ArrayList<AirbnbListing> boroughListings;
@@ -56,10 +57,11 @@ public class BoroughPropertiesController implements Initializable {
     /**
      *
      */
-    public void initializeListing(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs)
+    public void initializeListing(ArrayList<AirbnbListing> listings, ArrayList<String> selectedBoroughs, Account currentUser)
     {
         // Loads the data.
         this.boroughListings = filterBoroughs(listings, selectedBoroughs);
+        this.currentUser = currentUser;
         displayData.addAll(boroughListings);
 
         // Creates a table column which contains the hosts' names.
@@ -300,7 +302,7 @@ public class BoroughPropertiesController implements Initializable {
         newStage.setScene(new Scene(root, 600, 500));
 
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
-        propertyDisplayer.loadData(property); // Load the data into the window.
+        propertyDisplayer.loadData(property, currentUser); // Load the data into the window.
         newStage.show();
     }
 }
