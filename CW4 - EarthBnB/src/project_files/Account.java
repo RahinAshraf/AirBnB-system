@@ -51,4 +51,8 @@ public class Account {
     public String getEmailAddress() {
         return emailAddress;
     }
+
+    public ArrayList<AirbnbListing> getSavedProperties() {
+        return favouriteProperties;
+    }
 }

@@ -229,8 +229,10 @@ public class MainWindowController extends Application implements Initializable {
         contentPane.setCenter(nextPanel);
     }
 
-    public void initializeListings(ArrayList<AirbnbListing> listings) {
+    public void initializeListings(ArrayList<AirbnbListing> listings, Account currentUser) {
+
         this.listings = listings;
+        this.currentUser = currentUser;
     }
 
     public void loginNavigationClicked() throws IOException {

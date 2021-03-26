@@ -15,11 +15,10 @@ import java.util.ResourceBundle;
 
 public class BookingController extends MainframeContentPanel implements Initializable {
 
-    ArrayList<String> testFavorit; // Delete later!!
 
     ArrayList<AirbnbListing> listings;
     Account currentUser;
-    TableColumn propertyIDCol;
+    TableColumn propertyNameCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
     @FXML
@@ -27,18 +26,14 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        testFavorit = new ArrayList<>();
-        testFavorit.add("13913");
-        testFavorit.add("17506");
         currentUser = null;
     }
 
 
-    public void loadData(ArrayList<String> favoritBoroughs) {
-        System.out.println(favoritBoroughs.size());
+    public void loadData() {
         System.out.println(listings.size());
         for(int i = 0; i<listings.size(); i++) {
-            if(favoritBoroughs.contains(listings.get(i).getId())) {
+            if(currentUser.getSavedProperties().contains(listings.get(i))) {
                 data.add(listings.get(i));
                 System.out.println("added");
             }
@@ -51,14 +46,22 @@ public class BookingController extends MainframeContentPanel implements Initiali
         System.out.println("called");
         this.currentUser = currentUser;
         this.listings = listings;
-        loadData(testFavorit);
-        propertyIDCol = new TableColumn("Property ID");
-        propertyIDCol.setMinWidth(100);
-        propertyIDCol.setMaxWidth(120);
-        propertyIDCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        propertyIDCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("id"));
+        loadData();
 
-        favoritTable.getColumns().addAll(propertyIDCol);
+        propertyNameCol = new TableColumn("Name");
+        propertyNameCol.setMinWidth(300);
+        propertyNameCol.setMaxWidth(300);
+        propertyNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        propertyNameCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("name"));
+
+        TableColumn propertyBoroughCol = new TableColumn("Borough");
+        propertyBoroughCol.setMinWidth(300
+        );
+        propertyBoroughCol.setMaxWidth(300);
+        propertyBoroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        propertyBoroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
+
+        favoritTable.getColumns().addAll(propertyNameCol, propertyBoroughCol);
         favoritTable.setItems(data);
     }
 

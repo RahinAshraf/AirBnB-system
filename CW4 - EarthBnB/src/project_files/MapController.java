@@ -36,6 +36,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
     AnchorPane mapView;
 
     ArrayList<AirbnbListing> listings;
+    ArrayList<AirbnbListing> filteredListings;
 
 
     @Override
@@ -86,9 +87,9 @@ public class MapController extends MainframeContentPanel implements Initializabl
     public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser)
     {
         this.listings = listings;
+        filteredListings = listings;
         this.currentUser = currentUser;
         updateBoroughs();
-        System.out.println(propertyCount.get("Westminster"));
         for(int i=0; i<33; i++) {
             String buttonID = mapView.getChildren().get(i).getId();
             int boroughPropertyCount;
@@ -140,14 +141,14 @@ public class MapController extends MainframeContentPanel implements Initializabl
     private void updateBoroughs() // !! Change to only save the first word of the borough
     {
         resizePropertyNeighbourhood();
-        propertyCount = listings.stream()
+        propertyCount = filteredListings.stream()
                 .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.counting()));
     }
 
 
     public void resizePropertyNeighbourhood() {
-        for(int i = 0; i<listings.size(); i++) {
-           listings.get(i).chopNeighbourhoodName();
+        for(int i = 0; i<filteredListings.size(); i++) {
+           filteredListings.get(i).chopNeighbourhoodName();
         }
     }
 

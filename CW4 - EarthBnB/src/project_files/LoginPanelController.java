@@ -67,7 +67,7 @@ public class LoginPanelController implements Initializable {
             newStage.setResizable(false);
             newStage.show();
             MainWindowController mainWindowController = boroughLoader.getController();
-            mainWindowController.initializeListings(listings);
+            mainWindowController.initializeListings(listings, user);
             mainWindowController.setCurrentUser(user);
             //mainWindowController.updatePanel(3);
         } catch (Exception e) {

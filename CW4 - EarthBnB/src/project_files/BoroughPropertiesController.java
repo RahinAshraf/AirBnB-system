@@ -50,6 +50,7 @@ public class BoroughPropertiesController implements Initializable {
 
     // The list of the properties in the selected boroughs
     ArrayList<AirbnbListing> boroughListings;
+    ArrayList<AirbnbListing> listings;
 
     // An Array List that stores check boxes that hold filters.
     private ArrayList<CheckBox> activeFilters = new ArrayList<>();
@@ -61,6 +62,7 @@ public class BoroughPropertiesController implements Initializable {
     {
         // Loads the data.
         this.boroughListings = filterBoroughs(listings, selectedBoroughs);
+        this.listings = listings;
         this.currentUser = currentUser;
         displayData.addAll(boroughListings);
 
@@ -168,8 +170,8 @@ public class BoroughPropertiesController implements Initializable {
             newStage.setResizable(false);
             newStage.show();
             MainWindowController mainWindowController = boroughLoader.getController();
-            mainWindowController.initializeListings(boroughListings);
-            mainWindowController.updatePanel(3);
+            mainWindowController.initializeListings(listings, currentUser);
+            //mainWindowController.updatePanel(3);
             propertiesTable.getScene().getWindow().hide();
         } catch (Exception e) {
 
