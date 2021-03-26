@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
-<BorderPane id="contentPane" fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.MainWindowController">
+<BorderPane id="contentPane" fx:id="contentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.MainWindowController">
    <bottom>
       <BorderPane fx:id="bottomPane" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <left>
@@ -32,28 +36,28 @@
          <children>
             <Label fx:id="nameOfCurrent" layoutX="287.0" layoutY="14.0" text="Main" />
             <Button id="accountButton" fx:id="accountButton" layoutX="32.0" layoutY="12.0" mnemonicParsing="false" onAction="#navigateToAccount" text="Account" />
-            <HBox layoutX="359.0" layoutY="2.0" prefHeight="40.0" prefWidth="244.0">
+            <HBox alignment="CENTER_RIGHT" layoutX="359.0" layoutY="2.0" prefHeight="40.0" prefWidth="244.0">
                <children>
                   <Label prefHeight="37.0" prefWidth="47.0" text="From">
                      <padding>
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="fromPrice" prefHeight="27.0" prefWidth="78.0">
+                  <ChoiceBox id="minPriceChoiceBox" fx:id="minPriceChoiceBox" onAction="#setPriceRange">
                      <HBox.margin>
-                        <Insets right="5.0" top="5.0" />
+                        <Insets right="5.0" />
                      </HBox.margin>
-                  </TextField>
+                  </ChoiceBox>
                   <Label prefHeight="37.0" prefWidth="21.0" text="To">
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="toPrice" prefHeight="23.0" prefWidth="84.0">
+                  <ChoiceBox  id="maxPriceChoiceBox" fx:id="maxPriceChoiceBox" onAction="#setPriceRange">
                      <HBox.margin>
-                        <Insets right="5.0" top="5.0" />
+                        <Insets right="10.0" />
                      </HBox.margin>
-                  </TextField>
+                  </ChoiceBox>
                </children>
             </HBox>
          </children>

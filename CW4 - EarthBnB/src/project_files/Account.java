@@ -67,4 +67,14 @@ public class Account {
     public void setBookingData(BookingData bookingData) {
         this.bookingData = bookingData;
     }
+
+    /**
+     * Set the price range the user wants to find properties in.
+     * @param min
+     * @param max
+     */
+    public void setPriceRange(int min, int max)
+    {
+        bookingData.setPriceRange(min, max);
+    }
 }

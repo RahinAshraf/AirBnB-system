@@ -5,16 +5,22 @@ package project_files;
 // FIlter for properties in map controller
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,9 +39,10 @@ public class MainWindowController extends Application implements Initializable {
 
     private LinkedList<String> names = new LinkedList<>();
 
-    private Account currentUser; // null if not logged in
+    private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
-    private boolean buttonsActive = false; // Buttons to switch panels are disabled by default
+    //private boolean buttonsActive = false; // Buttons to switch panels are disabled by default
+
 
     // Stores names of all views that should be displayed in the main frame. Displayed in the order added.
     private static final String[] panelViews = new String[] {"welcomePanelView.fxml", "mapView.fxml", "statisticsView.fxml", "bookingView.fxml"};
@@ -49,6 +56,9 @@ public class MainWindowController extends Application implements Initializable {
     BorderPane bottomPane;
     @FXML
     Button accountButton;
+
+    @FXML
+    ChoiceBox minPriceChoiceBox, maxPriceChoiceBox;
 
     @FXML
     Label nameOfCurrent;
@@ -84,6 +94,10 @@ public class MainWindowController extends Application implements Initializable {
         } catch (IOException e) {
             System.out.println("Error while starting program. Please restart.");
         }
+
+        // Fill the dropdown with selectable price ranges
+        minPriceChoiceBox.setItems(FXCollections.observableArrayList("0", "25", "50", "100", "200", "500"));
+        maxPriceChoiceBox.setItems(FXCollections.observableArrayList("25", "50", "100", "200", "500", "3000"));
     }
 
     public void load(String filename){
@@ -198,8 +212,6 @@ public class MainWindowController extends Application implements Initializable {
     }
 
 
-
-
     public void setCurrentUser(Account user) {
         currentUser = user;
         accountButton.setText(user.getUsername());
@@ -272,16 +284,99 @@ public class MainWindowController extends Application implements Initializable {
     /**
      * Switch if the buttons to change the panel are active.
      */
+    /*
     public void switchButtonsActive() {
         buttonsActive = !buttonsActive;
         prevPaneBtn.setDisable(buttonsActive);
         nextPaneBtn.setDisable(buttonsActive);
     }
 
+     */
+
     public void setButtonsActive(boolean areEnabled) {
         prevPaneBtn.setDisable(!areEnabled);
         nextPaneBtn.setDisable(!areEnabled);
     }
+
+
+    // Code for setting the price range.
+
+    /**
+     * Set a price range. Checks for validity.
+     * @param e
+     */
+    @FXML
+    public void setPriceRange(ActionEvent e)
+    {
+        Integer minPrice = convertChoiceBoxToInteger(minPriceChoiceBox);
+        Integer maxPrice = convertChoiceBoxToInteger(maxPriceChoiceBox);
+
+        // Checking validity
+        if (((ChoiceBox) e.getSource()).getId().equals("minPriceChoiceBox")) {
+            if (maxPrice != null) {
+                if (minPrice >= maxPrice) {
+                    minPriceChoiceBox.getSelectionModel().clearSelection();
+                    priceRangeAlert();
+                }
+            }
+        }
+        else if (((ChoiceBox) e.getSource()).getId().equals("maxPriceChoiceBox")){
+            if (minPrice != null) {
+                if (maxPrice <= minPrice) {
+                    maxPriceChoiceBox.getSelectionModel().clearSelection();
+                    priceRangeAlert();
+                }
+            }
+        }
+
+        setPriceRange(minPrice, maxPrice);
+    }
+
+    /**
+     * Converts the selected item of a choicebox into an integer if possible.
+     * @param box Contents of this box will be converted.
+     * @return The integer. If the conversion was not possible, return null.
+     */
+    private Integer convertChoiceBoxToInteger(ChoiceBox box)
+    {
+        Object selection = box.getSelectionModel().getSelectedItem();
+        String selectionString = "";
+        if (selection != null)
+            selectionString = selection.toString();
+
+        Integer selectionInteger = null;
+
+        if (NumberUtils.isParsable(selectionString))
+            selectionInteger = Integer.parseInt(selectionString);
+
+        return selectionInteger;
+    }
+
+    /**
+     * Set the current chosen price range of objects to be shown.
+     * @param minPrice
+     * @param maxPrice
+     */
+    private void setPriceRange(Integer minPrice, Integer maxPrice) {
+        if (minPrice != null && maxPrice != null)
+        {
+            //if (currentUser != null)
+            currentUser.setPriceRange(minPrice, maxPrice);
+        }
+    }
+
+
+    /**
+     * An alert which occurs when the check-in date is not valid.
+     */
+    private void priceRangeAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Error while choosing price range.");
+        alert.setContentText("Maximum price range must be more than minimum");
+        alert.showAndWait();
+    }
+
 }
 
 
