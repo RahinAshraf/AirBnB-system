@@ -30,6 +30,10 @@ public class BoroughPropertiesController implements Initializable {
     //
     TableColumn<AirbnbListing, Integer> reviewsCountCol;
 
+
+
+    private MainWindowController mainWindowController;
+
     //
     private boolean isDropClicked;
 
@@ -305,6 +309,12 @@ public class BoroughPropertiesController implements Initializable {
 
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
         propertyDisplayer.loadData(property, currentUser); // Load the data into the window.
+        propertyDisplayer.setMainWindowController(mainWindowController);
+        propertyDisplayer.setBoroughPropertiesController(this);
         newStage.show();
+    }
+
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
     }
 }

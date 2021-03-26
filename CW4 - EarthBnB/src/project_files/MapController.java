@@ -25,7 +25,8 @@ public class MapController extends MainframeContentPanel implements Initializabl
     private Map<String, Long> propertyCount = new HashMap<String, Long>();
     private String boroughs[] = new String[32];
 
-    Account currentUser;
+
+    private Account currentUser;
 
     private ArrayList<Button> selectedBoroughs;
 
@@ -35,8 +36,8 @@ public class MapController extends MainframeContentPanel implements Initializabl
     @FXML
     AnchorPane mapView;
 
-    ArrayList<AirbnbListing> listings;
-    ArrayList<AirbnbListing> filteredListings;
+    private ArrayList<AirbnbListing> listings;
+    private ArrayList<AirbnbListing> filteredListings;
 
 
     @Override
@@ -76,6 +77,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
                 tempArray.add(selectedBoroughs.get(i).getId());
             }
             boroughController.initializeListing(listings, tempArray, currentUser);
+            boroughController.setMainWindowController(mainWindowController); // Passing on the mainWindowController Object
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {
             e.printStackTrace();
@@ -128,8 +130,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
             selectedBoroughs.add(button);
             button.setStyle("-fx-background-color: #50B4D4");
         }
-
-
         String borough = button.getId();
         System.out.println(borough);
     }

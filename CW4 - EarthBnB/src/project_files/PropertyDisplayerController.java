@@ -11,7 +11,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -28,7 +30,10 @@ import static java.lang.Long.MAX_VALUE;
 public class PropertyDisplayerController implements Initializable {
 
     private AirbnbListing displayedListing;
-    Account currentUser;
+    private Account currentUser;
+    private MainWindowController mainWindowController;
+    private BoroughPropertiesController boroughPropertiesController;
+
     @FXML
     ImageView propertyImg, hostLargeImg;
 
@@ -141,7 +146,33 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     private void goToBookingScreen()
     {
+        try {
+            mainWindowController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
 
+            // Pass on this listing to bookingPanel somehow
+
+            Stage thisStage = (Stage) saveButton.getScene().getWindow(); // Get the stage of this window from a random control
+            thisStage.close(); // Close the stage.
+
+            Stage boroughsStage = (Stage) boroughPropertiesController.propertiesTable.getScene().getWindow();
+            boroughsStage.close();
+
+            Stage mainWindowStage = (Stage) mainWindowController.contentPane.getScene().getWindow();
+            mainWindowStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMainWindowController(MainWindowController mainWindowController)
+    {
+        this.mainWindowController = mainWindowController;
+    }
+
+    public void setBoroughPropertiesController(BoroughPropertiesController controller)
+    {
+        this.boroughPropertiesController = controller;
     }
 
 }

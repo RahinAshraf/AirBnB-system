@@ -30,10 +30,6 @@ public class WelcomePanel extends MainframeContentPanel {
 
     private Account currentUser;
 
-
-
-    private MainWindowController mainWindowController;
-
     public WelcomePanel() {
         currentUser = null;
     }
@@ -162,10 +158,5 @@ public class WelcomePanel extends MainframeContentPanel {
                 }
             }
         }
-    }
-
-
-    public void setMainWindowController(MainWindowController mainWindowController) {
-        this.mainWindowController = mainWindowController;
     }
 }

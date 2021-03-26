@@ -41,8 +41,6 @@ public class MainWindowController extends Application implements Initializable {
 
     private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
-    //private boolean buttonsActive = false; // Buttons to switch panels are disabled by default
-
 
     // Stores names of all views that should be displayed in the main frame. Displayed in the order added.
     private static final String[] panelViews = new String[] {"welcomePanelView.fxml", "mapView.fxml", "statisticsView.fxml", "bookingView.fxml"};
@@ -179,10 +177,7 @@ public class MainWindowController extends Application implements Initializable {
         MainframeContentPanel controller = panelLoader.getController();
         controller.initializeList(filteredListings, currentUser);
 
-        if (controller.getClass() == WelcomePanel.class) {
-            WelcomePanel welcomePanel = (WelcomePanel) controller;
-            welcomePanel.setMainWindowController(this);
-        }
+        controller.setMainWindowController(this); // Pass on this controller of the main window. Used to pass back information & invoke changes in the main frame.
 
         return nextPanel;
     }
@@ -228,14 +223,12 @@ public class MainWindowController extends Application implements Initializable {
 
         {
             case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
-                currentPage++;
                 break;
 
             case 1: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
                 nextPanel = mapLoader.load();
                 MapController mapController = mapLoader.getController();
                 mapController.initializeList(filteredListings, currentUser);
-                currentPage = 4;
                 break;
 
             case 2: FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("statisticsView.fxml"));
@@ -244,20 +237,28 @@ public class MainWindowController extends Application implements Initializable {
                 AirbnbDataLoader loader = new AirbnbDataLoader();
                 filteredListings = loader.load("boroughListings.csv");
                 statisticsPanel.initializeList(filteredListings, currentUser);
-                currentPage++;
                 break;
 
             case 3: FXMLLoader bookingLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
                 nextPanel = bookingLoader.load();
                 BookingController bookingController = bookingLoader.getController();
                 bookingController.initializeList(filteredListings, currentUser);
-                currentPage = 0;
                 break;
 
             default: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                 break;
         }
+        currentPage = pageNumber;
         contentPane.setCenter(nextPanel);
+    }
+
+    public void loadBookingPanel(AirbnbListing listing) throws IOException {
+        FXMLLoader bookingLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
+        contentPane.setCenter(bookingLoader.load());
+        BookingController bookingController = bookingLoader.getController();
+        bookingController.initializeList(filteredListings, currentUser);
+        bookingController.initializeWithProperty(listing);
+        currentPage = 3;
     }
 
     public void initializeListings(ArrayList<AirbnbListing> listings, Account currentUser) {
