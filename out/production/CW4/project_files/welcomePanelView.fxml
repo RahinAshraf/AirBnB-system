@@ -42,6 +42,6 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="submitButton" layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#setSubmitButton" prefHeight="33.0" prefWidth="68.0" style="-fx-background-radius: 24;" text="Search" />
+      <Button fx:id="submitButton" layoutX="71.0" layoutY="307.0" mnemonicParsing="false" onAction="#setSubmitButton" prefHeight="33.0" prefWidth="68.0" style="-fx-background-radius: 24;" text="Submit" />
    </children>
 </Pane>

@@ -18,6 +18,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="JAVA FX 16" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

@@ -1,6 +1,8 @@
 package project_files;
 
-
+// Disable search before login
+// Disable switching before search
+// FIlter for properties in map controller
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -23,25 +25,24 @@ import java.util.ResourceBundle;
 
 public class MainWindowController extends Application implements Initializable {
 
-    private ArrayList<AirbnbListing> listings;
+    private ArrayList<AirbnbListing> filteredListings;
+    private ArrayList<AirbnbListing> originalListings;
+
     private MapController mapController = new MapController();
     private WelcomePanel welcomePanel = new WelcomePanel();
-    //private Statistic statistic = new Statistic();
 
     private LinkedList<String> names = new LinkedList<>();
-    private int i = 1;
 
-
-
-    private Account currentUser;
+    private Account currentUser; // null if not logged in
     private boolean accountOpen; // If the account window has been opened
+    private boolean buttonsActive = false; // Buttons to switch panels are disabled by default
 
     // Stores names of all views that should be displayed in the main frame. Displayed in the order added.
     private static final String[] panelViews = new String[] {"welcomePanelView.fxml", "mapView.fxml", "statisticsView.fxml", "bookingView.fxml"};
     private int currentPage = 0;
 
     @FXML
-    Button nextPaneBtn;
+    Button nextPaneBtn, prevPaneBtn;
     @FXML
     BorderPane contentPane;
     @FXML
@@ -72,7 +73,14 @@ public class MainWindowController extends Application implements Initializable {
         accountOpen = false;
         try {
             load("listings.csv");
-            contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
+            //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
+
+            FXMLLoader welcomePanelLoader = new FXMLLoader(getClass().getResource("welcomePanelView.fxml"));
+            contentPane.setCenter(welcomePanelLoader.load());
+            WelcomePanel welcomePanel = welcomePanelLoader.getController();
+            welcomePanel.setMainWindowController(this);
+            setButtonsActive(false);
+
         } catch (IOException e) {
             System.out.println("Error while starting program. Please restart.");
         }
@@ -80,8 +88,11 @@ public class MainWindowController extends Application implements Initializable {
 
     public void load(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
-        listings = new ArrayList<>();
-        listings = loader.load(filename);
+        originalListings = new ArrayList<>();
+        originalListings = loader.load(filename);
+
+        filteredListings = new ArrayList<>();
+        filteredListings.addAll(originalListings);
     }
 
     @FXML
@@ -93,7 +104,7 @@ public class MainWindowController extends Application implements Initializable {
                 FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
-                accountPanelController.initializeAccount(listings, currentUser);
+                accountPanelController.initializeAccount(filteredListings, currentUser);
                 accountOpen = true;
                 accountButton.setText("Exit");
                 nextPaneBtn.setDisable(true);
@@ -108,6 +119,8 @@ public class MainWindowController extends Application implements Initializable {
             System.out.println("You have to log in before you can go to your dashboard!");
         }
     }
+
+
 
     /**
      * Switched the panel when next or previous have been clicked.
@@ -124,8 +137,6 @@ public class MainWindowController extends Application implements Initializable {
 
             contentPane.setCenter(getNewPanel(getNextViewName(direction))); //Get new panel by getting name of panel to be loaded.
 
-            //System.out.println(contentPane.getCenter());
-
             if(contentPane.getCenter().toString().equals("AnchorPane[id=mapView]")){
                 setName("Map");
             }
@@ -139,9 +150,7 @@ public class MainWindowController extends Application implements Initializable {
             else{
                 setName("Welcome");
             }
-
         }
-
     }
 
     /**
@@ -154,7 +163,13 @@ public class MainWindowController extends Application implements Initializable {
         FXMLLoader panelLoader = new FXMLLoader(getClass().getResource(viewName));
         Parent nextPanel = panelLoader.load();
         MainframeContentPanel controller = panelLoader.getController();
-        controller.initializeList(listings, currentUser);
+        controller.initializeList(filteredListings, currentUser);
+
+        if (controller.getClass() == WelcomePanel.class) {
+            WelcomePanel welcomePanel = (WelcomePanel) controller;
+            welcomePanel.setMainWindowController(this);
+        }
+
         return nextPanel;
     }
 
@@ -183,6 +198,8 @@ public class MainWindowController extends Application implements Initializable {
     }
 
 
+
+
     public void setCurrentUser(Account user) {
         currentUser = user;
         accountButton.setText(user.getUsername());
@@ -203,7 +220,7 @@ public class MainWindowController extends Application implements Initializable {
             case 1: FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("mapView.fxml"));
                 nextPanel = mapLoader.load();
                 MapController mapController = mapLoader.getController();
-                mapController.initializeList(listings, currentUser);
+                mapController.initializeList(filteredListings, currentUser);
                 currentPage = 4;
                 break;
 
@@ -211,15 +228,15 @@ public class MainWindowController extends Application implements Initializable {
                 nextPanel = statsLoader.load();
                 StatisticsPanelController statisticsPanel = statsLoader.getController();
                 AirbnbDataLoader loader = new AirbnbDataLoader();
-                listings = loader.load("boroughListings.csv");
-                statisticsPanel.initializeList(listings, currentUser);
+                filteredListings = loader.load("boroughListings.csv");
+                statisticsPanel.initializeList(filteredListings, currentUser);
                 currentPage++;
                 break;
 
             case 3: FXMLLoader bookingLoader = new FXMLLoader(getClass().getResource("bookingView.fxml"));
                 nextPanel = bookingLoader.load();
                 BookingController bookingController = bookingLoader.getController();
-                bookingController.initializeList(listings, currentUser);
+                bookingController.initializeList(filteredListings, currentUser);
                 currentPage = 0;
                 break;
 
@@ -231,7 +248,7 @@ public class MainWindowController extends Application implements Initializable {
 
     public void initializeListings(ArrayList<AirbnbListing> listings, Account currentUser) {
 
-        this.listings = listings;
+        this.filteredListings = listings;
         this.currentUser = currentUser;
     }
 
@@ -243,7 +260,7 @@ public class MainWindowController extends Application implements Initializable {
         newStage.setResizable(false);
         newStage.show();
         LoginPanelController loginPanelController = loginLoader.getController();
-        loginPanelController.initializeListings(listings);
+        loginPanelController.initializeListings(filteredListings);
         loginPanelController.createUser(currentUser);
         contentPane.getScene().getWindow().hide();
     }
@@ -251,4 +268,20 @@ public class MainWindowController extends Application implements Initializable {
     public static void main(String[] args) {
         launch(args);
     }
+
+    /**
+     * Switch if the buttons to change the panel are active.
+     */
+    public void switchButtonsActive() {
+        buttonsActive = !buttonsActive;
+        prevPaneBtn.setDisable(buttonsActive);
+        nextPaneBtn.setDisable(buttonsActive);
+    }
+
+    public void setButtonsActive(boolean areEnabled) {
+        prevPaneBtn.setDisable(!areEnabled);
+        nextPaneBtn.setDisable(!areEnabled);
+    }
 }
+
+

@@ -30,11 +30,4 @@ public class StatMostExpensiveBorough extends Statistic {
                 .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.averagingDouble(AirbnbListing::getAveragePrice))) // Create a map mapping each borough to its average price
                 .entrySet().stream().max((borough1, borough2) -> borough1.getValue() > borough2.getValue() ? 1 : -1).get().getKey(); // Get the name (the key) of that map with the largest average price (value)
     }
-
-    public void lol(ArrayList<AirbnbListing>listings){
-
-       // boroughListings.stream().collect(Collectors.groupingBy(AirbnbListing::getAmenities))
-
-
-    }
 }
