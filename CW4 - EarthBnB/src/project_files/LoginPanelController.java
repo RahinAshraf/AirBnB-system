@@ -26,6 +26,8 @@ public class LoginPanelController implements Initializable {
 
     private Account user;
 
+    private MainWindowController mainWindowController;
+
     @FXML
     TextField usernameTextField;
 
@@ -60,20 +62,19 @@ public class LoginPanelController implements Initializable {
 
     public void goBack() {
         try {
-            FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
-            Parent root = boroughLoader.load();
+            if(user != null) {
+                mainWindowController.initializeListings(listings, user);
+                mainWindowController.setCurrentUser(user);
+            }
             usernameTextField.getScene().getWindow().hide();
-            Stage newStage = new Stage();
-            newStage.setScene(new Scene(root, 600, 500));
-            newStage.setResizable(false);
-            newStage.show();
-            MainWindowController mainWindowController = boroughLoader.getController();
-            mainWindowController.initializeListings(listings, user);
-            mainWindowController.setCurrentUser(user);
             //mainWindowController.updatePanel(3);
         } catch (Exception e) {
 
         }
+    }
+
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
     }
 
     public void navigateToRegister(javafx.event.ActionEvent actionEvent) throws IOException {

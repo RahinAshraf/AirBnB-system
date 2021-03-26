@@ -87,7 +87,7 @@ public class MainWindowController extends Application implements Initializable {
 
             FXMLLoader welcomePanelLoader = new FXMLLoader(getClass().getResource("welcomePanelView.fxml"));
             contentPane.setCenter(welcomePanelLoader.load());
-            WelcomePanel welcomePanel = welcomePanelLoader.getController();
+            welcomePanel = welcomePanelLoader.getController();
             welcomePanel.setMainWindowController(this);
             setButtonsActive(false);
 
@@ -196,6 +196,7 @@ public class MainWindowController extends Application implements Initializable {
     {
         // Loop forwards
         if (direction.equalsIgnoreCase("nextPaneBtn")) {
+            System.out.println("clicked next");
             if (currentPage < panelViews.length - 1)
                 currentPage++;
             else
@@ -215,6 +216,7 @@ public class MainWindowController extends Application implements Initializable {
     public void setCurrentUser(Account user) {
         currentUser = user;
         accountButton.setText(user.getUsername());
+        welcomePanel.setCurrentUser(currentUser);
     }
 
 
@@ -274,7 +276,8 @@ public class MainWindowController extends Application implements Initializable {
         LoginPanelController loginPanelController = loginLoader.getController();
         loginPanelController.initializeListings(filteredListings);
         loginPanelController.createUser(currentUser);
-        contentPane.getScene().getWindow().hide();
+        loginPanelController.setMainWindowController(this);
+        //contentPane.getScene().getWindow().hide();
     }
 
     public static void main(String[] args) {

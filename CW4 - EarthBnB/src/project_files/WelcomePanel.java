@@ -38,6 +38,10 @@ public class WelcomePanel extends MainframeContentPanel {
         currentUser = null;
     }
 
+    public void setCurrentUser(Account user) {
+        currentUser = user;
+    }
+
 
     @Override
     public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser) {
