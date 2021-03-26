@@ -16,6 +16,7 @@ public class StatC extends Statistic {
         updateStatistic(listings);
     }
 
+
     /**
      * Update the statistic.
      * @param listings A list of boroughListings the statistic should be calculated for.

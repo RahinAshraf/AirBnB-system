@@ -10,18 +10,28 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 
 public class MainWindowController extends Application implements Initializable {
 
     private ArrayList<AirbnbListing> listings;
+    private MapController mapController = new MapController();
+    private WelcomePanel welcomePanel = new WelcomePanel();
+    //private Statistic statistic = new Statistic();
+
+    private LinkedList<String> names = new LinkedList<>();
+    private int i = 1;
+
+
 
     private Account currentUser;
     private boolean accountOpen; // If the account window has been opened
@@ -39,7 +49,13 @@ public class MainWindowController extends Application implements Initializable {
     @FXML
     Button accountButton;
 
+    @FXML
+    Label nameOfCurrent;
 
+    public void setName(String name){
+
+        nameOfCurrent.setText(name);
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
@@ -107,7 +123,25 @@ public class MainWindowController extends Application implements Initializable {
             direction = btn.getId();
 
             contentPane.setCenter(getNewPanel(getNextViewName(direction))); //Get new panel by getting name of panel to be loaded.
+
+            //System.out.println(contentPane.getCenter());
+
+            if(contentPane.getCenter().toString().equals("AnchorPane[id=mapView]")){
+                setName("Map");
+            }
+            else if(contentPane.getCenter().toString().equals("VBox[id=statBox]")){
+                setName("Statistics");
+            }
+            else if(contentPane.getCenter().toString().equals("AnchorPane[id=bookingView]")){ //booking
+
+                setName("Bookings");
+            }
+            else{
+                setName("Welcome");
+            }
+
         }
+
     }
 
     /**
@@ -160,6 +194,7 @@ public class MainWindowController extends Application implements Initializable {
         Parent nextPanel;
         currentPage = pageNumber;
         switch (currentPage)
+
         {
             case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                 currentPage++;
