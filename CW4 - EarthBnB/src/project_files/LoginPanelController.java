@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -29,7 +30,7 @@ public class LoginPanelController implements Initializable {
     TextField usernameTextField;
 
     @FXML
-    TextField passwordTextField;
+    PasswordField passwordTextField;
 
     @FXML
     BorderPane mainPane;
@@ -138,4 +139,5 @@ public class LoginPanelController implements Initializable {
         signinMenu.setStyle("-fx-background-color: #FF5733");
         user = null;
     }
+
 }

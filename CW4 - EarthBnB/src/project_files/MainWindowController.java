@@ -54,9 +54,9 @@ public class MainWindowController extends Application implements Initializable {
     Label nameOfCurrent;
 
     public void setName(String name){
-
         nameOfCurrent.setText(name);
     }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));

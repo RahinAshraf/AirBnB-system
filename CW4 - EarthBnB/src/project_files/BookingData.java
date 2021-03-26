@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * The BookingData Class stores the data received from the welcome panel.
  *
- * @author Vandad Vafai Tabrizi
+ * @author
  */
 
 public class BookingData {
