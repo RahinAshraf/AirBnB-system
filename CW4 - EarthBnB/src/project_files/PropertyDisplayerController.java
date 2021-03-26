@@ -13,9 +13,6 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ResourceBundle;
 
 import static java.lang.Long.MAX_VALUE;
@@ -33,26 +30,10 @@ public class PropertyDisplayerController implements Initializable {
     private AirbnbListing displayedListing;
     Account currentUser;
     @FXML
-    ImageView propertyImg;
-    @FXML
-    ImageView hostLargeImg;
+    ImageView propertyImg, hostLargeImg;
 
     @FXML
-    Label propertyNameLbl;
-    @FXML
-    Label propertyTypeLbl;
-    @FXML
-    Label bedsLbl;
-    @FXML
-    Label bathroomsLbl;
-    @FXML
-    Label hostIsSuperHostLbl;
-    @FXML
-    Label hostNameLbl;
-    @FXML
-    Label boroughLbl;
-    @FXML
-    Label neighbourHoodDescriptionLbl;
+    Label bathroomsLbl, hostIsSuperHostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl, bedsLbl, propertyTypeLbl, propertyNameLbl;
     @FXML
     Button saveButton;
 
@@ -60,13 +41,8 @@ public class PropertyDisplayerController implements Initializable {
     TextArea amenitiesText; // Expand thing, only show a couple
 
     @FXML
-    ProgressBar cleanlinessBar;
-    @FXML
-    ProgressBar communicationBar;
-    @FXML
-    ProgressBar locationBar;
-    @FXML
-    ProgressBar totalBar;
+    ProgressBar cleanlinessBar, communicationBar, locationBar, totalBar;
+
 
     @FXML
     WebView mapWebView; // View for displaying webEngine
@@ -99,8 +75,6 @@ public class PropertyDisplayerController implements Initializable {
     }
 
 
-
-
     /**
      * Load the specific data of the property into the panel.
      * @param listing The property that should be displayed.
@@ -114,7 +88,7 @@ public class PropertyDisplayerController implements Initializable {
         propertyImg.setImage(new Image(String.valueOf(listing.getPictureUrl())));
         propertyNameLbl.setText(listing.getName());
         propertyTypeLbl.setText(listing.getRoomType());
-        bedsLbl.setText(String.valueOf(listing.getBedrooms()) + " Bedroom/s");
+        bedsLbl.setText(listing.getBedrooms() + " Bedroom/s");
         bathroomsLbl.setText(listing.getBathroomsText());
 
         // Display the amenities
@@ -163,4 +137,11 @@ public class PropertyDisplayerController implements Initializable {
                 "document.goToLocation(window.lat, window.lon);"
         );
     }
+
+    @FXML
+    private void goToBookingScreen()
+    {
+
+    }
+
 }

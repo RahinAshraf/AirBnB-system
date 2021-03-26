@@ -365,7 +365,6 @@ public class MainWindowController extends Application implements Initializable {
         }
     }
 
-
     /**
      * An alert which occurs when the check-in date is not valid.
      */
@@ -376,7 +375,6 @@ public class MainWindowController extends Application implements Initializable {
         alert.setContentText("Maximum price range must be more than minimum");
         alert.showAndWait();
     }
-
 }
 
 
