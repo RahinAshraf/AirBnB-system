@@ -167,16 +167,10 @@ public class BoroughPropertiesController implements Initializable {
      */
     public void backNavigation() {
         try {
-            FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
-            Parent root = boroughLoader.load();
-            Stage newStage = new Stage();
-            newStage.setScene(new Scene(root, 600, 500));
-            newStage.setResizable(false);
-            newStage.show();
-            MainWindowController mainWindowController = boroughLoader.getController();
-            mainWindowController.initializeListings(listings, currentUser);
-            //mainWindowController.updatePanel(3);
-            propertiesTable.getScene().getWindow().hide();
+            Stage stage = (Stage) mainWindowController.contentPane.getScene().getWindow();
+            stage.show();
+            Stage thisStage = (Stage) propertiesTable.getScene().getWindow();
+            thisStage.close();
         } catch (Exception e) {
 
         }
