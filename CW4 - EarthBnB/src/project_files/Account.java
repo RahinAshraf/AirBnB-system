@@ -11,6 +11,10 @@ public class Account {
     private ArrayList<AirbnbListing> favouriteProperties;
     private ArrayList<Integer> reservedTrips;
 
+
+
+    private BookingData bookingData;
+
     Account(int accountID, String username, String password, String emailAddress) {
         this.accountID = accountID;
         this.username = username;
@@ -54,5 +58,13 @@ public class Account {
 
     public ArrayList<AirbnbListing> getSavedProperties() {
         return favouriteProperties;
+    }
+
+    public BookingData getBookingData() {
+        return bookingData;
+    }
+
+    public void setBookingData(BookingData bookingData) {
+        this.bookingData = bookingData;
     }
 }

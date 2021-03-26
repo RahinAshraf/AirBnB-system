@@ -7,7 +7,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * The WelcomePanelClass -
@@ -29,7 +28,11 @@ public class WelcomePanel extends MainframeContentPanel {
     @FXML
     Button submitButton;
 
-    Account currentUser;
+    private Account currentUser;
+
+
+
+    private MainWindowController mainWindowController;
 
     public WelcomePanel() {
         currentUser = null;
@@ -98,7 +101,8 @@ public class WelcomePanel extends MainframeContentPanel {
     private void setSubmitButton(ActionEvent event){
         if (checkEntries()) {
             int people = Integer.parseInt(numberOfPeople.getText());
-            BookingData bookingData = new BookingData((Date) checkIn.getUserData(), (Date) checkOut.getUserData(), people, currentUser.getAccountID());
+            currentUser.setBookingData(new BookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID()));
+            mainWindowController.setButtonsActive(true);
             submitAlert();
         }
     }
@@ -157,4 +161,7 @@ public class WelcomePanel extends MainframeContentPanel {
     }
 
 
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
+    }
 }
