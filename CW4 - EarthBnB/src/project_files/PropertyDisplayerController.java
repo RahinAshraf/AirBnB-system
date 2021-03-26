@@ -114,7 +114,7 @@ public class PropertyDisplayerController implements Initializable {
         propertyImg.setImage(new Image(String.valueOf(listing.getPictureUrl())));
         propertyNameLbl.setText(listing.getName());
         propertyTypeLbl.setText(listing.getRoomType());
-        bedsLbl.setText(String.valueOf(listing.getBedrooms()));
+        bedsLbl.setText(String.valueOf(listing.getBedrooms()) + " Bedroom/s");
         bathroomsLbl.setText(listing.getBathroomsText());
 
         // Display the amenities

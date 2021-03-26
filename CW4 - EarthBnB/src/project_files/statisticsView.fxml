@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox id="statBox" fx:id="statisticsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="630.0" spacing="100.0" style="-fx-background-color: orange;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.StatisticsPanelController">
+<VBox id="statBox" fx:id="statisticsPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="630.0" spacing="100.0" style="-fx-border-color: red;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.StatisticsPanelController">
    <children>
       <GridPane fx:id="statsGridPane" hgap="10.0" prefHeight="356.0" prefWidth="538.0" vgap="10.0">
          <columnConstraints>
@@ -22,13 +22,16 @@
          <children>
             <BorderPane prefHeight="49.0" prefWidth="173.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <left>
-                  <Button id="prevBtn1" fx:id="prevBtn1" minHeight="68.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&lt;" BorderPane.alignment="CENTER" />
+                  <Button id="prevBtn1" fx:id="prevBtn1" minHeight="35.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="35.0" prefWidth="35.0" style="-fx-border-radius: 90; -fx-border-color: red; -fx-background-radius: 90;" text="&lt;" textFill="RED" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn1" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&gt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn1" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 90; -fx-border-color: red; -fx-border-radius: 90;" text="&gt;" textFill="RED" BorderPane.alignment="CENTER" />
                </right>
                <top>
-                  <Label fx:id="statNameLbl1" style="-fx-background-color: violet;" text="Label" wrapText="true" BorderPane.alignment="CENTER" />
+                  <Label fx:id="statNameLbl1" style="-fx-text-fill: red;" text="Label" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font></Label>
                </top>
                <center>
                   <Label fx:id="statLbl1" text="Label" BorderPane.alignment="CENTER">
@@ -42,13 +45,16 @@
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <left>
-                  <Button fx:id="prevBtn2" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&lt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn2" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 90; -fx-border-color: red; -fx-border-radius: 90;" text="&lt;" textFill="RED" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn2" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&gt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn2" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="36.0" prefWidth="35.0" style="-fx-background-radius: 90; -fx-border-color: red; -fx-border-radius: 90;" text="&gt;" textFill="RED" BorderPane.alignment="CENTER" />
                </right>
                <top>
-                  <Label fx:id="statNameLbl2" style="-fx-background-color: violet;" text="Label" BorderPane.alignment="CENTER" />
+                  <Label fx:id="statNameLbl2" style="-fx-text-fill: red;" text="Label" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font></Label>
                </top>
                <center>
                   <Label fx:id="statLbl2" text="Label" BorderPane.alignment="CENTER">
@@ -62,13 +68,16 @@
             </BorderPane>
             <BorderPane prefHeight="99.0" prefWidth="255.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <left>
-                  <Button fx:id="prevBtn3" minHeight="77.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&lt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn3" minHeight="35.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 90; -fx-border-radius: 90; -fx-border-color: red;" text="&lt;" textFill="RED" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn3" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&gt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn3" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 90; -fx-border-color: red; -fx-border-radius: 90;" text="&gt;" textFill="RED" BorderPane.alignment="CENTER" />
                </right>
                <top>
-                  <Label fx:id="statNameLbl3" style="-fx-background-color: violet;" text="Label" BorderPane.alignment="CENTER" />
+                  <Label fx:id="statNameLbl3" style="-fx-text-fill: red;" text="Label" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Label>
                </top>
                <center>
                   <Label fx:id="statLbl3" text="Label" BorderPane.alignment="CENTER">
@@ -79,13 +88,16 @@
             </BorderPane>
             <BorderPane prefHeight="19.0" prefWidth="286.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <left>
-                  <Button fx:id="prevBtn4" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&lt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="prevBtn4" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="36.0" prefWidth="35.0" style="-fx-background-radius: 90; -fx-border-color: red; -fx-border-radius: 90;" text="&lt;" textFill="RED" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="nextBtn4" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="72.0" prefWidth="26.0" style="-fx-background-color: orange; -fx-border-color: black;" text="&gt;" BorderPane.alignment="CENTER" />
+                  <Button fx:id="nextBtn4" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="35.0" prefWidth="35.0" style="-fx-border-radius: 90; -fx-border-color: red; -fx-background-radius: 90;" text="&gt;" textFill="RED" BorderPane.alignment="CENTER" />
                </right>
                <top>
-                  <Label fx:id="statNameLbl4" style="-fx-background-color: violet;" text="Label" BorderPane.alignment="CENTER" />
+                  <Label fx:id="statNameLbl4" style="-fx-text-fill: red;" text="Label" textAlignment="CENTER" wrapText="true" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="Arial" size="16.0" />
+                     </font></Label>
                </top>
                <center>
                   <Label fx:id="statLbl4" text="Label" BorderPane.alignment="CENTER">

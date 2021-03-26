@@ -2,6 +2,12 @@ package project_files;
 
 import java.util.Date;
 
+/**
+ * The BookingData Class stores the data received from the welcome panel.
+ *
+ * @author Vandad Vafai Tabrizi
+ */
+
 public class BookingData {
 
     private Date checkIn;

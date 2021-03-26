@@ -20,18 +20,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+/**
+ *
+ */
 
 public class MainWindowController extends Application implements Initializable {
 
     private ArrayList<AirbnbListing> listings;
-    private MapController mapController = new MapController();
-    private WelcomePanel welcomePanel = new WelcomePanel();
-    //private Statistic statistic = new Statistic();
-
-    private LinkedList<String> names = new LinkedList<>();
-    private int i = 1;
-
-
 
     private Account currentUser;
     private boolean accountOpen; // If the account window has been opened
@@ -39,6 +34,13 @@ public class MainWindowController extends Application implements Initializable {
     // Stores names of all views that should be displayed in the main frame. Displayed in the order added.
     private static final String[] panelViews = new String[] {"welcomePanelView.fxml", "mapView.fxml", "statisticsView.fxml", "bookingView.fxml"};
     private int currentPage = 0;
+
+    private MapController mapController = new MapController();
+    private WelcomePanel welcomePanel = new WelcomePanel();
+    //private Statistic statistic = new Statistic();
+
+    private LinkedList<String> names = new LinkedList<>();
+    private int i = 1;
 
     @FXML
     Button nextPaneBtn;
@@ -53,9 +55,9 @@ public class MainWindowController extends Application implements Initializable {
     Label nameOfCurrent;
 
     public void setName(String name){
-
         nameOfCurrent.setText(name);
     }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
@@ -123,6 +125,7 @@ public class MainWindowController extends Application implements Initializable {
             direction = btn.getId();
 
             contentPane.setCenter(getNewPanel(getNextViewName(direction))); //Get new panel by getting name of panel to be loaded.
+
 
             //System.out.println(contentPane.getCenter());
 
@@ -194,7 +197,6 @@ public class MainWindowController extends Application implements Initializable {
         Parent nextPanel;
         currentPage = pageNumber;
         switch (currentPage)
-
         {
             case 0: nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                 currentPage++;

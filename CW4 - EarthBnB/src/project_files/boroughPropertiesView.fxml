@@ -50,15 +50,10 @@
                </children></AnchorPane>
           <AnchorPane id="secondPane" fx:id="secondPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView id="propertiesTable" fx:id="propertiesTable" layoutX="14.0" layoutY="31.0" onMouseClicked="#rowClicked" prefHeight="468.0" prefWidth="642.0" style="-fx-border-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+                  <TableView id="propertiesTable" fx:id="propertiesTable" layoutX="14.0" onMouseClicked="#rowClicked" prefHeight="499.0" prefWidth="642.0" style="-fx-border-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                     </columns>
                   </TableView>
-                  <HBox layoutX="515.0" layoutY="2.0" prefHeight="27.0" prefWidth="127.0">
-                     <children>
-                        <ComboBox fx:id="comboBox" onAction="#updateSort" prefHeight="27.0" prefWidth="124.0" promptText="Sort By" />
-                     </children>
-                  </HBox>
                </children>
             </AnchorPane>
         </items>
