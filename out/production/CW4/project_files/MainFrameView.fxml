@@ -24,7 +24,7 @@
                </BorderPane.margin></Button>
          </bottom>
          <right>
-            <Button id="nextPaneBtn" fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#switchPanel" text="&gt;" BorderPane.alignment="CENTER">
+            <Button id="nextPaneBtn" fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#switchButtonsActive" text="&gt;" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin></Button>

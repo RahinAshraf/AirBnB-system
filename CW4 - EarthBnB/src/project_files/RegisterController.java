@@ -2,6 +2,7 @@ package project_files;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
@@ -16,9 +17,9 @@ public class RegisterController {
     @FXML
     TextField emailField;
     @FXML
-    TextField pwField;
+    PasswordField pwField;
     @FXML
-    TextField pwConfField;
+    PasswordField pwConfField;
     @FXML
     Label feedbackLabel;
 
