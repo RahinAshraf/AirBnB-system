@@ -101,8 +101,8 @@ public class WelcomePanel extends MainframeContentPanel {
     private void setSubmitButton(ActionEvent event){
         if (checkEntries()) {
             int people = Integer.parseInt(numberOfPeople.getText());
-            currentUser.setBookingData(new BookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID()));
-            mainWindowController.setButtonsActive(true);
+            currentUser.setBookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID());
+            mainWindowController.setFrameSwitchingButtonsActive(true);
             submitAlert();
         }
     }

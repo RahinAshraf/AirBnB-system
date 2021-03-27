@@ -65,9 +65,9 @@ public class LoginPanelController implements Initializable {
             if(user != null) {
                 mainWindowController.initializeListings(listings, user);
                 mainWindowController.setCurrentUser(user);
+                mainWindowController.setLoggedIn(true);
             }
             usernameTextField.getScene().getWindow().hide();
-            //mainWindowController.updatePanel(3);
         } catch (Exception e) {
 
         }
@@ -102,8 +102,6 @@ public class LoginPanelController implements Initializable {
         Connection connectDB = connection.getConnection();
 
         String verifyLogin = "SELECT * FROM account WHERE username = '" + usernameTextField.getText() + "' AND password = '" + passwordTextField.getText() + "'";
-
-
     try {
         Statement statement = connectDB.createStatement();
         ResultSet queryResult = statement.executeQuery(verifyLogin);

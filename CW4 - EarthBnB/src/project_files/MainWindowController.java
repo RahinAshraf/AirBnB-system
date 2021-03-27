@@ -1,12 +1,9 @@
 package project_files;
 
-// Disable search before login
-// Disable switching before search
 // FIlter for properties in map controller
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -81,17 +77,18 @@ public class MainWindowController extends Application implements Initializable {
         accountOpen = false;
         try {
             load("listings.csv");
-            //contentPane.setCenter(FXMLLoader.load(getClass().getResource("welcomePanelView.fxml")));
 
             FXMLLoader welcomePanelLoader = new FXMLLoader(getClass().getResource("welcomePanelView.fxml"));
             contentPane.setCenter(welcomePanelLoader.load());
             welcomePanel = welcomePanelLoader.getController();
             welcomePanel.setMainWindowController(this);
-            setButtonsActive(false);
+            //welcomePanel.submitButton.setDisable(true);
+            setFrameSwitchingButtonsActive(false);
 
         } catch (IOException e) {
             System.out.println("Error while starting program. Please restart.");
         }
+        setLoggedIn(false);
 
         // Fill the dropdown with selectable price ranges
         minPriceChoiceBox.setItems(FXCollections.observableArrayList("0", "25", "50", "100", "200", "500"));
@@ -107,11 +104,12 @@ public class MainWindowController extends Application implements Initializable {
         filteredListings.addAll(originalListings);
     }
 
+
     @FXML
     public void navigateToAccount(ActionEvent e) throws IOException {
         if(currentUser != null) {
             Parent nextPanel;
-            if(accountOpen == false) {
+            if(!accountOpen) {
 
                 FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
                 nextPanel = accountLoader.load();
@@ -119,14 +117,15 @@ public class MainWindowController extends Application implements Initializable {
                 accountPanelController.initializeAccount(filteredListings, currentUser);
                 accountOpen = true;
                 accountButton.setText("Exit");
-                nextPaneBtn.setDisable(true);
+                setFrameSwitchingButtonsActive(false);
+                contentPane.setCenter(nextPanel);
             } else {
-                nextPanel = FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
+                updatePanel(0);//FXMLLoader.load(getClass().getResource("welcomePanelView.fxml"));
                 accountOpen = false;
                 accountButton.setText(currentUser.getUsername());
-                nextPaneBtn.setDisable(false);
+                setFrameSwitchingButtonsActive(true);
             }
-            contentPane.setCenter(nextPanel);
+
         } else {
             System.out.println("You have to log in before you can go to your dashboard!");
         }
@@ -235,7 +234,7 @@ public class MainWindowController extends Application implements Initializable {
                 nextPanel = statsLoader.load();
                 StatisticsPanelController statisticsPanel = statsLoader.getController();
                 AirbnbDataLoader loader = new AirbnbDataLoader();
-                filteredListings = loader.load("boroughListings.csv");
+                filteredListings = loader.load("boroughListings.csv"); // ???
                 statisticsPanel.initializeList(filteredListings, currentUser);
                 break;
 
@@ -297,7 +296,11 @@ public class MainWindowController extends Application implements Initializable {
 
      */
 
-    public void setButtonsActive(boolean areEnabled) {
+    /**
+     * Activates the buttons for switching the frame to be active.
+     * @param areEnabled
+     */
+    public void setFrameSwitchingButtonsActive(boolean areEnabled) {
         prevPaneBtn.setDisable(!areEnabled);
         nextPaneBtn.setDisable(!areEnabled);
     }
@@ -320,6 +323,7 @@ public class MainWindowController extends Application implements Initializable {
             if (maxPrice != null) {
                 if (minPrice >= maxPrice) {
                     minPriceChoiceBox.getSelectionModel().clearSelection();
+                    minPrice = null;
                     priceRangeAlert();
                 }
             }
@@ -328,11 +332,11 @@ public class MainWindowController extends Application implements Initializable {
             if (minPrice != null) {
                 if (maxPrice <= minPrice) {
                     maxPriceChoiceBox.getSelectionModel().clearSelection();
+                    maxPrice = null;
                     priceRangeAlert();
                 }
             }
         }
-
         setPriceRange(minPrice, maxPrice);
     }
 
@@ -344,7 +348,7 @@ public class MainWindowController extends Application implements Initializable {
     private Integer convertChoiceBoxToInteger(ChoiceBox box)
     {
         Object selection = box.getSelectionModel().getSelectedItem();
-        String selectionString = "";
+        String selectionString = null;
         if (selection != null)
             selectionString = selection.toString();
 
@@ -366,6 +370,7 @@ public class MainWindowController extends Application implements Initializable {
         {
             //if (currentUser != null)
             currentUser.setPriceRange(minPrice, maxPrice);
+            System.out.println("Set price range tp " + minPrice + " " + maxPrice);
         }
     }
 
@@ -378,6 +383,17 @@ public class MainWindowController extends Application implements Initializable {
         alert.setHeaderText("Error while choosing price range.");
         alert.setContentText("Maximum price range must be more than minimum");
         alert.showAndWait();
+    }
+
+    /**
+     * Disable the selection of the price range and the submitButton in the welcomePanel before the user has logged in.
+     * @param isLoggedIn
+     */
+    public void setLoggedIn(boolean isLoggedIn)
+    {
+        minPriceChoiceBox.setDisable(!isLoggedIn);
+        maxPriceChoiceBox.setDisable(!isLoggedIn);
+        welcomePanel.submitButton.setDisable(!isLoggedIn);
     }
 }
 

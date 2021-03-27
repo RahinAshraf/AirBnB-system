@@ -74,6 +74,10 @@ public class BookingData {
         this.bookerID = bookerID;
     }
 
+    public BookingData()
+    {
+    }
+
     public void setPriceRange(int minPrice, int maxPrice)
     {
         this.minPrice = minPrice;

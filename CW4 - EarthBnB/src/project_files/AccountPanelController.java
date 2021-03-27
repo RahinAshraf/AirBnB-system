@@ -33,9 +33,7 @@ public class AccountPanelController implements Initializable {
         this.currentUser = currentUser;
         loadData();
         informationList.setItems(data);
-
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

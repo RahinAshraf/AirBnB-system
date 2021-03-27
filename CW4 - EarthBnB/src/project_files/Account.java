@@ -1,5 +1,6 @@
 package project_files;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Account {
@@ -10,9 +11,6 @@ public class Account {
     private String emailAddress;
     private ArrayList<AirbnbListing> favouriteProperties;
     private ArrayList<Integer> reservedTrips;
-
-
-
     private BookingData bookingData;
 
     Account(int accountID, String username, String password, String emailAddress) {
@@ -22,6 +20,7 @@ public class Account {
         this.emailAddress = emailAddress;
         favouriteProperties = new ArrayList<>();
         reservedTrips = new ArrayList<>();
+        bookingData = new BookingData();
     }
 
 
@@ -76,5 +75,12 @@ public class Account {
     public void setPriceRange(int min, int max)
     {
         bookingData.setPriceRange(min, max);
+    }
+
+    public void setBookingData(LocalDate checkIn, LocalDate checkOut, int people, int accountID) {
+        bookingData.setCheckIn(checkIn);
+        bookingData.setCheckOut(checkOut);
+        bookingData.setNumberOfPeople(people);
+        bookingData.setBookerID(accountID);
     }
 }

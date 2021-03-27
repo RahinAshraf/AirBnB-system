@@ -130,8 +130,6 @@ public class PropertyDisplayerController implements Initializable {
     private void loadMap(ActionEvent e)
     {
         mapWebView.setVisible(true);
-        mapWebView.setMaxHeight(MAX_VALUE); // Expand
-        mapWebView.setMaxWidth(MAX_VALUE);
         double latitude = displayedListing.getLatitude();
         double longitude = displayedListing.getLongitude();
 
