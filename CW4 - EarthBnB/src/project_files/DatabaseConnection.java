@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class DatabaseConnection {
 
-    String URL = "jdbc:mysql://34.89.16.104:3306/booking_system";
+    String URL = "jdbc:mysql://35.189.117.22:3306/booking_system";
     String USER_NAME = "root";
     String PASSWORD = "root";
     Connection conn;

@@ -8,9 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -20,6 +24,8 @@ public class BookingController extends MainframeContentPanel implements Initiali
     //ArrayList<AirbnbListing> listings;
     TableColumn propertyNameCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
+
+    AirbnbListing selectedListing;
 
     @FXML
     TableView favoritesTable;
@@ -40,6 +46,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //currentUser = null;
+        selectedListing = null;
     }
 
     /**
@@ -76,14 +83,43 @@ public class BookingController extends MainframeContentPanel implements Initiali
      */
     @FXML
     public void rowClicked(MouseEvent e) throws IOException {
-        if (e.getClickCount() == 2)
-        {
-            Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
-            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
-                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+        Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
+        if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
+            AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+            selectedListing = chosenProperty;
+            totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
+            calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
+            if (e.getClickCount() == 2)
+            {
                 loadFromFavouritesTable(chosenProperty);
             }
         }
+    }
+
+
+    public void reserveProperty() {
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection connectDB = connection.getConnection();
+        System.out.println(currentUser.getAccountID());
+        BookingData usersData = currentUser.getBookingData();
+        String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
+                usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice()*usersData.getDaysOfStay() + "')";
+        //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
+
+        try {
+            Statement statement = connectDB.createStatement();
+            if (selectedListing != null) {
+                statement.executeUpdate(createBooking);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+           // feedbackLabel.setText("The account could not be created!");
+           // feedbackLabel.setTextFill(Color.RED);
+        }
+
+
+
     }
 
     private void loadFromFavouritesTable(AirbnbListing chosenProperty) {

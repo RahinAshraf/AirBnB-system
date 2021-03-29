@@ -45,7 +45,7 @@
                         <Font name="System Bold" size="13.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" prefWidth="200.0" style="-fx-background-color: red;" text="RESERVE">
+                  <Button mnemonicParsing="false" onAction="#reserveProperty" prefWidth="200.0" style="-fx-background-color: red;" text="RESERVE">
                      <VBox.margin>
                         <Insets left="200.0" top="50.0" />
                      </VBox.margin>
