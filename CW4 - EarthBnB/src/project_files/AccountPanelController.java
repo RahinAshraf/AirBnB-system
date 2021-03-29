@@ -19,20 +19,21 @@ import java.util.ResourceBundle;
 
 public class AccountPanelController implements Initializable {
 
-    private ArrayList<AirbnbListing> listings = new ArrayList<>();
+    //private ArrayList<AirbnbListing> filteredListings; = new ArrayList<>();
+    //private Listings listings;
     private Account currentUser;
-    private ObservableList<String> data = FXCollections.observableArrayList();
+    private ObservableList<String> userInformationList = FXCollections.observableArrayList();
 
-    TableColumn infoCol;
 
     @FXML
     ListView informationList;
 
-    public void initializeAccount(ArrayList<AirbnbListing> listings, Account currentUser) {
-        this.listings = listings;
+    public void initializeAccount(Account currentUser) {
+        //this.listings = listings;
+        //filteredListings = listings.getFilteredListings();
         this.currentUser = currentUser;
-        loadData();
-        informationList.setItems(data);
+        loadUserInformation();
+        informationList.setItems(userInformationList);
     }
 
     @Override
@@ -40,10 +41,10 @@ public class AccountPanelController implements Initializable {
 
 
     }
-    public void loadData() {
-        data.add("Account ID: " + (currentUser.getAccountID()));
-        data.add("Username: " + currentUser.getUsername());
-        data.add("Password: " + currentUser.getPassword());
-        data.add("Email Address: " + currentUser.getEmailAddress());
+    public void loadUserInformation() {
+        userInformationList.add("Account ID: " + (currentUser.getAccountID()));
+        userInformationList.add("Username: " + currentUser.getUsername());
+        userInformationList.add("Password: " + currentUser.getPassword());
+        userInformationList.add("Email Address: " + currentUser.getEmailAddress());
     }
 }

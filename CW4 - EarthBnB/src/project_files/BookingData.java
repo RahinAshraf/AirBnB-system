@@ -1,5 +1,6 @@
 package project_files;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -32,7 +33,9 @@ public class BookingData {
         return numberOfPeople;
     }
 
-    public void setNumberOfPeople(int numberOfPeople) {
+    public void setNumberOfPeople(int numberOfPeople) throws InvalidParameterException {
+        if (numberOfPeople < 0)
+            throw new InvalidParameterException("Number of people cant be negative");
         this.numberOfPeople = numberOfPeople;
     }
 
@@ -48,26 +51,21 @@ public class BookingData {
         return minPrice;
     }
 
-    public void setMinPrice(int minPrice) {
-        this.minPrice = minPrice;
-    }
-
     public int getMaxPrice() {
         return maxPrice;
     }
 
-    public void setMaxPrice(int maxPrice) {
-        this.maxPrice = maxPrice;
-    }
 
     private LocalDate checkIn;
     private LocalDate checkOut;
     private int numberOfPeople;
     private int bookerID;
-    private int minPrice;
-    private int maxPrice;
+    private int minPrice = 0;
+    private int maxPrice = Integer.MAX_VALUE;
 
-    public BookingData(LocalDate checkIn, LocalDate checkOut, int numberOfPeople, int bookerID){
+    public BookingData(LocalDate checkIn, LocalDate checkOut, int numberOfPeople, int bookerID) throws InvalidParameterException {
+        if (numberOfPeople < 0)
+            throw new InvalidParameterException("Number of people cant be negative");
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.numberOfPeople = numberOfPeople;
@@ -78,8 +76,10 @@ public class BookingData {
     {
     }
 
-    public void setPriceRange(int minPrice, int maxPrice)
+    public void setPriceRange(int minPrice, int maxPrice) throws InvalidParameterException
     {
+        if (minPrice < 0 || maxPrice < 0)
+            throw new InvalidParameterException("Prices cant be negative");
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
     }

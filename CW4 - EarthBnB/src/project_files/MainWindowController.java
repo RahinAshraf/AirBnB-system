@@ -20,15 +20,13 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 
 public class MainWindowController extends Application implements Initializable {
 
-    private ArrayList<AirbnbListing> filteredListings;
-    private ArrayList<AirbnbListing> originalListings;
+    //private ArrayList<AirbnbListing> filteredListings;
+    //private ArrayList<AirbnbListing> originalListings;
 
     private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
@@ -36,6 +34,9 @@ public class MainWindowController extends Application implements Initializable {
     private int currentPage = 0;
 
     MainframeContentPanel[] contentPanels;
+
+    // Filters the list according to the search and price range the user has entered (maybe also the checkboxes?)
+    private Listings listings;
 
     @FXML
     Button nextPaneBtn, prevPaneBtn;
@@ -94,7 +95,7 @@ public class MainWindowController extends Application implements Initializable {
            FXMLLoader panelLoader = new FXMLLoader(getClass().getResource(panelViewsStrings[i]));
            Parent loadedPanel = panelLoader.load();
            MainframeContentPanel controller = panelLoader.getController();
-           controller.initialize(this, currentUser, loadedPanel, filteredListings);
+           controller.initialize(this, currentUser, loadedPanel, listings);
            contentPanels[i] = controller;
        }
     }
@@ -110,11 +111,7 @@ public class MainWindowController extends Application implements Initializable {
 
     public void loadListings(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
-        originalListings = new ArrayList<>();
-        originalListings = loader.load(filename);
-
-        filteredListings = new ArrayList<>();
-        filteredListings.addAll(originalListings);
+        listings = new Listings(loader.load(filename));
     }
 
 
@@ -126,7 +123,7 @@ public class MainWindowController extends Application implements Initializable {
                 FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
-                accountPanelController.initializeAccount(filteredListings, currentUser);
+                accountPanelController.initializeAccount(currentUser);
                 accountOpen = true;
                 accountButton.setText("Exit");
                 setFrameSwitchingButtonsActive(false);
@@ -150,14 +147,13 @@ public class MainWindowController extends Application implements Initializable {
      */
     @FXML
     private void switchPanel(ActionEvent e) {
-        String direction;
         if (e.getSource().getClass() == Button.class)
         {
             Button btn = (Button) e.getSource();
-            direction = btn.getId();
+            String direction = btn.getId();
 
             MainframeContentPanel controller = getNextView(direction);
-            controller.initializeList(filteredListings, currentUser);
+            controller.initializeList(listings, currentUser);
             contentPane.setCenter(controller.getPanelRoot());
             nameOfCurrent.setText(controller.getName());
         }
@@ -201,11 +197,16 @@ public class MainWindowController extends Application implements Initializable {
     }
 
 
+    /**
+     * Maybe redo.
+     * Loads the booking panel and passes in a listing to be displayed in combination with the search the user applied.
+     * @param listing
+     * @throws IOException
+     */
     public void loadBookingPanel(AirbnbListing listing) throws IOException {
-
         MainframeContentPanel controller = contentPanels[3];
         if (controller.getClass() == BookingController.class) {
-            controller.initializeList(filteredListings, currentUser);
+            controller.initializeList(listings, currentUser);
             ((BookingController) controller).initializeWithProperty(listing);
             contentPane.setCenter(controller.getPanelRoot());
             currentPage = 3;
@@ -242,7 +243,7 @@ public class MainWindowController extends Application implements Initializable {
      * @param e
      */
     @FXML
-    public void setPriceRange(ActionEvent e)
+    public void applyPriceRange(ActionEvent e)
     {
         Integer minPrice = convertChoiceBoxToInteger(minPriceChoiceBox);
         Integer maxPrice = convertChoiceBoxToInteger(maxPriceChoiceBox);
@@ -268,7 +269,7 @@ public class MainWindowController extends Application implements Initializable {
                 }
             }
         }
-        setPriceRange(minPrice, maxPrice);
+        applyPriceRange(minPrice, maxPrice);
     }
 
     /**
@@ -296,12 +297,16 @@ public class MainWindowController extends Application implements Initializable {
      * @param minPrice
      * @param maxPrice
      */
-    private void setPriceRange(Integer minPrice, Integer maxPrice) {
-        if (minPrice != null && maxPrice != null)
+    private void applyPriceRange(Integer minPrice, Integer maxPrice) {
+        if (minPrice != null && maxPrice != null && currentUser != null)
         {
-            //if (currentUser != null)
             currentUser.setPriceRange(minPrice, maxPrice);
-            System.out.println("Set price range tp " + minPrice + " " + maxPrice);
+            listings.filterPriceRange(minPrice, maxPrice);
+            contentPanels[1].updateListings(listings);
+            contentPanels[2].updateListings(listings);
+            contentPane.setCenter(contentPanels[1].getPanelRoot());
+            //updateAllPanels();
+            System.out.println("Applied price range " + minPrice + " " + maxPrice);
         }
     }
 
@@ -334,6 +339,11 @@ public class MainWindowController extends Application implements Initializable {
             WelcomePanel welcomePanel = (WelcomePanel) contentPanels[0];
             welcomePanel.submitButton.setDisable(!isLoggedIn);
         }
+    }
+
+    public Listings getListings()
+    {
+        return listings;
     }
 }
 

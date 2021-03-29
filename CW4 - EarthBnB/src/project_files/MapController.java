@@ -78,7 +78,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
             for(int i = 0; i<selectedBoroughs.size(); i++) {
                 tempArray.add(selectedBoroughs.get(i).getId());
             }
-            boroughController.initializeListing(listings, tempArray, currentUser);
+            boroughController.initializeListing(listings.getFilteredListings(), tempArray, currentUser);
             boroughController.setMainWindowController(mainWindowController); // Passing on the mainWindowController Object
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {
@@ -88,10 +88,10 @@ public class MapController extends MainframeContentPanel implements Initializabl
     }
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser)
+    public void initializeList(Listings listings, Account currentUser)
     {
         this.listings = listings;
-        filteredListings = listings;
+        filteredListings = listings.getFilteredListings();
         this.currentUser = currentUser;
         updateBoroughs();
         for(int i=0; i<33; i++) {
