@@ -68,10 +68,10 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
     public void loadSavedProperties() {
-        System.out.println(listings.size());
-        for(int i = 0; i<listings.size(); i++) {
-            if(currentUser.getSavedProperties().contains(listings.get(i))) {
-                data.add(listings.get(i));
+        System.out.println(listings.getFilteredListings().size());
+        for(int i = 0; i<listings.getFilteredListings().size(); i++) {
+            if(currentUser.getSavedProperties().contains(listings.getFilteredListings().get(i))) {
+                data.add(listings.getFilteredListings().get(i));
                 System.out.println("added");
             }
         }
@@ -139,7 +139,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser) {
+    public void initializeList(Listings listings, Account currentUser) {
         System.out.println("called");
         this.currentUser = currentUser;
         this.listings = listings;

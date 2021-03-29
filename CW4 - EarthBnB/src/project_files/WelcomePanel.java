@@ -7,6 +7,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The WelcomePanelClass -
@@ -36,68 +37,21 @@ public class WelcomePanel extends MainframeContentPanel {
 
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser) {
+    public void initializeList(Listings listings, Account currentUser) {
     }
 
-    /**
-     * An alert which occurs when the check-out date is not valid.
-     */
-    private void checkOutDateAlert(){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Error while choosing date.");
-        alert.setContentText("Make sure that you are entering the check out date after the check in date!");
-        alert.showAndWait();
-    }
 
-    /**
-     * An alert which occurs when the check-in date is not valid.
-     */
-    private void pastDateAlert(){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Error while choosing date.");
-        alert.setContentText("You can't book before today!");
-        alert.showAndWait();
-    }
-
-    /**
-     * An alert which occurs when the check-in date is not valid.
-     */
-    private void submitAlert(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Successful!");
-        alert.setHeaderText("Details saved successfully!");
-        alert.setContentText("Your booking details have been saved.");
-        alert.showAndWait();
-    }
-
-    private void setNumberOfPeopleAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Invalid number of people entered");
-        alert.setContentText("You have to book for at least one person.");
-        alert.showAndWait();
-    }
-
-    private void missingInformationAlert()
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("");
-        alert.setHeaderText("Missing Information");
-        alert.setContentText("Please enter all information before searching..");
-        alert.showAndWait();
-    }
 
     /**
      * Saves the data and moves it on to the booking panel.
-     * @param event
+     * @param e
      */
     @FXML
-    private void setSubmitButton(ActionEvent event){
+    private void setSubmitButton(ActionEvent e){
         if (checkEntries()) {
             int people = Integer.parseInt(numberOfPeople.getText());
             currentUser.setBookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID());
+            mainWindowController.getListings().filterBookingData(currentUser.getBookingData());
             mainWindowController.setFrameSwitchingButtonsActive(true);
             submitAlert();
         }
@@ -154,5 +108,59 @@ public class WelcomePanel extends MainframeContentPanel {
                 }
             }
         }
+    }
+
+
+
+    // Alerts for wrong user interaction
+
+    /**
+     * An alert which occurs when the check-out date is not valid.
+     */
+    private void checkOutDateAlert(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Error while choosing date.");
+        alert.setContentText("Make sure that you are entering the check out date after the check in date!");
+        alert.showAndWait();
+    }
+
+    /**
+     * An alert which occurs when the check-in date is not valid.
+     */
+    private void pastDateAlert(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Error while choosing date.");
+        alert.setContentText("You can't book before today!");
+        alert.showAndWait();
+    }
+
+    /**
+     * An alert which occurs when the check-in date is not valid.
+     */
+    private void submitAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Successful!");
+        alert.setHeaderText("Details saved successfully!");
+        alert.setContentText("Your booking details have been saved.");
+        alert.showAndWait();
+    }
+
+    private void setNumberOfPeopleAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Warning");
+        alert.setHeaderText("Invalid number of people entered");
+        alert.setContentText("You have to book for at least one person.");
+        alert.showAndWait();
+    }
+
+    private void missingInformationAlert()
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("");
+        alert.setHeaderText("Missing Information");
+        alert.setContentText("Please enter all information before searching..");
+        alert.showAndWait();
     }
 }

@@ -43,7 +43,7 @@
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </padding>
                   </Label>
-                  <ChoiceBox id="minPriceChoiceBox" fx:id="minPriceChoiceBox" onAction="#setPriceRange">
+                  <ChoiceBox id="minPriceChoiceBox" fx:id="minPriceChoiceBox" onAction="#applyPriceRange">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
@@ -53,7 +53,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Label>
-                  <ChoiceBox id="maxPriceChoiceBox" fx:id="maxPriceChoiceBox" onAction="#setPriceRange">
+                  <ChoiceBox id="maxPriceChoiceBox" fx:id="maxPriceChoiceBox" onAction="#applyPriceRange">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

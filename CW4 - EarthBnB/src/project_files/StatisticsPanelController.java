@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StatisticsPanelController extends MainframeContentPanel {
     Statistic accommodationType;
@@ -37,18 +38,19 @@ public class StatisticsPanelController extends MainframeContentPanel {
     }
 
     @Override
-    public void initializeList(ArrayList<AirbnbListing> listings, Account currentUser)
+    public void initializeList(Listings listings, Account currentUser)
     {
+        ArrayList<AirbnbListing> filteredListings = listings.getFilteredListings();
         // Create and load the statistics
         this.currentUser = currentUser;
-        accommodationType = new StatAccommodationType(listings);
-        availableProperties = new StatAvailableProperties(listings);
-        averageNumReviews = new StatAverageNumReviews(listings);
-        mostExpensiveBorough = new StatMostExpensiveBorough(listings);
-        closestListingToAttraction = new StatClosestListingToAttraction(listings);
-        statB = new StatB(listings);
-        statC = new StatC(listings);
-        statD = new StatD(listings);
+        accommodationType = new StatAccommodationType(filteredListings);
+        availableProperties = new StatAvailableProperties(filteredListings);
+        averageNumReviews = new StatAverageNumReviews(filteredListings);
+        mostExpensiveBorough = new StatMostExpensiveBorough(filteredListings);
+        closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
+        statB = new StatB(filteredListings);
+        statC = new StatC(filteredListings);
+        statD = new StatD(filteredListings);
 
         // Just a temporary list, specifies all elements that are not being shown.
         // Would be better to derive them from the ones being displayed, making sure no bs can happen.
@@ -160,6 +162,6 @@ public class StatisticsPanelController extends MainframeContentPanel {
     private void displaySinglePanel(Label titleLbl, Label textLbl, Statistic stat) // Get correct stat at runtime
     {
         titleLbl.setText(stat.getName());
-        textLbl.setText(stat.getStatistic(listings));
+        textLbl.setText(stat.getStatistic(listings.getFilteredListings()));
     }
 }

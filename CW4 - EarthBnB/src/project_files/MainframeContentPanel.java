@@ -2,16 +2,15 @@ package project_files;
 
 import javafx.scene.Parent;
 
-import java.util.ArrayList;
-
 public abstract class MainframeContentPanel {
 
-    public abstract void initializeList(ArrayList<AirbnbListing> listings, Account currentAccount);
+    public abstract void initializeList(Listings listings, Account currentAccount);
 
 
     protected MainWindowController mainWindowController;
     protected Parent panelRoot;
-    protected ArrayList<AirbnbListing> listings;
+    protected Listings listings;
+    //protected static ArrayList<AirbnbListing> currentListings;
     protected Account currentUser;
     protected String name;
 
@@ -29,11 +28,11 @@ public abstract class MainframeContentPanel {
      * @param panelRoot The root of a panel. This is the top node of the view which can be received to be displayed in the mainframe.
      * @param listings
      */
-    public void initialize(MainWindowController controller, Account currentUser, Parent panelRoot, ArrayList<AirbnbListing> listings) {
+    public void initialize(MainWindowController controller, Account currentUser, Parent panelRoot, Listings listings) {
         this.mainWindowController = controller;
         this.currentUser = currentUser;
         this.panelRoot = panelRoot;
-        this. listings = listings;
+        this.listings = listings;
     }
 
     public String getName()
@@ -46,4 +45,7 @@ public abstract class MainframeContentPanel {
         this.currentUser = currentUser;
     }
 
+    public void updateListings(Listings listings) {
+        this.listings = listings;
+    }
 }

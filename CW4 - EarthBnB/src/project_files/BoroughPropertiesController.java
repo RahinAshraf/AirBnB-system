@@ -50,7 +50,7 @@ public class BoroughPropertiesController implements Initializable {
 
     // The new data which will be set if any of the filters are chosen.
     private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
-    Account currentUser;
+    private Account currentUser;
 
     // The list of the properties in the selected boroughs
     ArrayList<AirbnbListing> boroughListings;
@@ -115,7 +115,6 @@ public class BoroughPropertiesController implements Initializable {
 
     }
 
-    // should be done with stream
     /**
      * Loads the data from the csv file into the table.
      */
@@ -160,8 +159,7 @@ public class BoroughPropertiesController implements Initializable {
          }
     }
 
-
-    // Broken
+    // FUCKED
     /**
      *
      */
