@@ -7,9 +7,9 @@ import java.sql.Statement;
 
 public class DatabaseConnection {
 
-    String URL = "jdbc:mysql://SG-Barnabas-4055-mysql-master.servers.mongodirector.com:3306/cw4";
-    String USER_NAME = "sgroot";
-    String PASSWORD = "EV.DNyM5kI2ff7OB";
+    String URL = "jdbc:mysql://35.189.117.22:3306/booking_system";
+    String USER_NAME = "root";
+    String PASSWORD = "root";
     Connection conn;
 
     public Connection getConnection() {
