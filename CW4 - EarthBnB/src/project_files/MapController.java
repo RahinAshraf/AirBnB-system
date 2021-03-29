@@ -34,9 +34,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
     @FXML
     AnchorPane mapView;
 
-    //private ArrayList<AirbnbListing> listings;
-    private ArrayList<AirbnbListing> filteredListings;
-
     public MapController()
     {
         name = "Map";
@@ -91,8 +88,12 @@ public class MapController extends MainframeContentPanel implements Initializabl
     public void initializeList(Listings listings, Account currentUser)
     {
         this.listings = listings;
-        filteredListings = listings.getFilteredListings();
         this.currentUser = currentUser;
+        updatePanel();
+    }
+
+    @Override
+    public void updatePanel() {
         updateBoroughs();
         for(int i=0; i<33; i++) {
             String buttonID = mapView.getChildren().get(i).getId();
@@ -120,14 +121,13 @@ public class MapController extends MainframeContentPanel implements Initializabl
                 System.out.println("error: " + i);
             }
         }
-
     }
 
     public void selectNewBorough(Button button) {
 
         if (selectedBoroughs.contains(button)) {
             selectedBoroughs.remove(button);
-            button.setStyle("-fx-background-color: #FFFFFF");
+            button.setStyle("-fx-background-color: #FFFFFF"); // Change back to old color instead of white
         } else {
             selectedBoroughs.add(button);
             button.setStyle("-fx-background-color: #50B4D4");
@@ -143,14 +143,14 @@ public class MapController extends MainframeContentPanel implements Initializabl
     private void updateBoroughs() // !! Change to only save the first word of the borough
     {
         resizePropertyNeighbourhood();
-        propertyCount = filteredListings.stream()
+        propertyCount = listings.getFilteredListings().stream()
                 .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.counting()));
     }
 
 
     public void resizePropertyNeighbourhood() {
-        for(int i = 0; i<filteredListings.size(); i++) {
-           filteredListings.get(i).chopNeighbourhoodName();
+        for(int i = 0; i<listings.getFilteredListings().size(); i++) {
+           listings.getFilteredListings().get(i).chopNeighbourhoodName();
         }
     }
 

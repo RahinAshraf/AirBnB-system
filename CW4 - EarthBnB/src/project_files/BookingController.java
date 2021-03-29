@@ -136,4 +136,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
         alert.setContentText("The selected property does not match your search request.");
         alert.showAndWait();
     }
+
+    @Override
+    public void updatePanel() {
+        // invoked when price range is changed
+    }
 }

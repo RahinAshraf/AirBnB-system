@@ -35,11 +35,13 @@ public class WelcomePanel extends MainframeContentPanel {
     }
 
 
-
+    // Get rid of those two with new class "updatableMainframeContentPanel"
     @Override
     public void initializeList(Listings listings, Account currentUser) {
     }
 
+    @Override
+    public void updatePanel() {};
 
 
     /**
