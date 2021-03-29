@@ -58,7 +58,7 @@
                   <Insets bottom="20.0" left="10.0" top="20.0" />
                </padding>
             </GridPane>
-            <WebView fx:id="mapWebView" prefHeight="-1.0" prefWidth="-1.0" />
+            <WebView fx:id="mapWebView" minHeight="-1.0" minWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" visible="false" />
          </children>
       </VBox>
    </left>

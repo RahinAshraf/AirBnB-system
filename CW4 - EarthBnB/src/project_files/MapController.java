@@ -20,13 +20,11 @@ import java.util.stream.Collectors;
 
 public class MapController extends MainframeContentPanel implements Initializable {
 
-    private Button selectedBorough;
+    //private Button selectedBorough;
     private Double filterValue;
     private Map<String, Long> propertyCount = new HashMap<String, Long>();
     private String boroughs[] = new String[32];
 
-
-    private Account currentUser;
 
     private ArrayList<Button> selectedBoroughs;
 
@@ -36,9 +34,13 @@ public class MapController extends MainframeContentPanel implements Initializabl
     @FXML
     AnchorPane mapView;
 
-    private ArrayList<AirbnbListing> listings;
+    //private ArrayList<AirbnbListing> listings;
     private ArrayList<AirbnbListing> filteredListings;
 
+    public MapController()
+    {
+        name = "Map";
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

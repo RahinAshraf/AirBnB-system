@@ -17,8 +17,7 @@ import java.util.ResourceBundle;
 public class BookingController extends MainframeContentPanel implements Initializable {
 
 
-    ArrayList<AirbnbListing> listings;
-    Account currentUser;
+    //ArrayList<AirbnbListing> listings;
     TableColumn propertyNameCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
@@ -31,9 +30,16 @@ public class BookingController extends MainframeContentPanel implements Initiali
     @FXML
     DatePicker checkInDate, checkOutDate;
 
+    public BookingController()
+    {
+        name = "Bookings";
+        currentUser = null;
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        currentUser = null;
+        //currentUser = null;
     }
 
     /**
