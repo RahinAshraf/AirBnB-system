@@ -28,15 +28,11 @@ public class WelcomePanel extends MainframeContentPanel {
     @FXML
     Button submitButton;
 
-    private Account currentUser;
-
     public WelcomePanel() {
         currentUser = null;
+        name = "Welcome";
     }
 
-    public void setCurrentUser(Account user) {
-        currentUser = user;
-    }
 
 
     @Override

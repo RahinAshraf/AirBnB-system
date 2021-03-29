@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static java.lang.Long.MAX_VALUE;
-
 /**
  * Class PropertyDisplayerController - The controller for displaying the information about a single property.
  * It loads images, displays different texts, shows ratings and has google maps embedded for showing the location of
@@ -64,10 +62,12 @@ public class PropertyDisplayerController implements Initializable {
     {
         final  URL urlGoogleMaps = getClass().getResource("googleMaps.html"); // create a url for the html file
         webEngine = mapWebView.getEngine();
+        mapWebView.setVisible(true);
         mapWebView.setContextMenuEnabled(false);
         webEngine.load(urlGoogleMaps.toExternalForm()); // load google maps file into the webengine (nothing shown yet)
         currentUser = null;
     }
+
     public void saveProperty() {
         if(currentUser.removeFavouriteProperty(displayedListing)) {
             saveButton.setStyle("-fx-background-color: grey");
@@ -129,7 +129,6 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     private void loadMap(ActionEvent e)
     {
-        mapWebView.setVisible(true);
         double latitude = displayedListing.getLatitude();
         double longitude = displayedListing.getLongitude();
 
@@ -139,6 +138,8 @@ public class PropertyDisplayerController implements Initializable {
                 "window.lon = " + longitude + ";" +
                 "document.goToLocation(window.lat, window.lon);"
         );
+        mapWebView.setVisible(true);
+        System.out.println("Map loaded");
     }
 
     @FXML

@@ -22,8 +22,6 @@ import java.util.ResourceBundle;
 
 public class LoginPanelController implements Initializable {
 
-    private ArrayList<AirbnbListing> listings = new ArrayList<>();
-
     private Account user;
 
     private MainWindowController mainWindowController;
@@ -52,7 +50,6 @@ public class LoginPanelController implements Initializable {
 
     public void loginButtonClicked(javafx.event.ActionEvent actionEvent) {
         validateLogin();
-
     }
 
     public void createUser(Account user) {
@@ -63,7 +60,7 @@ public class LoginPanelController implements Initializable {
     public void goBack() {
         try {
             if(user != null) {
-                mainWindowController.initializeListings(listings, user);
+                //mainWindowController.initializeListings(listings, user);
                 mainWindowController.setCurrentUser(user);
                 mainWindowController.setLoggedIn(true);
             }
@@ -128,9 +125,6 @@ public class LoginPanelController implements Initializable {
     }
     }
 
-    public void initializeListings(ArrayList<AirbnbListing> listings) {
-        this.listings = listings;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

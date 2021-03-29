@@ -23,40 +23,17 @@ public class StatisticsPanelController extends MainframeContentPanel {
     StatsPanelElement panel3;
     StatsPanelElement panel4;
 
-    ArrayList<AirbnbListing> listings;
-    Account currentUser;
-
     ArrayList<StatsPanelElement> allStatPanels;
 
-
+    @FXML
+    Label statLbl1, statLbl2, statLbl3, statLbl4;
 
     @FXML
-    Label statLbl1;
-
-    @FXML
-    Label statLbl2;
-
-    @FXML
-    Label statLbl3;
-
-    @FXML
-    Label statLbl4;
-
-    @FXML
-    Label statNameLbl1;
-
-    @FXML
-    Label statNameLbl2;
-
-    @FXML
-    Label statNameLbl3;
-
-    @FXML
-    Label statNameLbl4;
-
+    Label statNameLbl1, statNameLbl2, statNameLbl3, statNameLbl4;
 
     public StatisticsPanelController() {
         currentUser = null;
+        name = "Statistics";
     }
 
     @Override
