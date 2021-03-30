@@ -7,17 +7,17 @@ public class Reservation {
     private int reservationID;
     private LocalDate arrival;
     private LocalDate departure;
-    private Account bookerAccount;
+    private int bookerID;
     private int numberOfGuests;
     private double price;
     private String listingID;
 
-    Reservation(int reservationID, LocalDate arrival, LocalDate departure, Account bookerAccount,
+    Reservation(int reservationID, LocalDate arrival, LocalDate departure, int bookerID,
                 int numberOfGuests, double price, String listingID) {
         this.reservationID = reservationID;
         this.arrival = arrival;
         this.departure = departure;
-        this.bookerAccount = bookerAccount;
+        this.bookerID = bookerID;
         this.numberOfGuests = numberOfGuests;
         this.price = price;
         this.listingID = listingID;
@@ -47,12 +47,12 @@ public class Reservation {
         this.departure = departure;
     }
 
-    public Account getBookerAccount() {
-        return bookerAccount;
+    public int getBookerAccount() {
+        return bookerID;
     }
 
-    public void setBookerAccount(Account bookerAccount) {
-        this.bookerAccount = bookerAccount;
+    public void setBookerAccount(int bookerID) {
+        this.bookerID = bookerID;
     }
 
     public int getNumberOfGuests() {
