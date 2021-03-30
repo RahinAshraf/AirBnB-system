@@ -8,13 +8,14 @@ public class Listings {
 
 
     private ArrayList<AirbnbListing> originalListings;
-    private ArrayList<AirbnbListing> listingsFilteredByBookingData;
+    private ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
     private ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
 
     public Listings(ArrayList<AirbnbListing> originalListings)
     {
         this.originalListings = originalListings;
         filteredListings.addAll(originalListings);
+        listingsFilteredByBookingData.addAll(originalListings);
     }
 
     public ArrayList<AirbnbListing> getFilteredListings()

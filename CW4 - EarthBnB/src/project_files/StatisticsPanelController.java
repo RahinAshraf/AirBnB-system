@@ -41,6 +41,8 @@ public class StatisticsPanelController extends MainframeContentPanel {
     }
 
 
+    // Make a hashmap of StatsPanelElement, Label[2] and access label that way.
+
     @Override
     public void initializeList(Listings listings, Account currentUser)
     {
@@ -172,20 +174,20 @@ public class StatisticsPanelController extends MainframeContentPanel {
      */
     @Override
     public void updatePanel() {
-
-        /*
         for (StatsPanelElement panel : allStatPanels)
         {
             //String newStat = statsPanelElement.getCurrentStatistic().updateStatistic(listings.getFilteredListings());
-            displaySinglePanel(panel.getStatNameLbl(), panel.getStatLbl(), panel.getCurrentStatistic());
+            //System.out.println(panel.getStatLbl() + " " + panel.getStatNameLbl());
+            //displaySinglePanel(statNameLbl1, statLbl1, panel.getCurrentStatistic());
         }
 
-         */
+
 
         displaySinglePanel(statNameLbl1, statLbl1, panel1.getCurrentStatistic());
         displaySinglePanel(statNameLbl2, statLbl2, panel2.getCurrentStatistic());
         displaySinglePanel(statNameLbl3, statLbl3, panel3.getCurrentStatistic());
         displaySinglePanel(statNameLbl4, statLbl4, panel4.getCurrentStatistic());
+
 
     }
 }
