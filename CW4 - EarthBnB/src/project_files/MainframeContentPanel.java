@@ -5,12 +5,11 @@ import javafx.scene.Parent;
 public abstract class MainframeContentPanel {
 
     public abstract void initializeList(Listings listings, Account currentAccount);
-
+    public abstract void updatePanel();
 
     protected MainWindowController mainWindowController;
     protected Parent panelRoot;
     protected Listings listings;
-    //protected static ArrayList<AirbnbListing> currentListings;
     protected Account currentUser;
     protected String name;
 

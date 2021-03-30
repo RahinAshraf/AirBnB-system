@@ -302,9 +302,9 @@ public class MainWindowController extends Application implements Initializable {
         {
             currentUser.setPriceRange(minPrice, maxPrice);
             listings.filterPriceRange(minPrice, maxPrice);
-            contentPanels[1].updateListings(listings);
-            contentPanels[2].updateListings(listings);
-            contentPane.setCenter(contentPanels[1].getPanelRoot());
+
+            contentPanels[currentPage].updatePanel();
+
             //updateAllPanels();
             System.out.println("Applied price range " + minPrice + " " + maxPrice);
         }

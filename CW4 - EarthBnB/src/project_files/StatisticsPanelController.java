@@ -2,11 +2,14 @@ package project_files;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class StatisticsPanelController extends MainframeContentPanel {
     Statistic accommodationType;
@@ -37,9 +40,13 @@ public class StatisticsPanelController extends MainframeContentPanel {
         name = "Statistics";
     }
 
+
+    // Make a hashmap of StatsPanelElement, Label[2] and access label that way.
+
     @Override
     public void initializeList(Listings listings, Account currentUser)
     {
+        this.listings = listings;
         ArrayList<AirbnbListing> filteredListings = listings.getFilteredListings();
         // Create and load the statistics
         this.currentUser = currentUser;
@@ -61,10 +68,10 @@ public class StatisticsPanelController extends MainframeContentPanel {
         statisticsInQueue.add(statD);
 
         // Each panel stores the elements that it could possibly show later.
-        panel1 = new StatsPanelElement(statisticsInQueue, accommodationType);
-        panel2 = new StatsPanelElement(statisticsInQueue, availableProperties);
-        panel3 = new StatsPanelElement(statisticsInQueue, averageNumReviews);
-        panel4 = new StatsPanelElement(statisticsInQueue, mostExpensiveBorough);
+        panel1 = new StatsPanelElement(statisticsInQueue, accommodationType, statNameLbl1, statLbl1);
+        panel2 = new StatsPanelElement(statisticsInQueue, availableProperties, statNameLbl2, statLbl2);
+        panel3 = new StatsPanelElement(statisticsInQueue, averageNumReviews, statNameLbl3, statLbl3);
+        panel4 = new StatsPanelElement(statisticsInQueue, mostExpensiveBorough, statNameLbl4, statLbl4);
 
         allStatPanels = new ArrayList<>();
         allStatPanels.add(panel1);
@@ -72,16 +79,13 @@ public class StatisticsPanelController extends MainframeContentPanel {
         allStatPanels.add(panel3);
         allStatPanels.add(panel4);
 
-        this.listings = listings;
+
         //create list objects for each panel
 
         //Display the first statistics
         displaySinglePanel(statNameLbl1, statLbl1, accommodationType);
-
         displaySinglePanel(statNameLbl2, statLbl2, availableProperties);
-
         displaySinglePanel(statNameLbl3, statLbl3, averageNumReviews);
-
         displaySinglePanel(statNameLbl4, statLbl4, mostExpensiveBorough);
     }
 
@@ -163,5 +167,27 @@ public class StatisticsPanelController extends MainframeContentPanel {
     {
         titleLbl.setText(stat.getName());
         textLbl.setText(stat.getStatistic(listings.getFilteredListings()));
+    }
+
+    /**
+     * Updates the statistic displayed in each panel. BS CODE THIS HAS TO BE CHANGED!
+     */
+    @Override
+    public void updatePanel() {
+        for (StatsPanelElement panel : allStatPanels)
+        {
+            //String newStat = statsPanelElement.getCurrentStatistic().updateStatistic(listings.getFilteredListings());
+            //System.out.println(panel.getStatLbl() + " " + panel.getStatNameLbl());
+            //displaySinglePanel(statNameLbl1, statLbl1, panel.getCurrentStatistic());
+        }
+
+
+
+        displaySinglePanel(statNameLbl1, statLbl1, panel1.getCurrentStatistic());
+        displaySinglePanel(statNameLbl2, statLbl2, panel2.getCurrentStatistic());
+        displaySinglePanel(statNameLbl3, statLbl3, panel3.getCurrentStatistic());
+        displaySinglePanel(statNameLbl4, statLbl4, panel4.getCurrentStatistic());
+
+
     }
 }
