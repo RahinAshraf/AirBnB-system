@@ -85,6 +85,8 @@ public class LoginPanelController implements Initializable {
             if(registerPanel == null) {
                 FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("registerView.fxml"));
                 registerPanel = registerLoader.load();
+                RegisterController registerController = registerLoader.getController();
+                registerController.setMainWindowController(mainWindowController);
             }
             loginpagePane.setCenter(registerPanel);
             backToSignIn.setVisible(true);
@@ -97,34 +99,52 @@ public class LoginPanelController implements Initializable {
 
 
     public void validateLogin() {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection connectDB = connection.getConnection();
+        if(mainWindowController.isUsingDatabase()) {
+            DatabaseConnection connection = new DatabaseConnection();
+            Connection connectDB = connection.getConnection();
 
-        String verifyLogin = "SELECT * FROM account WHERE username = '" + usernameTextField.getText() + "' AND password = '" + passwordTextField.getText() + "'";
-    try {
-        Statement statement = connectDB.createStatement();
-        ResultSet queryResult = statement.executeQuery(verifyLogin);
+            String verifyLogin = "SELECT * FROM account WHERE username = '" + usernameTextField.getText() + "' AND password = '" + passwordTextField.getText() + "'";
+            try {
+                Statement statement = connectDB.createStatement();
+                ResultSet queryResult = statement.executeQuery(verifyLogin);
 
-       if(queryResult.next()) {
-            System.out.println("Logged In");
-            accountID = queryResult.getInt(1);
-            user = new Account(
-                    queryResult.getInt(1),
-                    queryResult.getString(2),
-                    queryResult.getString(3),
-                    queryResult.getString(4)
-            );
-           System.out.println("Email: " + user.getEmailAddress());
-           goBack();
+                if (queryResult.next()) {
+                    System.out.println("Logged In");
+                    accountID = queryResult.getInt(1);
+                    user = new Account(
+                            queryResult.getInt(1),
+                            queryResult.getString(2),
+                            queryResult.getString(3),
+                            queryResult.getString(4)
+                    );
+                    System.out.println("Email: " + user.getEmailAddress());
+                    goBack();
+                } else {
+                    System.out.println("Incorrect Login Details");
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                e.getCause();
+            }
         } else {
-           System.out.println("Incorrect Login Details");
-       }
+            ArrayList<Account> accounts = mainWindowController.getOfflineAccounts();
+            boolean found = false;
+            for(int i=0; i<accounts.size(); i++) {
+                if(accounts.get(i).getUsername().equals(usernameTextField.getText()) && accounts.get(i).getPassword().equals(passwordTextField.getText())) {
+                    user = accounts.get(i);
+                    found = true;
+                }
+            }
+            if (found) {
+                System.out.println("Logged In");
+                goBack();
+            } else {
+                System.out.println("Incorrect Login Details");
+            }
 
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        e.getCause();
-    }
+        }
     }
 
 

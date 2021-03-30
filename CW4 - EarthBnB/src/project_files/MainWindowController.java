@@ -20,6 +20,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -30,6 +31,10 @@ public class MainWindowController extends Application implements Initializable {
 
     private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
+
+    private ArrayList<Account> offlineAccounts;
+
+    private boolean usingDatabase;
 
     private int currentPage = 0;
 
@@ -59,9 +64,9 @@ public class MainWindowController extends Application implements Initializable {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("MainFrameView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("connectionSelectorView.fxml"));
         primaryStage.setTitle("EarthBnB");
-        primaryStage.setScene(new Scene(root, 600, 500));
+        primaryStage.setScene(new Scene(root, 600, 300));
         primaryStage.setResizable(true);
         primaryStage.show();
     }
@@ -84,6 +89,12 @@ public class MainWindowController extends Application implements Initializable {
 
         // Fill the dropdown with selectable price ranges
         initializePriceRangeDropDown();
+        usingDatabase = false;
+        offlineAccounts = new ArrayList<>();
+    }
+
+    public void setUsingDatabase(boolean usingDatabase) {
+        this.usingDatabase = usingDatabase;
     }
 
     private void createPanels() throws IOException {
@@ -112,6 +123,13 @@ public class MainWindowController extends Application implements Initializable {
     public void loadListings(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = new Listings(loader.load(filename));
+    }
+
+    public void addOfflineAccount(Account account) {
+        offlineAccounts.add(account);
+    }
+    public ArrayList<Account> getOfflineAccounts() {
+        return offlineAccounts;
     }
 
 
@@ -224,6 +242,10 @@ public class MainWindowController extends Application implements Initializable {
         LoginPanelController loginPanelController = loginLoader.getController();
         loginPanelController.createUser(currentUser);
         loginPanelController.setMainWindowController(this);
+    }
+
+    public boolean isUsingDatabase() {
+        return usingDatabase;
     }
 
     /**
