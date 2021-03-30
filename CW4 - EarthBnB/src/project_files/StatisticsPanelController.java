@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class StatisticsPanelController extends MainframeContentPanel implements Initializable {
+public class StatisticsPanelController extends MainframeContentPanel {
     Statistic accommodationType;
     Statistic availableProperties;
     Statistic averageNumReviews;
@@ -40,25 +40,11 @@ public class StatisticsPanelController extends MainframeContentPanel implements 
         name = "Statistics";
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        /*
-        statLbl1 = new Label();
-        statLbl2 = new Label();
-        statLbl3 = new Label();
-        statLbl4 = new Label();
-
-        statNameLbl1 = new Label();
-        statNameLbl2 = new Label();
-        statNameLbl3 = new Label();
-        statNameLbl4 = new Label();
-
-         */
-    }
 
     @Override
     public void initializeList(Listings listings, Account currentUser)
     {
+        this.listings = listings;
         ArrayList<AirbnbListing> filteredListings = listings.getFilteredListings();
         // Create and load the statistics
         this.currentUser = currentUser;
@@ -91,16 +77,13 @@ public class StatisticsPanelController extends MainframeContentPanel implements 
         allStatPanels.add(panel3);
         allStatPanels.add(panel4);
 
-        this.listings = listings;
+
         //create list objects for each panel
 
         //Display the first statistics
         displaySinglePanel(statNameLbl1, statLbl1, accommodationType);
-
         displaySinglePanel(statNameLbl2, statLbl2, availableProperties);
-
         displaySinglePanel(statNameLbl3, statLbl3, averageNumReviews);
-
         displaySinglePanel(statNameLbl4, statLbl4, mostExpensiveBorough);
     }
 
@@ -189,6 +172,7 @@ public class StatisticsPanelController extends MainframeContentPanel implements 
      */
     @Override
     public void updatePanel() {
+
         /*
         for (StatsPanelElement panel : allStatPanels)
         {
@@ -202,5 +186,6 @@ public class StatisticsPanelController extends MainframeContentPanel implements 
         displaySinglePanel(statNameLbl2, statLbl2, panel2.getCurrentStatistic());
         displaySinglePanel(statNameLbl3, statLbl3, panel3.getCurrentStatistic());
         displaySinglePanel(statNameLbl4, statLbl4, panel4.getCurrentStatistic());
+
     }
 }
