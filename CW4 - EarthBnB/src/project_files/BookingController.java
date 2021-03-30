@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -36,10 +37,17 @@ public class BookingController extends MainframeContentPanel implements Initiali
     @FXML
     DatePicker checkInDate, checkOutDate;
 
+    boolean usingDatabase;
+
     public BookingController()
     {
         name = "Bookings";
         currentUser = null;
+        usingDatabase = false;
+    }
+
+    public void setUsingDatabase(boolean usingDatabase) {
+        this.usingDatabase = usingDatabase;
     }
 
 
@@ -68,6 +76,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
     public void loadSavedProperties() {
+        data.clear();
         System.out.println(listings.getFilteredListings().size());
         for(int i = 0; i<listings.getFilteredListings().size(); i++) {
             if(currentUser.getSavedProperties().contains(listings.getFilteredListings().get(i))) {
@@ -98,25 +107,32 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
     public void reserveProperty() {
-        DatabaseConnection connection = new DatabaseConnection();
-        Connection connectDB = connection.getConnection();
-        System.out.println(currentUser.getAccountID());
-        BookingData usersData = currentUser.getBookingData();
-        String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
-                usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice()*usersData.getDaysOfStay() + "')";
-        //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
+        if(usingDatabase) {
+            DatabaseConnection connection = new DatabaseConnection();
+            Connection connectDB = connection.getConnection();
+            System.out.println(currentUser.getAccountID());
+            BookingData usersData = currentUser.getBookingData();
+            String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
+                    usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "')";
+            //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
-        try {
-            Statement statement = connectDB.createStatement();
-            if (selectedListing != null) {
-                statement.executeUpdate(createBooking);
+            try {
+                Statement statement = connectDB.createStatement();
+                if (selectedListing != null) {
+                    statement.executeUpdate(createBooking);
+                }
+            } catch (Exception e) {
+
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            e.getCause();
-           // feedbackLabel.setText("The account could not be created!");
-           // feedbackLabel.setTextFill(Color.RED);
+        } else {
+            BookingData usersData = currentUser.getBookingData();
+            ArrayList<Reservation> reservations = mainWindowController.getOfflineReservations();
+            Reservation reservation = new Reservation(reservations.size()+1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser, usersData.getNumberOfPeople(),
+                    selectedListing.getPrice() * usersData.getDaysOfStay());
+            reservations.add(reservation);
         }
+
+
 
 
 

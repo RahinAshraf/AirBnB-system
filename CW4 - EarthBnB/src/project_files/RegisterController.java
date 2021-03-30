@@ -77,7 +77,7 @@ public class RegisterController {
                 feedbackLabel.setTextFill(Color.RED);
             } else {
                 Account newAccount = new Account(mainWindowController.getOfflineAccounts().size()+1, nameField.getText(), pwField.getText(), emailField.getText());
-                mainWindowController.addOfflineAccount(newAccount);
+                accounts.add(newAccount);
                 feedbackLabel.setText("Successful registration!");
                 feedbackLabel.setTextFill(Color.GREEN);
             }

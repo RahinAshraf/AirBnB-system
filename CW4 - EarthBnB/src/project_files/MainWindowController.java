@@ -33,6 +33,7 @@ public class MainWindowController extends Application implements Initializable {
     private boolean accountOpen; // If the account window has been opened
 
     private ArrayList<Account> offlineAccounts;
+    private ArrayList<Reservation> offlineReservations;
 
     private boolean usingDatabase;
 
@@ -91,6 +92,7 @@ public class MainWindowController extends Application implements Initializable {
         initializePriceRangeDropDown();
         usingDatabase = false;
         offlineAccounts = new ArrayList<>();
+        offlineReservations = new ArrayList<>();
     }
 
     public void setUsingDatabase(boolean usingDatabase) {
@@ -130,6 +132,9 @@ public class MainWindowController extends Application implements Initializable {
     }
     public ArrayList<Account> getOfflineAccounts() {
         return offlineAccounts;
+    }
+    public ArrayList<Reservation> getOfflineReservations() {
+        return offlineReservations;
     }
 
 
@@ -226,6 +231,7 @@ public class MainWindowController extends Application implements Initializable {
         if (controller.getClass() == BookingController.class) {
             controller.initializeList(listings, currentUser);
             ((BookingController) controller).initializeWithProperty(listing);
+            ((BookingController) controller).setUsingDatabase(usingDatabase);
             contentPane.setCenter(controller.getPanelRoot());
             currentPage = 3;
         }
