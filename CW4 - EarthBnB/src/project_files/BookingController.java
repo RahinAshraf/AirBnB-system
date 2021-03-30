@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -16,8 +17,9 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.*;
 
 public class BookingController extends MainframeContentPanel implements Initializable {
 
@@ -51,10 +53,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //currentUser = null;
         selectedListing = null;
+
     }
 
     /**
@@ -84,6 +89,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 System.out.println("added");
             }
         }
+
+
+
     }
 
     /**
@@ -103,6 +111,51 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 loadFromFavouritesTable(chosenProperty);
             }
         }
+
+
+
+        List<LocalDate> reservedDates = new ArrayList<>();
+        ArrayList<Reservation> reservations = mainWindowController.getOfflineReservations();
+        System.out.println("total reservations: " + reservations.size());
+        for(int i = 0; i < reservations.size(); i++) {
+            Reservation reservation = reservations.get(i);
+            System.out.println(reservation.getArrival());
+            if(reservation.getListingID().equals(selectedListing.getId())) {
+                System.out.println("there is resevation for this property");
+                LocalDate date = reservation.getArrival();
+                while(date.isBefore(reservation.getDeparture())) {
+                    reservedDates.add(date);
+                    System.out.println("added" + date);
+                    date = date.plusDays(1);
+                }
+            }
+        }
+
+
+        Callback<DatePicker, DateCell> reservedDayCellFactory = new Callback<DatePicker, DateCell>()
+        {
+            public DateCell call(final DatePicker datePicker)
+            {
+                return new DateCell()
+                {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty)
+                    {
+                        // Must call super
+                        super.updateItem(item, empty);
+
+                        //Show reserved dates in red
+                        if (!empty && item != null) {
+                            if(reservedDates.contains(item)) {
+                                this.setStyle("-fx-background-color: #F96E3A");
+                            }
+                        }
+                    }
+                };
+            }
+        };
+        checkInDate.setDayCellFactory(reservedDayCellFactory);
+
     }
 
 
@@ -128,7 +181,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
             BookingData usersData = currentUser.getBookingData();
             ArrayList<Reservation> reservations = mainWindowController.getOfflineReservations();
             Reservation reservation = new Reservation(reservations.size()+1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser, usersData.getNumberOfPeople(),
-                    selectedListing.getPrice() * usersData.getDaysOfStay());
+                    selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
             reservations.add(reservation);
         }
 

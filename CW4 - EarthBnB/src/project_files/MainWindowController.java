@@ -130,6 +130,9 @@ public class MainWindowController extends Application implements Initializable {
     public void addOfflineAccount(Account account) {
         offlineAccounts.add(account);
     }
+    public void addOfflineReservation(Reservation reservation) {
+        offlineReservations.add(reservation);
+    }
     public ArrayList<Account> getOfflineAccounts() {
         return offlineAccounts;
     }
