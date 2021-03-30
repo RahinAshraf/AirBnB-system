@@ -136,7 +136,6 @@ public class BoroughPropertiesController implements Initializable {
             sortHost.setVisible(true);
             isDropClicked = true;
         }
-
     }
 
     /**
@@ -202,7 +201,7 @@ public class BoroughPropertiesController implements Initializable {
      * @param activeFilters The filters to be applied.
      */
     private void filter(ArrayList<CheckBox> activeFilters){
-        //Reset the display data
+        // Reset the display data
         displayData.clear();
         displayData.addAll(boroughListings);
 
@@ -226,7 +225,7 @@ public class BoroughPropertiesController implements Initializable {
      * @param filterString The amenity to be filtered by.
      * @return A new list only containing the properties which supply the specified amenity.
      */
-    private ObservableList<AirbnbListing> filterAmenity(ObservableList<AirbnbListing> list, String filterString)
+    public ObservableList<AirbnbListing> filterAmenity(ObservableList<AirbnbListing> list, String filterString)
     {
         return list.stream()
             .filter(airbnbListing -> airbnbListing.getAmenities().contains(filterString))
@@ -297,7 +296,7 @@ public class BoroughPropertiesController implements Initializable {
         Parent root = displayerLoader.load();
         Stage newStage = new Stage();
         newStage.setTitle("Property");
-        newStage.setScene(new Scene(root, 890, 560));
+        newStage.setScene(new Scene(root, 900, 600));
 
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
         propertyDisplayer.loadData(property, currentUser); // Load the data into the window.

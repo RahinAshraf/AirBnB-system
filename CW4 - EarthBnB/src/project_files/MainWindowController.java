@@ -159,8 +159,20 @@ public class MainWindowController extends Application implements Initializable {
             }
 
         } else {
-            System.out.println("You have to log in before you can go to your dashboard!");
+            accountAlert();
         }
+    }
+
+    /**
+     * An alert which tells you to create/login into an account
+     */
+    private void accountAlert(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Account not found!");
+        alert.setHeaderText("");
+        alert.setContentText("You have to log in before you can go to your dashboard!");
+
+        alert.showAndWait();
     }
 
     /**
