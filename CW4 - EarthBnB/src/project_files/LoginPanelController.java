@@ -44,6 +44,11 @@ public class LoginPanelController implements Initializable {
     @FXML
     Button signupMenu;
 
+    @FXML
+    Button backToSignIn;
+
+    Parent registerPanel;
+
     private int accountID;
 
     private boolean currentPanel;
@@ -64,9 +69,9 @@ public class LoginPanelController implements Initializable {
                 mainWindowController.setCurrentUser(user);
                 mainWindowController.setLoggedIn(true);
             }
-            usernameTextField.getScene().getWindow().hide();
+            loginpagePane.getScene().getWindow().hide();
         } catch (Exception e) {
-
+            System.out.println("mainWindowController is null");
         }
     }
 
@@ -75,22 +80,19 @@ public class LoginPanelController implements Initializable {
     }
 
     public void navigateToRegister(javafx.event.ActionEvent actionEvent) throws IOException {
+
         if(((Button) actionEvent.getSource()).getId().equals("signupMenu")) {
-            Parent nextPanel;
-            FXMLLoader statsLoader = new FXMLLoader(getClass().getResource("registerView.fxml"));
-            nextPanel = statsLoader.load();
-            loginpagePane.setCenter(nextPanel);
-            signinMenu.setStyle(signupMenu.getStyle());
-            signupMenu.setStyle("-fx-background-color: #FF5733");
+            if(registerPanel == null) {
+                FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("registerView.fxml"));
+                registerPanel = registerLoader.load();
+            }
+            loginpagePane.setCenter(registerPanel);
+            backToSignIn.setVisible(true);
         } else {
-            Parent root = FXMLLoader.load(getClass().getResource("loginPanel.fxml"));
-            Stage newStage = new Stage();
-            newStage.setTitle("Login Panel");
-            newStage.setScene(new Scene(root, 600, 500));
-            newStage.setResizable(false);
-            newStage.show();
-            loginpagePane.getScene().getWindow().hide();
+            loginpagePane.setCenter(mainPane);
+            backToSignIn.setVisible(false);
         }
+
     }
 
 
@@ -129,8 +131,9 @@ public class LoginPanelController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentPanel = false;
-        signinMenu.setStyle("-fx-background-color: #FF5733");
+        //signinMenu.setStyle("-fx-background-color: #FF5733");
         user = null;
+        backToSignIn.setVisible(false);
     }
 
 }

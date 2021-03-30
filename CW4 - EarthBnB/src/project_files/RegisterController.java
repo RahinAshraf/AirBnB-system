@@ -23,6 +23,8 @@ public class RegisterController {
     @FXML
     Label feedbackLabel;
 
+    MainWindowController mainWindowController;
+
 
 
 
@@ -60,6 +62,10 @@ public class RegisterController {
             feedbackLabel.setText("Please fill in all fields!");
             feedbackLabel.setTextFill(Color.RED);
         }
+    }
+
+    public void setMainWindowController(MainWindowController mainWindowController) {
+        this.mainWindowController = mainWindowController;
     }
 
 
