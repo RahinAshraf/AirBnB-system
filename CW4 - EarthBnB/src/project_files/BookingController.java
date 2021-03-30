@@ -27,12 +27,15 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
     //ArrayList<AirbnbListing> listings;
     TableColumn propertyNameCol;
+    TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
     DatabaseConnection connection = new DatabaseConnection();
     Connection connectDB = connection.getConnection();
 
     AirbnbListing selectedListing;
+
+    List<LocalDate> reservedDates = new ArrayList<>();
 
     @FXML
     TableView favoritesTable;
@@ -119,7 +122,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
 
-            List<LocalDate> reservedDates = new ArrayList<>();
             ArrayList<Reservation> reservations;
 
             if(!usingDatabase) {
@@ -153,13 +155,14 @@ public class BookingController extends MainframeContentPanel implements Initiali
             }
 
             System.out.println("total reservations: " + reservations.size());
+            reservedDates.clear();
             for(int i = 0; i < reservations.size(); i++) {
                 Reservation reservation = reservations.get(i);
                 System.out.println(reservation.getArrival());
                 if(reservation.getListingID().equals(selectedListing.getId())) {
                     System.out.println("there is resevation for this property");
                     LocalDate date = reservation.getArrival();
-                    while(date.isBefore(reservation.getDeparture())) {
+                    while(date.isBefore(reservation.getDeparture().plusDays(1))) {
                         reservedDates.add(date);
                         System.out.println("added" + date);
                         date = date.plusDays(1);
@@ -202,8 +205,22 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
             try {
                 Statement statement = connectDB.createStatement();
-                if (selectedListing != null) {
-                    statement.executeUpdate(createBooking);
+                boolean violation = false;
+                int index = 0;
+
+                if (selectedListing != null ) {
+                    while(index < reservedDates.size() && !violation) {
+                        System.out.println("# of reserved dates: " + reservedDates.size());
+                        if(checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
+                            System.out.println("Some days are reserved in between your selection");
+                            violation = true;
+                        } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
+                            System.out.println("Some days are reserved at your selections");
+                            violation = true;
+                        }
+                        index++;
+                    }
+                    if(!violation) {statement.executeUpdate(createBooking); }
                 }
             } catch (Exception e) {
 
@@ -251,12 +268,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
         propertyNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyNameCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("name"));
 
-        TableColumn propertyBoroughCol = new TableColumn("Borough");
+        propertyBoroughCol = new TableColumn("Borough");
         propertyBoroughCol.setMinWidth(300);
         propertyBoroughCol.setMaxWidth(300);
         propertyBoroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyBoroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
+        favoritesTable.getColumns().clear();
         favoritesTable.getColumns().addAll(propertyNameCol, propertyBoroughCol);
         favoritesTable.setItems(data);
     }
