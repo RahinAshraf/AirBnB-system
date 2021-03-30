@@ -8,40 +8,27 @@ import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class StatisticsPanelController extends MainframeContentPanel {
-    Statistic accommodationType;
-    Statistic availableProperties;
-    Statistic averageNumReviews;
-    Statistic mostExpensiveBorough;
-    Statistic closestListingToAttraction;
-    //dummy stats - used for now to be able to implement structure
-    Statistic statB;
-    Statistic statC;
-    Statistic statD;
+    private Statistic accommodationType, availableProperties, averageNumReviews, mostExpensiveBorough,
+            closestListingToAttraction, statB, statC, statD;
 
-    StatsPanelElement panel1;
-    StatsPanelElement panel2;
-    StatsPanelElement panel3;
-    StatsPanelElement panel4;
+    private StatsPanelElement panel1, panel2, panel3, panel4;
 
-    ArrayList<StatsPanelElement> allStatPanels;
+    private ArrayList<StatsPanelElement> allStatPanels;
 
     @FXML
-    Label statLbl1, statLbl2, statLbl3, statLbl4;
+    private Label statLbl1, statLbl2, statLbl3, statLbl4;
 
     @FXML
-    Label statNameLbl1, statNameLbl2, statNameLbl3, statNameLbl4;
+    private Label statNameLbl1, statNameLbl2, statNameLbl3, statNameLbl4;
 
     public StatisticsPanelController() {
         currentUser = null;
         name = "Statistics";
     }
-
-
-    // Make a hashmap of StatsPanelElement, Label[2] and access label that way.
 
     @Override
     public void initializeList(Listings listings, Account currentUser)
@@ -68,83 +55,66 @@ public class StatisticsPanelController extends MainframeContentPanel {
         statisticsInQueue.add(statD);
 
         // Each panel stores the elements that it could possibly show later.
-        panel1 = new StatsPanelElement(statisticsInQueue, accommodationType, statNameLbl1, statLbl1);
-        panel2 = new StatsPanelElement(statisticsInQueue, availableProperties, statNameLbl2, statLbl2);
-        panel3 = new StatsPanelElement(statisticsInQueue, averageNumReviews, statNameLbl3, statLbl3);
-        panel4 = new StatsPanelElement(statisticsInQueue, mostExpensiveBorough, statNameLbl4, statLbl4);
+        panel1 = new StatsPanelElement(statisticsInQueue, accommodationType, statNameLbl1, statLbl1, listings);
+        panel2 = new StatsPanelElement(statisticsInQueue, availableProperties, statNameLbl2, statLbl2, listings);
+        panel3 = new StatsPanelElement(statisticsInQueue, averageNumReviews, statNameLbl3, statLbl3, listings);
+        panel4 = new StatsPanelElement(statisticsInQueue, mostExpensiveBorough, statNameLbl4, statLbl4, listings);
 
         allStatPanels = new ArrayList<>();
         allStatPanels.add(panel1);
         allStatPanels.add(panel2);
         allStatPanels.add(panel3);
         allStatPanels.add(panel4);
-
-
-        //create list objects for each panel
-
-        //Display the first statistics
-        displaySinglePanel(statNameLbl1, statLbl1, accommodationType);
-        displaySinglePanel(statNameLbl2, statLbl2, availableProperties);
-        displaySinglePanel(statNameLbl3, statLbl3, averageNumReviews);
-        displaySinglePanel(statNameLbl4, statLbl4, mostExpensiveBorough);
     }
 
 
+    /**
+     * Depending on which button has been clicked, the chosen panel shows the ´previous or the next statistic.
+     * @param event
+     */
     @FXML
     private void buttonClicked(ActionEvent event) {
         Node selectedPane = (Node) event.getSource();
-        switch(selectedPane.getId())
+
+        switch (selectedPane.getId())
         {
-            case "nextBtn1": displaySinglePanel(statNameLbl1, statLbl1, getNext(panel1));
+            case "nextBtn1": nextStat(panel1);
                 break;
-            case "prevBtn1": displaySinglePanel(statNameLbl1, statLbl1, getPrev(panel1));
+            case "prevBtn1": prevStat(panel1);
                 break;
-            case "nextBtn2": displaySinglePanel(statNameLbl2, statLbl2, getNext(panel2));
+            case "nextBtn2": prevStat(panel2);
                 break;
-            case "prevBtn2": displaySinglePanel(statNameLbl2, statLbl2, getPrev(panel2));
+            case "prevBtn2": nextStat(panel2);
                 break;
-            case "nextBtn3": displaySinglePanel(statNameLbl3, statLbl3, getNext(panel3));
+            case "nextBtn3": prevStat(panel3);
                 break;
-            case "prevBtn3": displaySinglePanel(statNameLbl3, statLbl3, getPrev(panel3));
+            case "prevBtn3": nextStat(panel3);
                 break;
-            case "nextBtn4": displaySinglePanel(statNameLbl4, statLbl4, getNext(panel4));
+            case "nextBtn4": prevStat(panel4);
                 break;
-            case "prevBtn4": displaySinglePanel(statNameLbl4, statLbl4, getPrev(panel4));
+            case "prevBtn4": nextStat(panel4);
                 break;
         }
     }
 
-    // Get rid of code duplication in getNext and getPrev
 
-    private Statistic getNext(StatsPanelElement panel)
+
+    /**
+     * Invokes that the given panel loads the next statistic and accordingly updates the lists of available statistics of the other panels.
+     * @param panel
+     */
+    private void nextStat(StatsPanelElement panel)
     {
-        Statistic nextStat;
-        int i = panel.getIndexOfCurrent();
-
-        if (i < panel.getStatisticsList().size()-1) // next element wont be out of bounds
-            nextStat = panel.getStatisticsList().get(i+1);
-        else // Reached end and get first.
-            nextStat = panel.getStatisticsList().get(0);
-
-        updateOtherPanels(panel, nextStat);
-        panel.setCurrentStatistic(nextStat);
-        return nextStat;
+        updateOtherPanels(panel, panel.getNextStat()); // Getting the next stat automatically displays the new stat
     }
 
 
-    private Statistic getPrev(StatsPanelElement panel){
-
-        Statistic nextStat;
-        int i = panel.getIndexOfCurrent();
-
-        if (i > 0) // next element wont be out of bounds
-            nextStat = panel.getStatisticsList().get(i-1);
-        else // Reached end and get first.
-            nextStat = panel.getStatisticsList().get(panel.getStatisticsList().size()-1);
-
-        updateOtherPanels(panel, nextStat);
-        panel.setCurrentStatistic(nextStat);
-        return nextStat;
+    /**
+     * Invokes that the given panel loads the previous statistic and accordingly updates the lists of available statistics of the other panels.
+     * @param panel
+     */
+    private void prevStat(StatsPanelElement panel){
+        updateOtherPanels(panel, panel.getPrevStat());
     }
 
     /**
@@ -154,40 +124,21 @@ public class StatisticsPanelController extends MainframeContentPanel {
      * @param nextStat
      */
     private void updateOtherPanels(StatsPanelElement currentPanel, Statistic nextStat) {
-        for (int k = 0; k < allStatPanels.size(); k++)
-        {
+        for (int k = 0; k < allStatPanels.size(); k++) {
             if (allStatPanels.get(k) != currentPanel)
-            {
                 allStatPanels.get(k).updateList(currentPanel.getCurrentStatistic(), nextStat); // The previously current stat of the panel is now free. Add it to the list of other panels. The nextStat is now taken, remove it from the list of the other panels.
-            }
         }
     }
 
-    private void displaySinglePanel(Label titleLbl, Label textLbl, Statistic stat) // Get correct stat at runtime
-    {
-        titleLbl.setText(stat.getName());
-        textLbl.setText(stat.getStatistic(listings.getFilteredListings()));
-    }
 
     /**
-     * Updates the statistic displayed in each panel. BS CODE THIS HAS TO BE CHANGED!
+     * Updates the statistic displayed in each panel.
      */
     @Override
     public void updatePanel() {
-        for (StatsPanelElement panel : allStatPanels)
-        {
-            //String newStat = statsPanelElement.getCurrentStatistic().updateStatistic(listings.getFilteredListings());
-            //System.out.println(panel.getStatLbl() + " " + panel.getStatNameLbl());
-            //displaySinglePanel(statNameLbl1, statLbl1, panel.getCurrentStatistic());
+        for (StatsPanelElement panel : allStatPanels) {
+            panel.displayStatistic();
         }
-
-
-
-        displaySinglePanel(statNameLbl1, statLbl1, panel1.getCurrentStatistic());
-        displaySinglePanel(statNameLbl2, statLbl2, panel2.getCurrentStatistic());
-        displaySinglePanel(statNameLbl3, statLbl3, panel3.getCurrentStatistic());
-        displaySinglePanel(statNameLbl4, statLbl4, panel4.getCurrentStatistic());
-
-
     }
 }
+
