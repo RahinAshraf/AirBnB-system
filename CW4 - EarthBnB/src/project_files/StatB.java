@@ -24,6 +24,5 @@ public class StatB extends Statistic {
     protected String updateStatistic(ArrayList<AirbnbListing> listings)
     {
         return "2"; //used to get it to run - need changing
-
     }
 }

@@ -2,13 +2,10 @@ package project_files;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 
 public class StatisticsPanelController extends MainframeContentPanel {
@@ -67,7 +64,6 @@ public class StatisticsPanelController extends MainframeContentPanel {
         allStatPanels.add(panel4);
     }
 
-
     /**
      * Depending on which button has been clicked, the chosen panel shows the ´previous or the next statistic.
      * @param event
@@ -96,8 +92,6 @@ public class StatisticsPanelController extends MainframeContentPanel {
                 break;
         }
     }
-
-
 
     /**
      * Invokes that the given panel loads the next statistic and accordingly updates the lists of available statistics of the other panels.
@@ -129,7 +123,6 @@ public class StatisticsPanelController extends MainframeContentPanel {
                 allStatPanels.get(k).updateList(currentPanel.getCurrentStatistic(), nextStat); // The previously current stat of the panel is now free. Add it to the list of other panels. The nextStat is now taken, remove it from the list of the other panels.
         }
     }
-
 
     /**
      * Updates the statistic displayed in each panel.

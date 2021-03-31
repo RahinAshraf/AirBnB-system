@@ -47,21 +47,11 @@ public class BookingData {
         this.bookerID = bookerID;
     }
 
-    public int getMinPrice() {
-        return minPrice;
-    }
-
-    public int getMaxPrice() {
-        return maxPrice;
-    }
-
 
     private LocalDate checkIn;
     private LocalDate checkOut;
     private int numberOfPeople;
     private int bookerID;
-    private int minPrice = 0;
-    private int maxPrice = Integer.MAX_VALUE;
 
     public BookingData(LocalDate checkIn, LocalDate checkOut, int numberOfPeople, int bookerID) throws InvalidParameterException {
         if (numberOfPeople < 0)
@@ -76,13 +66,6 @@ public class BookingData {
     {
     }
 
-    public void setPriceRange(int minPrice, int maxPrice) throws InvalidParameterException
-    {
-        if (minPrice < 0 || maxPrice < 0)
-            throw new InvalidParameterException("Prices cant be negative");
-        this.minPrice = minPrice;
-        this.maxPrice = maxPrice;
-    }
 
     public int getDaysOfStay()
     {

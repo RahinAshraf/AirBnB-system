@@ -24,14 +24,14 @@ public class RegisterController {
     @FXML
     Label feedbackLabel;
 
-    MainWindowController mainWindowController;
+    MainFrameController mainFrameController;
 
 
 
 
 
     public void validateRegister() {
-        if(mainWindowController.isUsingDatabase()) {
+        if(mainFrameController.isUsingDatabase()) {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
 
@@ -65,7 +65,7 @@ public class RegisterController {
                 feedbackLabel.setTextFill(Color.RED);
             }
         } else {
-            ArrayList<Account> accounts = mainWindowController.getOfflineAccounts();
+            ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
             boolean found = false;
             for(int i=0; i<accounts.size(); i++) {
                 if(accounts.get(i).getUsername().equals(nameField.getText())) {
@@ -76,7 +76,7 @@ public class RegisterController {
                 feedbackLabel.setText("Account already exists!");
                 feedbackLabel.setTextFill(Color.RED);
             } else {
-                Account newAccount = new Account(mainWindowController.getOfflineAccounts().size()+1, nameField.getText(), pwField.getText(), emailField.getText());
+                Account newAccount = new Account(mainFrameController.getOfflineAccounts().size()+1, nameField.getText(), pwField.getText(), emailField.getText());
                 accounts.add(newAccount);
                 feedbackLabel.setText("Successful registration!");
                 feedbackLabel.setTextFill(Color.GREEN);
@@ -84,8 +84,8 @@ public class RegisterController {
         }
     }
 
-    public void setMainWindowController(MainWindowController mainWindowController) {
-        this.mainWindowController = mainWindowController;
+    public void setMainWindowController(MainFrameController mainFrameController) {
+        this.mainFrameController = mainFrameController;
     }
 
 

@@ -2,6 +2,7 @@ package project_files;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Account {
 
@@ -9,7 +10,7 @@ public class Account {
     private String username;
     private String password;
     private String emailAddress;
-    private ArrayList<AirbnbListing> favouriteProperties;
+    private HashSet<AirbnbListing> favouriteProperties;
     private ArrayList<Integer> reservedTrips;
     private BookingData bookingData;
 
@@ -18,7 +19,7 @@ public class Account {
         this.username = username;
         this.password = password;
         this.emailAddress = emailAddress;
-        favouriteProperties = new ArrayList<>();
+        favouriteProperties = new HashSet<>();
         reservedTrips = new ArrayList<>();
         bookingData = new BookingData();
     }
@@ -55,7 +56,7 @@ public class Account {
         return emailAddress;
     }
 
-    public ArrayList<AirbnbListing> getSavedProperties() {
+    public HashSet<AirbnbListing> getSavedProperties() {
         return favouriteProperties;
     }
 
@@ -65,16 +66,6 @@ public class Account {
 
     public void setBookingData(BookingData bookingData) {
         this.bookingData = bookingData;
-    }
-
-    /**
-     * Set the price range the user wants to find properties in.
-     * @param min
-     * @param max
-     */
-    public void setPriceRange(int min, int max)
-    {
-        bookingData.setPriceRange(min, max);
     }
 
     public void setBookingData(LocalDate checkIn, LocalDate checkOut, int people, int accountID) {

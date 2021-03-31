@@ -8,13 +8,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -126,16 +123,11 @@ public class BookingController extends MainframeContentPanel implements Initiali
             }
         } else {
             BookingData usersData = currentUser.getBookingData();
-            ArrayList<Reservation> reservations = mainWindowController.getOfflineReservations();
+            ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
             Reservation reservation = new Reservation(reservations.size()+1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser, usersData.getNumberOfPeople(),
                     selectedListing.getPrice() * usersData.getDaysOfStay());
             reservations.add(reservation);
         }
-
-
-
-
-
     }
 
     private void loadFromFavouritesTable(AirbnbListing chosenProperty) {

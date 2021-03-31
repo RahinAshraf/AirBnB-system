@@ -29,7 +29,7 @@ public class PropertyDisplayerController implements Initializable {
 
     private AirbnbListing displayedListing;
     private Account currentUser;
-    private MainWindowController mainWindowController;
+    private MainFrameController mainFrameController;
     private BoroughPropertiesController boroughPropertiesController;
 
     @FXML
@@ -68,17 +68,6 @@ public class PropertyDisplayerController implements Initializable {
         currentUser = null;
     }
 
-    public void saveProperty() {
-        if(currentUser.removeFavouriteProperty(displayedListing)) {
-            saveButton.setStyle("-fx-background-color: grey");
-            saveButton.setText("save");
-        } else {
-            currentUser.addFavouriteProperty(displayedListing);
-            saveButton.setStyle("-fx-background-color: #F75737");
-            saveButton.setText("unsave");
-        }
-    }
-
 
     /**
      * Load the specific data of the property into the panel.
@@ -88,7 +77,8 @@ public class PropertyDisplayerController implements Initializable {
     {
         displayedListing = listing;
         this.currentUser = currentUser;
-
+        if (currentUser.getSavedProperties().contains(displayedListing))
+            setSaved(true);
         // Displaying basic information at top
         propertyImg.setImage(new Image(String.valueOf(listing.getPictureUrl())));
         propertyNameLbl.setText(listing.getName());
@@ -145,8 +135,9 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     private void goToBookingScreen()
     {
+        currentUser.addFavouriteProperty(displayedListing); // Using a hashset, therefore not added twice.
         try {
-            mainWindowController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
+            mainFrameController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
 
             // Pass on this listing to bookingPanel somehow
 
@@ -156,7 +147,7 @@ public class PropertyDisplayerController implements Initializable {
             Stage boroughsStage = (Stage) boroughPropertiesController.propertiesTable.getScene().getWindow();
             boroughsStage.close();
 
-            Stage mainWindowStage = (Stage) mainWindowController.contentPane.getScene().getWindow();
+            Stage mainWindowStage = (Stage) mainFrameController.contentPane.getScene().getWindow();
             mainWindowStage.show();
 
         } catch (IOException e) {
@@ -164,9 +155,31 @@ public class PropertyDisplayerController implements Initializable {
         }
     }
 
-    public void setMainWindowController(MainWindowController mainWindowController)
+    @FXML
+    public void saveProperty() {
+        if(currentUser.removeFavouriteProperty(displayedListing)) {
+           setSaved(false);
+        } else {
+            currentUser.addFavouriteProperty(displayedListing);
+            setSaved(true);
+        }
+    }
+
+    private void setSaved(boolean saved)
     {
-        this.mainWindowController = mainWindowController;
+        if (!saved) {
+            saveButton.setStyle("-fx-background-color: grey");
+            saveButton.setText("save");
+        }
+        else {
+            saveButton.setStyle("-fx-background-color: #F75737");
+            saveButton.setText("unsave");
+        }
+    }
+
+    public void setMainWindowController(MainFrameController mainFrameController)
+    {
+        this.mainFrameController = mainFrameController;
     }
 
     public void setBoroughPropertiesController(BoroughPropertiesController controller)

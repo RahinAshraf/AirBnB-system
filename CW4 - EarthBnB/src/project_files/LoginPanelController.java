@@ -4,12 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 
 import java.io.IOException;
@@ -24,7 +22,7 @@ public class LoginPanelController implements Initializable {
 
     private Account user;
 
-    private MainWindowController mainWindowController;
+    private MainFrameController mainFrameController;
 
     @FXML
     TextField usernameTextField;
@@ -66,8 +64,8 @@ public class LoginPanelController implements Initializable {
         try {
             if(user != null) {
                 //mainWindowController.initializeListings(listings, user);
-                mainWindowController.setCurrentUser(user);
-                mainWindowController.setLoggedIn(true);
+                mainFrameController.setCurrentUser(user);
+                mainFrameController.setLoggedIn(true);
             }
             loginpagePane.getScene().getWindow().hide();
         } catch (Exception e) {
@@ -75,8 +73,8 @@ public class LoginPanelController implements Initializable {
         }
     }
 
-    public void setMainWindowController(MainWindowController mainWindowController) {
-        this.mainWindowController = mainWindowController;
+    public void setMainWindowController(MainFrameController mainFrameController) {
+        this.mainFrameController = mainFrameController;
     }
 
     public void navigateToRegister(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -86,7 +84,7 @@ public class LoginPanelController implements Initializable {
                 FXMLLoader registerLoader = new FXMLLoader(getClass().getResource("registerView.fxml"));
                 registerPanel = registerLoader.load();
                 RegisterController registerController = registerLoader.getController();
-                registerController.setMainWindowController(mainWindowController);
+                registerController.setMainWindowController(mainFrameController);
             }
             loginpagePane.setCenter(registerPanel);
             backToSignIn.setVisible(true);
@@ -99,7 +97,7 @@ public class LoginPanelController implements Initializable {
 
 
     public void validateLogin() {
-        if(mainWindowController.isUsingDatabase()) {
+        if(mainFrameController.isUsingDatabase()) {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
 
@@ -129,7 +127,7 @@ public class LoginPanelController implements Initializable {
                 e.getCause();
             }
         } else {
-            ArrayList<Account> accounts = mainWindowController.getOfflineAccounts();
+            ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
             boolean found = false;
             for(int i=0; i<accounts.size(); i++) {
                 if(accounts.get(i).getUsername().equals(usernameTextField.getText()) && accounts.get(i).getPassword().equals(passwordTextField.getText())) {

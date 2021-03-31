@@ -28,8 +28,8 @@ public class ConnectionSelector {
         if(((Button)e.getSource()).getId().equals("dbSelectButton")) {
             usingDatabase = true;
         }
-        MainWindowController mainWindowController = mainLoader.getController();
-        mainWindowController.setUsingDatabase(usingDatabase);
+        MainFrameController mainFrameController = mainLoader.getController();
+        mainFrameController.setUsingDatabase(usingDatabase);
         dbSelectButton.getScene().getWindow().hide();
     }
 

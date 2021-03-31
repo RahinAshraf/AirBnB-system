@@ -19,6 +19,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="FX16" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="controlsfx-11.1.0" level="project" />
   </component>
 </module>

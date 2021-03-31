@@ -6,9 +6,6 @@ import javafx.scene.control.*;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The WelcomePanelClass -
  */
@@ -53,8 +50,8 @@ public class WelcomePanel extends MainframeContentPanel {
         if (checkEntries()) {
             int people = Integer.parseInt(numberOfPeople.getText());
             currentUser.setBookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID());
-            mainWindowController.getListings().filterBookingData(currentUser.getBookingData());
-            mainWindowController.setFrameSwitchingButtonsActive(true);
+            mainFrameController.getListings().changeBookingData(currentUser.getBookingData());
+            mainFrameController.setFirstRequestSubmitted(true);
             submitAlert();
         }
     }

@@ -3,20 +3,22 @@ package project_files;
 // FIlter for properties in map controller
 
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.controlsfx.control.CheckComboBox;
+import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,13 +26,11 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
-public class MainWindowController extends Application implements Initializable {
-
-    //private ArrayList<AirbnbListing> filteredListings;
-    //private ArrayList<AirbnbListing> originalListings;
+public class MainFrameController extends Application implements Initializable {
 
     private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
+    private boolean firstRequestSubmitted;
 
     private ArrayList<Account> offlineAccounts;
     private ArrayList<Reservation> offlineReservations;
@@ -39,7 +39,7 @@ public class MainWindowController extends Application implements Initializable {
 
     private int currentPage = 0;
 
-    MainframeContentPanel[] contentPanels;
+    private MainframeContentPanel[] contentPanels;
 
     // Filters the list according to the search and price range the user has entered (maybe also the checkboxes?)
     private Listings listings;
@@ -54,6 +54,9 @@ public class MainWindowController extends Application implements Initializable {
 
     @FXML
     ChoiceBox minPriceChoiceBox, maxPriceChoiceBox;
+
+    @FXML
+    CheckComboBox filtersComboBox;
 
     @FXML
     Label nameOfCurrent;
@@ -76,7 +79,8 @@ public class MainWindowController extends Application implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle bundle)
     {
-        currentUser = null;
+        firstRequestSubmitted = false;
+        currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("listings.csv");
         try {
@@ -90,10 +94,45 @@ public class MainWindowController extends Application implements Initializable {
 
         // Fill the dropdown with selectable price ranges
         initializePriceRangeDropDown();
+        initializeFiltersComboBox();
         usingDatabase = false;
         offlineAccounts = new ArrayList<>();
         offlineReservations = new ArrayList<>();
     }
+
+    private void initializeFiltersComboBox()
+    {
+        CheckBox poolBox = new CheckBox("Pool");
+        CheckBox wifiBox = new CheckBox("Wifi");
+        CheckBox roomBox = new CheckBox("Private Room");
+        CheckBox superBox = new CheckBox("Superhost");
+
+
+
+        String[] boxes = new String[] {"poolBox", "wifiBox", "roomBox", "superBox"};
+        ObservableList<String> filters = FXCollections.observableArrayList(boxes);
+        filtersComboBox.getItems().addAll(filters);
+
+        //filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> listings.changeActiveFilters(filtersComboBox.getCheckModel().getCheckedItems()));
+        filtersComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) box -> changeFilters(new ActionEvent()));
+        /*
+        filtersComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+            public void onChanged(ListChangeListener.Change<? extends String> c) {
+                while (c.next()) {
+                    //do something with changes here
+                }
+                System.out.println(filtersComboBox.getCheckModel().getCheckedItems());
+            }
+        });
+
+         */
+    }
+
+    public void changeFilters(ActionEvent e)
+    {
+        System.out.println("Filter pressed " + e.getSource());
+    }
+
 
     public void setUsingDatabase(boolean usingDatabase) {
         this.usingDatabase = usingDatabase;
@@ -155,6 +194,7 @@ public class MainWindowController extends Application implements Initializable {
                 contentPane.setCenter(contentPanels[currentPage].getPanelRoot());
                 accountOpen = false;
                 accountButton.setText(currentUser.getUsername());
+                if (firstRequestSubmitted)
                 setFrameSwitchingButtonsActive(true);
             }
 
@@ -328,8 +368,7 @@ public class MainWindowController extends Application implements Initializable {
     private void applyPriceRange(Integer minPrice, Integer maxPrice) {
         if (minPrice != null && maxPrice != null && currentUser != null)
         {
-            currentUser.setPriceRange(minPrice, maxPrice);
-            listings.filterPriceRange(minPrice, maxPrice);
+            listings.changePriceRange(minPrice, maxPrice);
 
             contentPanels[currentPage].updatePanel();
 
@@ -373,6 +412,19 @@ public class MainWindowController extends Application implements Initializable {
     {
         return listings;
     }
+
+    /**
+     * If a request for checkin, checkout and number of guests has been performed already.
+     * Has an effect on how buttons for switching panels behave.
+     * @param submitted
+     */
+    public void setFirstRequestSubmitted(boolean submitted)
+    {
+        setFrameSwitchingButtonsActive(true);
+        firstRequestSubmitted = submitted;
+    }
+
+
 }
 
 
