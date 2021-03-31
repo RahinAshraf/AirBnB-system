@@ -21,6 +21,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class BookingController extends MainframeContentPanel implements Initializable {
 
@@ -29,13 +33,12 @@ public class BookingController extends MainframeContentPanel implements Initiali
     TableColumn propertyNameCol;
     TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
+    List<LocalDate> reservedDates = new ArrayList<>();
 
     DatabaseConnection connection = new DatabaseConnection();
     Connection connectDB = connection.getConnection();
 
     AirbnbListing selectedListing;
-
-    List<LocalDate> reservedDates = new ArrayList<>();
 
     @FXML
     TableView favoritesTable;
