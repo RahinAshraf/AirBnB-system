@@ -1,3 +1,6 @@
 # Default ignored files
 /shelf/
-/workspace.xml
+/workspace.xml,
+/libraries/
+/FX16.xml,
+/_libs.xml,

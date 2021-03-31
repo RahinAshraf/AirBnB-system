@@ -39,6 +39,10 @@ public class PropertyDisplayerController implements Initializable {
     Label bathroomsLbl, hostIsSuperHostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl, bedsLbl, propertyTypeLbl, propertyNameLbl;
     @FXML
     Button saveButton;
+    @FXML
+    Label pricePerNight;
+    @FXML
+    Label maxNumberOfPeople;
 
     @FXML
     TextArea amenitiesText; // Expand thing, only show a couple
@@ -110,6 +114,10 @@ public class PropertyDisplayerController implements Initializable {
         // Display information about the neighbourhood. Map is initialized in initialize()
         boroughLbl.setText("Borough: " + listing.getNeighbourhood());
         neighbourHoodDescriptionLbl.setText(listing.getNeighbourhoodOverview());
+
+        pricePerNight.setText("Price per minimum night: " + listing.getAveragePrice());
+
+        maxNumberOfPeople.setText("Maximum number of guests: " + listing.getMaxGuests());
     }
 
     /**

@@ -8,22 +8,34 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 public class BookingController extends MainframeContentPanel implements Initializable {
 
 
     //ArrayList<AirbnbListing> listings;
     TableColumn propertyNameCol;
+    TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
 
+    DatabaseConnection connection = new DatabaseConnection();
+    Connection connectDB = connection.getConnection();
+
     AirbnbListing selectedListing;
+
+    List<LocalDate> reservedDates = new ArrayList<>();
 
     @FXML
     TableView favoritesTable;
@@ -48,10 +60,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //currentUser = null;
         selectedListing = null;
+
     }
 
     /**
@@ -81,6 +96,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 System.out.println("added");
             }
         }
+
+
+
     }
 
     /**
@@ -89,45 +107,136 @@ public class BookingController extends MainframeContentPanel implements Initiali
      */
     @FXML
     public void rowClicked(MouseEvent e) throws IOException {
-        Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
-        if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
-            AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
-            selectedListing = chosenProperty;
-            totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
-            calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
-            if (e.getClickCount() == 2)
-            {
-                loadFromFavouritesTable(chosenProperty);
+        if(!(favoritesTable.getSelectionModel().getSelectedItem() == null)) {
+            Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
+            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
+                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+                selectedListing = chosenProperty;
+                totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
+                calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
+                if (e.getClickCount() == 2)
+                {
+                    loadFromFavouritesTable(chosenProperty);
+                }
             }
+
+
+
+            ArrayList<Reservation> reservations;
+
+            if(!usingDatabase) {
+                reservations = mainWindowController.getOfflineReservations();
+            } else {
+                reservations = new ArrayList<>();
+                String getReservations = "SELECT * FROM booking";
+
+                try {
+                    Statement statement = connectDB.createStatement();
+                    ResultSet queryResult = statement.executeQuery(getReservations);
+                    while (queryResult.next()) {
+                        LocalDate arrivalDate = new java.sql.Date(queryResult.getDate(2).getTime()).toLocalDate();
+                        LocalDate departureDate = new java.sql.Date(queryResult.getDate(3).getTime()).toLocalDate();
+                        Reservation reservation = new Reservation(
+                                queryResult.getInt(1),
+                                arrivalDate,
+                                departureDate,
+                                queryResult.getInt(4),
+                                queryResult.getInt(5),
+                                queryResult.getInt(6),
+                                queryResult.getString(7)
+                        );
+                        reservations.add(reservation);
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    exception.getCause();
+
+                }
+            }
+
+            System.out.println("total reservations: " + reservations.size());
+            reservedDates.clear();
+            for(int i = 0; i < reservations.size(); i++) {
+                Reservation reservation = reservations.get(i);
+                System.out.println(reservation.getArrival());
+                if(reservation.getListingID().equals(selectedListing.getId())) {
+                    System.out.println("there is resevation for this property");
+                    LocalDate date = reservation.getArrival();
+                    while(date.isBefore(reservation.getDeparture().plusDays(1))) {
+                        reservedDates.add(date);
+                        System.out.println("added" + date);
+                        date = date.plusDays(1);
+                    }
+                }
+            }
+
+            Callback<DatePicker, DateCell> reservedDayCellFactory = new Callback<>() {
+                public DateCell call(final DatePicker datePicker) {
+                    return new DateCell() {
+                        @Override
+                        public void updateItem(LocalDate item, boolean empty) {
+                            // Must call super
+                            super.updateItem(item, empty);
+
+                            //Show reserved dates in red
+                            if (!empty && item != null) {
+                                if (reservedDates.contains(item)) {
+                                    this.setStyle("-fx-background-color: #F96E3A");
+                                }
+                            }
+                        }
+                    };
+                }
+            };
+            checkInDate.setDayCellFactory(reservedDayCellFactory);
         }
+
+
     }
 
 
     public void reserveProperty() {
         if(usingDatabase) {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
             System.out.println(currentUser.getAccountID());
             BookingData usersData = currentUser.getBookingData();
             String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
-                    usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "')";
+                    usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "')";
             //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
             try {
                 Statement statement = connectDB.createStatement();
-                if (selectedListing != null) {
-                    statement.executeUpdate(createBooking);
+                boolean violation = false;
+                int index = 0;
+
+                if (selectedListing != null ) {
+                    while(index < reservedDates.size() && !violation) {
+                        System.out.println("# of reserved dates: " + reservedDates.size());
+                        if(checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
+                            System.out.println("Some days are reserved in between your selection");
+                            violation = true;
+                        } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
+                            System.out.println("Some days are reserved at your selections");
+                            violation = true;
+                        }
+                        index++;
+                    }
+                    if(!violation) {statement.executeUpdate(createBooking); }
                 }
             } catch (Exception e) {
 
             }
         } else {
             BookingData usersData = currentUser.getBookingData();
-            ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
-            Reservation reservation = new Reservation(reservations.size()+1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser, usersData.getNumberOfPeople(),
-                    selectedListing.getPrice() * usersData.getDaysOfStay());
+            ArrayList<Reservation> reservations = mainWindowController.getOfflineReservations();
+            Reservation reservation = new Reservation(reservations.size()+1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
+                    selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
             reservations.add(reservation);
         }
+
+
+
+
+
     }
 
     private void loadFromFavouritesTable(AirbnbListing chosenProperty) {
@@ -159,12 +268,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
         propertyNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyNameCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("name"));
 
-        TableColumn propertyBoroughCol = new TableColumn("Borough");
+        propertyBoroughCol = new TableColumn("Borough");
         propertyBoroughCol.setMinWidth(300);
         propertyBoroughCol.setMaxWidth(300);
         propertyBoroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyBoroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
+        favoritesTable.getColumns().clear();
         favoritesTable.getColumns().addAll(propertyNameCol, propertyBoroughCol);
         favoritesTable.setItems(data);
     }
