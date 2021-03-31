@@ -61,7 +61,7 @@
                   </ChoiceBox>
                </children>
             </HBox>
-            <CheckComboBox fx:id="filtersComboBox" layoutX="113.0" layoutY="13.0" onMouseClicked="#changeFilters" title="Filters" />
+            <CheckComboBox fx:id="filtersComboBox" layoutX="113.0" layoutY="13.0" showCheckedCount="true" title="Filters" />
          </children>
       </AnchorPane>
    </top>

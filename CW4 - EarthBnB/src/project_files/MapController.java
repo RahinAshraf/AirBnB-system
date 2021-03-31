@@ -8,14 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
-
-import java.util.*;
-
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class MapController extends MainframeContentPanel implements Initializable {
@@ -71,12 +71,12 @@ public class MapController extends MainframeContentPanel implements Initializabl
             }
             newStage.setTitle(titleString);
             BoroughPropertiesController boroughController = boroughLoader.getController();
-            ArrayList<String> tempArray = new ArrayList<>();
+            ArrayList<String> selectedBoroughsStrings = new ArrayList<>();
             for(int i = 0; i<selectedBoroughs.size(); i++) {
-                tempArray.add(selectedBoroughs.get(i).getId());
+                selectedBoroughsStrings.add(selectedBoroughs.get(i).getId());
             }
             // Look at this. Not sure about it!
-            boroughController.initializeListing(listings.getFilteredListings(), tempArray, currentUser);
+            boroughController.initializeListing(listings, selectedBoroughsStrings, currentUser);
             boroughController.setMainWindowController(mainFrameController); // Passing on the mainWindowController Object
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {

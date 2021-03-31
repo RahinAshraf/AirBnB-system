@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class Listings {
 
-
     private ArrayList<AirbnbListing> originalListings;
     private ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
     private ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
