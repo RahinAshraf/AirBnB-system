@@ -3,7 +3,6 @@ package project_files;
 // FIlter for properties in map controller
 
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -18,7 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.controlsfx.control.CheckComboBox;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -109,7 +107,7 @@ public class MainFrameController extends Application implements Initializable {
 
 
 
-        String[] boxes = new String[] {"poolBox", "wifiBox", "roomBox", "superBox"};
+        String[] boxes = new String[] {"Pool", "Wifi", "Private Room", "Superhost"};
         ObservableList<String> filters = FXCollections.observableArrayList(boxes);
         filtersComboBox.getItems().addAll(filters);
 

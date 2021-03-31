@@ -8,7 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -28,7 +31,6 @@ public class BoroughPropertiesController implements Initializable {
     TableColumn<AirbnbListing, Integer> boroughPriceCol;
     //
     TableColumn<AirbnbListing, Integer> reviewsCountCol;
-
 
 
     private MainFrameController mainFrameController;
@@ -53,25 +55,26 @@ public class BoroughPropertiesController implements Initializable {
 
     // The list of the properties in the selected boroughs
     private ObservableList<AirbnbListing> boroughListings;
-
     private Listings listings;
-
 
     /**
      *
      */
-    public void initializeListing(Listings listings, ArrayList<String> selectedBoroughs, Account currentUser)
-    {
-        // Loads the data.
-        this.listings = listings;
-        listings.changeSelectedBoroughs(selectedBoroughs); // Filter for the selected boroughs
-        this.boroughListings = listings.getObservableFilteredListings();
-        this.currentUser = currentUser;
-        displayData = FXCollections.observableArrayList(boroughListings);
-
-        setActivatedCheckboxFilters(); // Load the active user preferences
-
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        sortReviews.setVisible(false);
+        sortPrice.setVisible(false);
+        sortHost.setVisible(false);
+        isDropClicked = false;
+        setFilterCheckBoxIds();
         buildTable();
+    }
+
+    private void setFilterCheckBoxIds() {
+        wifiBox.setId(FilterNames.WIFI_FILTER.toString());
+        poolBox.setId(FilterNames.POOL_FILTER.toString());
+        superBox.setId(FilterNames.SUPER_FILTER.toString());
+        roomBox.setId(FilterNames.ROOM_FILTER.toString());
     }
 
     private void buildTable() {
@@ -116,7 +119,7 @@ public class BoroughPropertiesController implements Initializable {
 
         // Sets all of the data into the table.
         propertiesTable.getColumns().addAll(boroughHostCol, boroughPriceCol, boroughCol, reviewsCountCol, minimumNightsCol);
-        propertiesTable.setItems(displayData);
+
     }
 
     /**
@@ -125,16 +128,41 @@ public class BoroughPropertiesController implements Initializable {
      * Solution: Only create this controller once and later just show it. (Barni?)
      */
     private void setActivatedCheckboxFilters() {
-        for (CheckBox box : listings.getActiveFilters())
+        for (String filter : listings.getActiveFilters())
         {
+            if (filter.equals(FilterNames.POOL_FILTER.toString()))
+                poolBox.setSelected(true);
+            else if (filter.equals(FilterNames.WIFI_FILTER.toString()))
+                wifiBox.setSelected(true);
+            else if (filter.equals(FilterNames.SUPER_FILTER.toString()))
+                superBox.setSelected(true);
+            else if (filter.equals(FilterNames.ROOM_FILTER.toString()))
+                roomBox.setSelected(true);
+            /*
             switch (box.getId())
             {
-                case "wifiBox": wifiBox.setSelected(true); break;
+                case FilterNames.WIFI_FILTER.toString(): wifiBox.setSelected(true); break;
                 case "poolBox": poolBox.setSelected(true); break;
                 case "superBox": superBox.setSelected(true); break;
                 case "roomBox": roomBox.setSelected(true); break;
             }
+             */
         }
+    }
+
+    /**
+     *
+     */
+    public void initializeListing(Listings listings, ArrayList<String> selectedBoroughs, Account currentUser)
+    {
+        // Loads the data.
+        this.listings = listings;
+        listings.changeSelectedBoroughs(selectedBoroughs); // Filter for the selected boroughs
+        this.boroughListings = listings.getObservableFilteredListings();
+        this.currentUser = currentUser;
+        displayData = FXCollections.observableArrayList(boroughListings);
+        setActivatedCheckboxFilters(); // Load the active user preferences
+        propertiesTable.setItems(displayData);
     }
 
 
@@ -197,12 +225,12 @@ public class BoroughPropertiesController implements Initializable {
     @FXML
     public void changeFilter(ActionEvent e)
     {
-        System.out.println("Selected " + e.getSource());
         CheckBox checkBox;
         System.out.println(e.getSource());
         if (e.getSource().getClass() == CheckBox.class) {
             checkBox = (CheckBox) e.getSource();
-            listings.changeActiveFilters(checkBox); // FUCKED because the new list does not inclued filtering for boroughs
+            listings.changeActiveFilters(checkBox.getId());
+            System.out.println(listings.getFilteredListings().size());
         }
         displayList();
     }
@@ -211,19 +239,9 @@ public class BoroughPropertiesController implements Initializable {
     private void displayList()
     {
         propertiesTable.setItems(listings.getObservableFilteredListings());
+        System.out.println(listings.getObservableFilteredListings().size());
     }
 
-
-    /**
-     *
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        sortReviews.setVisible(false);
-        sortPrice.setVisible(false);
-        sortHost.setVisible(false);
-        isDropClicked = false;
-    }
 
     /**
      * Initiated when a row in the tableview has been clicked. Initiates opening up a new window displaying further information

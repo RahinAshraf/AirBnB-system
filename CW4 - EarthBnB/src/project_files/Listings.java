@@ -2,7 +2,6 @@ package project_files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.CheckBox;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
@@ -23,7 +22,7 @@ public class Listings {
     private BookingData bookingData;
     private int[] priceRange = new int[2];
     private ArrayList<String> selectedBoroughs = new ArrayList<>();
-    private HashSet<CheckBox> activeFilters = new HashSet<>();
+    private HashSet<String> activeFilters = new HashSet<>();
 
 
     public Listings(ArrayList<AirbnbListing> originalListings)
@@ -120,35 +119,36 @@ public class Listings {
         filterForCheckBoxes();
     }
 
-    // Noeed to compare against ids because new objects are created every time when boroughpropertiescontroller is opened.
-    public void changeActiveFilters(CheckBox checkBox)
+
+    public void changeActiveFilters(String filter)
     {
-        ArrayList<String> checkBoxIds = new ArrayList<>();
-        for (CheckBox c : activeFilters)
-            checkBoxIds.add(c.getId());
-
-        if (checkBoxIds.contains(checkBox.getId()))
-            activeFilters.remove(checkBox);
+        if (activeFilters.contains(filter))
+            activeFilters.remove(filter);
         else
-            activeFilters.add(checkBox);
-
-        //if (!activeFilters.add(checkBox))
-        //    activeFilters.remove(checkBox);
-        System.out.print("Active filters ");
-        for (CheckBox c : activeFilters)
-        System.out.print(" " + c.getId());
+            activeFilters.add(filter);
         filterForCheckBoxes();
     }
+
 
     private void filterForCheckBoxes() {
 
             listingsFilteredByCheckboxes.clear();
             listingsFilteredByCheckboxes.addAll(listingsFilteredBySelectedBoroughs);
             if (!activeFilters.isEmpty()) {
-                for (CheckBox box : activeFilters) {
+                for (String filter : activeFilters) {
                     //System.out.println("Filtering for checkbox: " + filter.getId());
+
+                    if (filter.equals(FilterNames.WIFI_FILTER.toString()))
+                        listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Wifi");
+                    else if (filter.equals(FilterNames.POOL_FILTER.toString()))
+                        listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Pool");
+                    else if (filter.equals(FilterNames.ROOM_FILTER.toString()))
+                        listingsFilteredByCheckboxes = filterPrivateRoom(listingsFilteredByCheckboxes);
+                    else if (filter.equals(FilterNames.SUPER_FILTER.toString()))
+                        listingsFilteredByCheckboxes = filterSuperHost(listingsFilteredByCheckboxes);
+                    /*
                     switch (box.getId()) {
-                        case "wifiBox":
+                        case FilterNames.POOL_FILTER.toString():
                             listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Wifi");
                             break;
                         case "poolBox":
@@ -161,6 +161,8 @@ public class Listings {
                             listingsFilteredByCheckboxes = filterSuperHost(listingsFilteredByCheckboxes);
                             break;
                     }
+
+                     */
                 }
             }
             filteredListings.clear();
@@ -176,7 +178,7 @@ public class Listings {
     }
 
 
-    public HashSet<CheckBox> getActiveFilters()
+    public HashSet<String> getActiveFilters()
     {
         return activeFilters;
     }
