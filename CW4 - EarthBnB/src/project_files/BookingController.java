@@ -8,30 +8,34 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.ZoneId;
+import java.util.*;
 
 public class BookingController extends MainframeContentPanel implements Initializable {
 
 
     //ArrayList<AirbnbListing> listings;
     TableColumn propertyNameCol;
+    TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
-    List<LocalDate> reservedDates = new ArrayList<>();
-
-    AirbnbListing selectedListing;
 
     DatabaseConnection connection = new DatabaseConnection();
     Connection connectDB = connection.getConnection();
+
+    AirbnbListing selectedListing;
+
+    List<LocalDate> reservedDates = new ArrayList<>();
 
     @FXML
     TableView favoritesTable;
@@ -56,10 +60,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //currentUser = null;
         selectedListing = null;
+
     }
 
     /**
@@ -89,6 +96,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 System.out.println("added");
             }
         }
+
+
+
     }
 
     /**
@@ -112,11 +122,12 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
 
-            ArrayList<Reservation> reservations = new ArrayList<>();
+            ArrayList<Reservation> reservations;
 
             if(!usingDatabase) {
-                //reservations = mainWindowController.getOfflineReservations();
+                reservations = mainFrameController.getOfflineReservations();
             } else {
+                reservations = new ArrayList<>();
                 String getReservations = "SELECT * FROM booking";
 
                 try {
@@ -221,6 +232,11 @@ public class BookingController extends MainframeContentPanel implements Initiali
                     selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
             reservations.add(reservation);
         }
+
+
+
+
+
     }
 
     private void loadFromFavouritesTable(AirbnbListing chosenProperty) {
@@ -252,12 +268,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
         propertyNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyNameCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("name"));
 
-        TableColumn propertyBoroughCol = new TableColumn("Borough");
+        propertyBoroughCol = new TableColumn("Borough");
         propertyBoroughCol.setMinWidth(300);
         propertyBoroughCol.setMaxWidth(300);
         propertyBoroughCol.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyBoroughCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("neighbourhood"));
 
+        favoritesTable.getColumns().clear();
         favoritesTable.getColumns().addAll(propertyNameCol, propertyBoroughCol);
         favoritesTable.setItems(data);
     }

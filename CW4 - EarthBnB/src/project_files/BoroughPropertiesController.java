@@ -32,7 +32,7 @@ public class BoroughPropertiesController implements Initializable {
 
 
 
-    private MainFrameController mainFrameController;
+    private MainFrameController mainWindowController;
 
     //
     private boolean isDropClicked;
@@ -136,7 +136,6 @@ public class BoroughPropertiesController implements Initializable {
             sortHost.setVisible(true);
             isDropClicked = true;
         }
-
     }
 
     /**
@@ -165,8 +164,7 @@ public class BoroughPropertiesController implements Initializable {
      */
     public void backNavigation() {
         try {
-            listings.changeSelectedBoroughs(new ArrayList<>()); // Reset the selected boroughs
-            Stage stage = (Stage) mainFrameController.contentPane.getScene().getWindow();
+            Stage stage = (Stage) mainWindowController.contentPane.getScene().getWindow();
             stage.show();
             Stage thisStage = (Stage) propertiesTable.getScene().getWindow();
             thisStage.close();
@@ -188,9 +186,12 @@ public class BoroughPropertiesController implements Initializable {
         System.out.println(e.getSource());
         if (e.getSource().getClass() == CheckBox.class) {
             checkBox = (CheckBox) e.getSource();
-            listings.changeActiveFilters(checkBox); // FUCKED because the new list does not inclued filtering for boroughs
+            if (activeFilters.contains(checkBox))
+                activeFilters.remove(checkBox);
+            else
+                activeFilters.add(checkBox);
         }
-        displayList();
+        filter(activeFilters);
     }
 
 
@@ -200,7 +201,7 @@ public class BoroughPropertiesController implements Initializable {
      * @param activeFilters The filters to be applied.
      */
     private void filter(ArrayList<CheckBox> activeFilters){
-        //Reset the display data
+        // Reset the display data
         displayData.clear();
         displayData.addAll(boroughListings);
 
@@ -224,9 +225,23 @@ public class BoroughPropertiesController implements Initializable {
      * @param filterString The amenity to be filtered by.
      * @return A new list only containing the properties which supply the specified amenity.
      */
-    private ObservableList<AirbnbListing> filterAmenity(ObservableList<AirbnbListing> list, String filterString)
+    public ObservableList<AirbnbListing> filterAmenity(ObservableList<AirbnbListing> list, String filterString)
     {
-        propertiesTable.setItems(listings.getObservableFilteredListings());
+        return list.stream()
+            .filter(airbnbListing -> airbnbListing.getAmenities().contains(filterString))
+            .collect(Collectors.toCollection(FXCollections::observableArrayList));
+    }
+
+
+    /**
+     * A method which filters houses that are hosted by a super host.
+     * @param list The list to be filtered.
+     * @return A new list only containing superhosts.
+     */
+    public ObservableList<AirbnbListing> filterSuperHost(ObservableList<AirbnbListing> list){
+            return list.stream()
+                    .filter(airbnbListing -> airbnbListing.isHostSuperhost())
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
     }
 
     /**
@@ -285,12 +300,12 @@ public class BoroughPropertiesController implements Initializable {
 
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
         propertyDisplayer.loadData(property, currentUser); // Load the data into the window.
-        propertyDisplayer.setMainWindowController(mainFrameController);
+        propertyDisplayer.setMainWindowController(mainWindowController);
         propertyDisplayer.setBoroughPropertiesController(this);
         newStage.show();
     }
 
-    public void setMainWindowController(MainFrameController mainFrameController) {
-        this.mainFrameController = mainFrameController;
+    public void setMainWindowController(MainFrameController mainWindowController) {
+        this.mainWindowController = mainWindowController;
     }
 }

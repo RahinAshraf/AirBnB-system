@@ -48,7 +48,7 @@ public class Listings {
     public ObservableList<AirbnbListing> getObservableFilteredListings() { return FXCollections.observableArrayList(filteredListings); }
 
 
-
+    //
     public void changeBookingData(BookingData bookingData)
     {
         this.bookingData = bookingData;
