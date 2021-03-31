@@ -75,7 +75,8 @@ public class MapController extends MainframeContentPanel implements Initializabl
             for(int i = 0; i<selectedBoroughs.size(); i++) {
                 tempArray.add(selectedBoroughs.get(i).getId());
             }
-            //boroughController.initializeListing(listings, tempArray, currentUser);
+            // Look at this. Not sure about it!
+            boroughController.initializeListing(listings.getFilteredListings(), tempArray, currentUser);
             boroughController.setMainWindowController(mainFrameController); // Passing on the mainWindowController Object
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {
