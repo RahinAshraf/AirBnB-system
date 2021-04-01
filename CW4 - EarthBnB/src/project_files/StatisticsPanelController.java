@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class StatisticsPanelController extends MainframeContentPanel {
     private Statistic accommodationType, availableProperties, averageNumReviews, mostExpensiveBorough,
-            closestListingToAttraction, statB, statC, statD;
+            closestListingToAttraction, StatMostLuxurious, StatBestOffer, statD;
 
     private StatsPanelElement panel1, panel2, panel3, panel4;
 
@@ -39,16 +39,16 @@ public class StatisticsPanelController extends MainframeContentPanel {
         averageNumReviews = new StatAverageNumReviews(filteredListings);
         mostExpensiveBorough = new StatMostExpensiveBorough(filteredListings);
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
-        statB = new StatB(filteredListings);
-        statC = new StatC(filteredListings);
+        StatMostLuxurious = new StatMostLuxurious(filteredListings);
+        StatBestOffer = new StatBestOffer(filteredListings);
         statD = new StatD(filteredListings);
 
         // Just a temporary list, specifies all elements that are not being shown.
         // Would be better to derive them from the ones being displayed, making sure no bs can happen.
         ArrayList<Statistic> statisticsInQueue = new ArrayList<>();
         statisticsInQueue.add(closestListingToAttraction);
-        statisticsInQueue.add(statB);
-        statisticsInQueue.add(statC);
+        statisticsInQueue.add(StatMostLuxurious);
+        statisticsInQueue.add(StatBestOffer);
         statisticsInQueue.add(statD);
 
         // Each panel stores the elements that it could possibly show later.
@@ -99,7 +99,7 @@ public class StatisticsPanelController extends MainframeContentPanel {
      */
     private void nextStat(StatsPanelElement panel)
     {
-        updateOtherPanels(panel, panel.getNextStat()); // Getting the next stat automatically displays the new stat
+        updateOtherPanels(panel, panel.getCurrentStatistic(), panel.getNextStat()); // Getting the next stat automatically displays the new stat
     }
 
 
@@ -108,19 +108,20 @@ public class StatisticsPanelController extends MainframeContentPanel {
      * @param panel
      */
     private void prevStat(StatsPanelElement panel){
-        updateOtherPanels(panel, panel.getPrevStat());
+        updateOtherPanels(panel, panel.getCurrentStatistic(), panel.getPrevStat());
     }
 
     /**
      * Remove the nextstat from the other lists (will now be shown here and therefore should not be shown in other)
      * Add the currentstat to the other lists (not displayed anymore, can be shown by others now)
      * @param currentPanel
-     * @param nextStat
+     * @param removedStat
+     * @param displayedStat
      */
-    private void updateOtherPanels(StatsPanelElement currentPanel, Statistic nextStat) {
+    private void updateOtherPanels(StatsPanelElement currentPanel, Statistic removedStat, Statistic displayedStat) {
         for (int k = 0; k < allStatPanels.size(); k++) {
             if (allStatPanels.get(k) != currentPanel)
-                allStatPanels.get(k).updateList(currentPanel.getCurrentStatistic(), nextStat); // The previously current stat of the panel is now free. Add it to the list of other panels. The nextStat is now taken, remove it from the list of the other panels.
+                allStatPanels.get(k).updateList(removedStat, displayedStat); // The previously current stat of the panel is now free. Add it to the list of other panels. The nextStat is now taken, remove it from the list of the other panels.
         }
     }
 

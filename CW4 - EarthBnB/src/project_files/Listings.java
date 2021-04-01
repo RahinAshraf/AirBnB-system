@@ -2,7 +2,6 @@ package project_files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.CheckBox;
 
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
@@ -10,9 +9,23 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
+/**
+ * Class Listings - Performs and stores every manipulation of the dataset.
+ *
+ * A filter-chain ensures a reduction of the amount of performed filter-calculations.
+ * The filters usually changed the least are first in the chain to not be filtered for again when filters at the end of the chain are changed.
+ * The order of the filter is:
+ * Booking data --> Price Range --> Boroughs --> Checkbox filters (Wifi,...)
+ *
+ * The filters are invoked by the previous filters or by a public changeXY method.
+ *
+ * @version 01-04-2021
+ * @author Valentin Magis
+ */
+
 public class Listings {
 
-
+    // The different stages the listing can take. Stored so not every filter needs to be applied newly in case something is changed.
     private ArrayList<AirbnbListing> originalListings;
     private ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
     private ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
@@ -21,14 +34,19 @@ public class Listings {
     private ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
 
     // The filters that can be applied.
-    private BookingData bookingData;
-    private int[] priceRange = new int[2];
-    private ArrayList<String> selectedBoroughs = new ArrayList<>();
-    private HashSet<CheckBox> activeFilters = new HashSet<>();
+    private BookingData bookingData; // Checkin, checkout, number of people
+    private int[] priceRange = new int[2]; // Min, max
+    private ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
+    private HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
 
 
+    /**
+     * Create a new Listings object. Initializes the different lists so the user can add any filter at the beginning.
+     * @param originalListings
+     */
     public Listings(ArrayList<AirbnbListing> originalListings)
     {
+        // Initializing stages of filtering making sure the user can start with any filter without problems.
         this.originalListings = originalListings;
         listingsFilteredByBookingData.addAll(originalListings);
         listingsFilteredByPrice.addAll(originalListings);
@@ -40,15 +58,27 @@ public class Listings {
     }
 
 
+    /**
+     * Get current result of all filter operations.
+     * @return The result as an ArrayList
+     */
     public ArrayList<AirbnbListing> getFilteredListings()
     {
         return filteredListings;
     }
 
+    /**
+     * Returns an observable list which is used for displaying content in e.g. a tableview.
+     * @return The result as an ObservableList
+     */
     public ObservableList<AirbnbListing> getObservableFilteredListings() { return FXCollections.observableArrayList(filteredListings); }
 
 
-    //
+    /**
+     * Change the booking data filter for it.
+     * This is the top filter of the filter-chain because it is expected to be changed the least.
+     * @param bookingData The booking data the user has entered.
+     */
     public void changeBookingData(BookingData bookingData)
     {
         this.bookingData = bookingData;
@@ -56,13 +86,12 @@ public class Listings {
     }
 
     /**
-     * Filter for entered booking data.
+     * Filter for entered booking data. Uses to original listings to avoid loss of data.
      * Checked values are: Minimum and maximum nights, number of guests, price range, availability according to the database.
      * @return
      */
     private void filterBookingData()
     {
-        //listingsFilteredByBookingData.clear();
         listingsFilteredByBookingData = originalListings.stream()
                 .filter(l -> l.getMinimumNights() <= bookingData.getDaysOfStay() && l.getMaximumNights() >= bookingData.getDaysOfStay())
                 .filter(l -> l.getMaxGuests() >= bookingData.getNumberOfPeople())
@@ -73,9 +102,15 @@ public class Listings {
         filterPriceRange();
     }
 
+    /**
+     * Change the price range being applied.
+     * @param minPrice The minimum price the user wants to find properties for.
+     * @param maxPrice The maximum price the user wants to find properties for.
+     * @throws InvalidParameterException If a given price is below 0 or the min is not smaller than the max.
+     */
     public void changePriceRange(int minPrice, int maxPrice) throws InvalidParameterException
     {
-        if (minPrice < 0 || maxPrice < 0)
+        if (minPrice < 0 || maxPrice < 0 || !(minPrice < maxPrice))
             throw new InvalidParameterException("Prices cant be negative");
         priceRange[0] = minPrice;
         priceRange[1] = maxPrice;
@@ -83,6 +118,7 @@ public class Listings {
     }
 
     /**
+     * Second filter in the filter-chain
      * Separate method so the user can change price range at any time without having filter for booking data again.
      */
     private void filterPriceRange()
@@ -98,6 +134,10 @@ public class Listings {
         filterBoroughs();
     }
 
+    /**
+     * Change the boroughs filtered for.
+     * @param selectedBoroughs
+     */
     public void changeSelectedBoroughs(ArrayList<String> selectedBoroughs)
     {
         this.selectedBoroughs = selectedBoroughs;
@@ -118,38 +158,55 @@ public class Listings {
             listingsFilteredBySelectedBoroughs.clear();
             listingsFilteredBySelectedBoroughs.addAll(listingsFilteredByPrice);
         }
-        filterForCheckBoxes();
+        filterForActiveFilters();
     }
 
-    // Noeed to compare against ids because new objects are created every time when boroughpropertiescontroller is opened.
-    public void changeActiveFilters(CheckBox checkBox)
+    /**
+     * Set the active filters with a list.
+     * @param checkedList The active filters.
+     */
+    public void setActiveFilters(ArrayList<FilterNames> checkedList)
     {
-        ArrayList<String> checkBoxIds = new ArrayList<>();
-        for (CheckBox c : activeFilters)
-            checkBoxIds.add(c.getId());
-
-        if (checkBoxIds.contains(checkBox.getId()))
-            activeFilters.remove(checkBox);
-        else
-            activeFilters.add(checkBox);
-
-        //if (!activeFilters.add(checkBox))
-        //    activeFilters.remove(checkBox);
-        System.out.print("Active filters ");
-        for (CheckBox c : activeFilters)
-        System.out.print(" " + c.getId());
-        filterForCheckBoxes();
+        activeFilters.clear();
+        activeFilters.addAll(checkedList);
+        filterForActiveFilters();
     }
 
-    private void filterForCheckBoxes() {
+    /**
+     * Add/Remove a filter depending if it is in the list of active filters or not.
+     * @param filter The filter to be added/removed
+     */
+    public void toggleActiveFilter(FilterNames filter)
+    {
+        if (activeFilters.contains(filter))
+            activeFilters.remove(filter);
+        else
+            activeFilters.add(filter);
+        filterForActiveFilters();
+    }
+
+    /**
+     * Filter for the filters that have been specified by the user. (Wifi, Pool, Private room, Superhost)
+     */
+    private void filterForActiveFilters() {
 
             listingsFilteredByCheckboxes.clear();
             listingsFilteredByCheckboxes.addAll(listingsFilteredBySelectedBoroughs);
             if (!activeFilters.isEmpty()) {
-                for (CheckBox box : activeFilters) {
+                for (FilterNames filter : activeFilters) {
                     //System.out.println("Filtering for checkbox: " + filter.getId());
+
+                    if (filter.name().equals(FilterNames.WIFI_FILTER.name()))
+                        listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Wifi");
+                    else if (filter.name().equals(FilterNames.POOL_FILTER.name()))
+                        listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Pool");
+                    else if (filter.name().equals(FilterNames.ROOM_FILTER.name()))
+                        listingsFilteredByCheckboxes = filterPrivateRoom(listingsFilteredByCheckboxes);
+                    else if (filter.name().equals(FilterNames.SUPER_FILTER.name()))
+                        listingsFilteredByCheckboxes = filterSuperHost(listingsFilteredByCheckboxes);
+                    /*
                     switch (box.getId()) {
-                        case "wifiBox":
+                        case FilterNames.POOL_FILTER.toString():
                             listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Wifi");
                             break;
                         case "poolBox":
@@ -162,6 +219,8 @@ public class Listings {
                             listingsFilteredByCheckboxes = filterSuperHost(listingsFilteredByCheckboxes);
                             break;
                     }
+
+                     */
                 }
             }
             filteredListings.clear();
@@ -169,15 +228,20 @@ public class Listings {
 
     }
 
-
-
-
+    /**
+     * Filter for the properties which have not been booked by other users.
+     * @param checkIn The checkin date (inclusive)
+     * @param checkOut The checkout date (inclusive)
+     */
     private void filterDates(LocalDate checkIn, LocalDate checkOut) {
         // @Barni
     }
 
-
-    public HashSet<CheckBox> getActiveFilters()
+    /**
+     * Get the checkbox filters that have been activated.
+     * @return
+     */
+    public HashSet<FilterNames> getActiveFilters()
     {
         return activeFilters;
     }

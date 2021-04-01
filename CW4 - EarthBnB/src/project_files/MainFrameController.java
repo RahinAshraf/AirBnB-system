@@ -3,11 +3,10 @@ package project_files;
 // FIlter for properties in map controller
 
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,7 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.controlsfx.control.CheckComboBox;
-import org.w3c.dom.events.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -102,35 +100,40 @@ public class MainFrameController extends Application implements Initializable {
 
     private void initializeFiltersComboBox()
     {
-        CheckBox poolBox = new CheckBox("Pool");
-        CheckBox wifiBox = new CheckBox("Wifi");
-        CheckBox roomBox = new CheckBox("Private Room");
-        CheckBox superBox = new CheckBox("Superhost");
+        ObservableList<FilterNames> filterNamesObservableList = FXCollections.observableArrayList(FilterNames.WIFI_FILTER, FilterNames.SUPER_FILTER, FilterNames.ROOM_FILTER, FilterNames.POOL_FILTER);
+        //ObservableList<String> testList = FXCollections.observableArrayList(new String[] {"1", "2", "3", "4"});
 
+        filtersComboBox.getItems().addAll(filterNamesObservableList);
 
-
-        String[] boxes = new String[] {"poolBox", "wifiBox", "roomBox", "superBox"};
-        ObservableList<String> filters = FXCollections.observableArrayList(boxes);
-        filtersComboBox.getItems().addAll(filters);
-
-        //filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> listings.changeActiveFilters(filtersComboBox.getCheckModel().getCheckedItems()));
-        filtersComboBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<String>) box -> changeFilters(new ActionEvent()));
-        /*
-        filtersComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
-            public void onChanged(ListChangeListener.Change<? extends String> c) {
-                while (c.next()) {
-                    //do something with changes here
-                }
-                System.out.println(filtersComboBox.getCheckModel().getCheckedItems());
-            }
-        });
-
-         */
+        filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> activatedFilters(event));
     }
 
-    public void changeFilters(ActionEvent e)
+    private void activatedFilters(Event event)
     {
-        System.out.println("Filter pressed " + e.getSource());
+        ArrayList<FilterNames> checkedList = new ArrayList<>();
+        for (Object s : filtersComboBox.getCheckModel().getCheckedItems()) {
+            if (s.getClass() == FilterNames.class) {
+                FilterNames filter = (FilterNames) s;
+                checkedList.add(filter);
+            }
+        }
+        listings.setActiveFilters(checkedList);
+        updateCurrentPanel();
+    }
+
+    public void setChoiceComboBoxFilters()
+    {
+        /*System.out.println("setting checkboxes: ");
+        for (FilterNames f : listings.getActiveFilters())
+            System.out.println(f.name());
+
+         */
+        filtersComboBox.getCheckModel().clearChecks();
+
+        for (FilterNames filter : listings.getActiveFilters()) {
+            filtersComboBox.getCheckModel().check(filter);
+        }
+        updateCurrentPanel();
     }
 
 
@@ -237,7 +240,6 @@ public class MainFrameController extends Application implements Initializable {
         }
     }
 
-
     /**
      * Get the next panel to be shown in the center of the mainframe.
      * @param direction If the "next" or the "previous" button has been clicked.
@@ -274,7 +276,6 @@ public class MainFrameController extends Application implements Initializable {
         contentPanels[currentPage].setCurrentUser(currentUser);
     }
 
-
     /**
      * Maybe redo.
      * Loads the booking panel and passes in a listing to be displayed in combination with the search the user applied.
@@ -291,7 +292,6 @@ public class MainFrameController extends Application implements Initializable {
             currentPage = 3;
         }
     }
-
 
     public void loginNavigationClicked() throws IOException {
         FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("loginPanel.fxml"));
@@ -384,12 +384,13 @@ public class MainFrameController extends Application implements Initializable {
         if (minPrice != null && maxPrice != null && currentUser != null)
         {
             listings.changePriceRange(minPrice, maxPrice);
-
-            contentPanels[currentPage].updatePanel();
-
-            //updateAllPanels();
-            System.out.println("Applied price range " + minPrice + " " + maxPrice);
+            updateCurrentPanel();
         }
+    }
+
+    public void updateCurrentPanel()
+    {
+        contentPanels[currentPage].updatePanel();
     }
 
     /**
@@ -403,10 +404,6 @@ public class MainFrameController extends Application implements Initializable {
         alert.showAndWait();
     }
 
-
-
-
-
     /**
      * Disable the selection of the price range and the submitButton in the welcomePanel if the user is not logged in.
      * The user can only use the program if logged in.
@@ -414,8 +411,8 @@ public class MainFrameController extends Application implements Initializable {
      */
     public void setLoggedIn(boolean isLoggedIn)
     {
-        minPriceChoiceBox.setDisable(!isLoggedIn);
-        maxPriceChoiceBox.setDisable(!isLoggedIn);
+        //minPriceChoiceBox.setDisable(!isLoggedIn);
+        //maxPriceChoiceBox.setDisable(!isLoggedIn);
 
         if (contentPanels[0].getClass() == WelcomePanel.class) {
             WelcomePanel welcomePanel = (WelcomePanel) contentPanels[0];
@@ -438,8 +435,6 @@ public class MainFrameController extends Application implements Initializable {
         setFrameSwitchingButtonsActive(true);
         firstRequestSubmitted = submitted;
     }
-
-
 }
 
 

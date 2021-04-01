@@ -66,7 +66,7 @@ public class PropertyDisplayerController implements Initializable {
     {
         final  URL urlGoogleMaps = getClass().getResource("googleMaps.html"); // create a url for the html file
         webEngine = mapWebView.getEngine();
-        mapWebView.setVisible(true);
+        mapWebView.setVisible(false);
         mapWebView.setContextMenuEnabled(false);
         webEngine.load(urlGoogleMaps.toExternalForm()); // load google maps file into the webengine (nothing shown yet)
         currentUser = null;
@@ -127,6 +127,7 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     private void loadMap(ActionEvent e)
     {
+        mapWebView.setVisible(true);
         double latitude = displayedListing.getLatitude();
         double longitude = displayedListing.getLongitude();
 

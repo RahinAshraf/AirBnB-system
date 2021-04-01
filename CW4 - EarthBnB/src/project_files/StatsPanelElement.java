@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import java.util.ArrayList;
 
 public class StatsPanelElement {
-    private ArrayList<Statistic> statisticsList;
+    private ArrayList<Statistic> statisticsQueue;
     private Statistic currentStatistic;
     private Listings listings;
 
@@ -14,9 +14,9 @@ public class StatsPanelElement {
 
 
     public StatsPanelElement(ArrayList<Statistic> freeStatisticsList, Statistic currentStatistic, Label statNameLbl, Label statLbl, Listings listings) {
-        statisticsList = new ArrayList<>();
-        this.statisticsList.addAll(freeStatisticsList);
-        this.statisticsList.add(0, currentStatistic);
+        this.statisticsQueue = new ArrayList<>();
+        this.statisticsQueue.addAll(freeStatisticsList);
+        this.statisticsQueue.add(0, currentStatistic);
         this.currentStatistic = currentStatistic;
         this.statNameLbl = statNameLbl;
         this.statLbl = statLbl;
@@ -32,13 +32,14 @@ public class StatsPanelElement {
 
     public int getIndexOfCurrent()
     {
-        return statisticsList.indexOf(currentStatistic);
+        return statisticsQueue.indexOf(currentStatistic);
     }
 
     public void updateList(Statistic addStat, Statistic removeStat)
     {
-        statisticsList.add(addStat);
-        statisticsList.remove(removeStat);
+        statisticsQueue.add(addStat);
+        statisticsQueue.remove(removeStat);
+        System.out.println(this.toString() + " added: " + addStat.getName() + " removed " + removeStat.getName());
     }
 
     public void displayStatistic()
@@ -55,25 +56,25 @@ public class StatsPanelElement {
         int i = getIndexOfCurrent();
 
         if (i > 0) // next element wont be out of bounds
-            nextStat = statisticsList.get(i - 1);
+            nextStat = statisticsQueue.get(i - 1);
         else // Reached end and get first.
-            nextStat = statisticsList.get(statisticsList.size() - 1);
+            nextStat = statisticsQueue.get(statisticsQueue.size() - 1);
 
         currentStatistic = nextStat;
         displayStatistic();
         return nextStat;
     }
 
+
     public Statistic getNextStat()
     {
         Statistic nextStat;
         int i = getIndexOfCurrent();
 
-        if (i < statisticsList.size()-1) // next element wont be out of bounds
-            nextStat = statisticsList.get(i+1);
+        if (i < statisticsQueue.size()-1) // next element wont be out of bounds
+            nextStat = statisticsQueue.get(i+1);
         else // Reached end and get first.
-            nextStat = statisticsList.get(0);
-
+            nextStat = statisticsQueue.get(0);
         currentStatistic = nextStat;
         displayStatistic();
         return nextStat;
