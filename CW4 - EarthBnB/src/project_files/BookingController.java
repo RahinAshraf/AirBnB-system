@@ -99,9 +99,81 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 System.out.println("added");
             }
         }
+    }
+
+    ArrayList<Reservation> reservations;
+    public void updateCalendar() {
+
+        if(!usingDatabase) {
+            reservations = mainFrameController.getOfflineReservations();
+        } else {
+            reservations = new ArrayList<>();
+            String getReservations = "SELECT * FROM booking";
+
+            try {
+                Statement statement = connectDB.createStatement();
+                ResultSet queryResult = statement.executeQuery(getReservations);
+                while (queryResult.next()) {
+                    LocalDate arrivalDate = new java.sql.Date(queryResult.getDate(2).getTime()).toLocalDate();
+                    LocalDate departureDate = new java.sql.Date(queryResult.getDate(3).getTime()).toLocalDate();
+                    Reservation reservation = new Reservation(
+                            queryResult.getInt(1),
+                            arrivalDate,
+                            departureDate,
+                            queryResult.getInt(4),
+                            queryResult.getInt(5),
+                            queryResult.getInt(6),
+                            queryResult.getString(7)
+                    );
+                    reservations.add(reservation);
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                exception.getCause();
+
+            }
+        }
+
+        updateDate();
+
+        Callback<DatePicker, DateCell> reservedDayCellFactory = new Callback<>() {
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        // Must call super
+                        super.updateItem(item, empty);
+
+                        //Show reserved dates in red
+                        if (!empty && item != null) {
+                            if (reservedDates.contains(item)) {
+                                this.setStyle("-fx-background-color: #F96E3A");
+                            }
+                        }
+                    }
+                };
+            }
+        };
+        checkInDate.setDayCellFactory(reservedDayCellFactory);
+    }
 
 
-
+    public void updateDate() {
+        System.out.println("total reservations: " + reservations.size());
+        reservedDates.clear();
+        for(int i = 0; i < reservations.size(); i++) {
+            Reservation reservation = reservations.get(i);
+            System.out.println(reservation.getArrival());
+            if(reservation.getListingID().equals(selectedListing.getId())) {
+                System.out.println("there is resevation for this property");
+                LocalDate date = reservation.getArrival();
+                while(date.isBefore(reservation.getDeparture().plusDays(1))) {
+                    reservedDates.add(date);
+                    System.out.println("added" + date);
+                    date = date.plusDays(1);
+                }
+            }
+        }
     }
 
     /**
@@ -122,76 +194,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                     loadFromFavouritesTable(chosenProperty);
                 }
             }
-
-
-
-            ArrayList<Reservation> reservations;
-
-            if(!usingDatabase) {
-                reservations = mainFrameController.getOfflineReservations();
-            } else {
-                reservations = new ArrayList<>();
-                String getReservations = "SELECT * FROM booking";
-
-                try {
-                    Statement statement = connectDB.createStatement();
-                    ResultSet queryResult = statement.executeQuery(getReservations);
-                    while (queryResult.next()) {
-                        LocalDate arrivalDate = new java.sql.Date(queryResult.getDate(2).getTime()).toLocalDate();
-                        LocalDate departureDate = new java.sql.Date(queryResult.getDate(3).getTime()).toLocalDate();
-                        Reservation reservation = new Reservation(
-                                queryResult.getInt(1),
-                                arrivalDate,
-                                departureDate,
-                                queryResult.getInt(4),
-                                queryResult.getInt(5),
-                                queryResult.getInt(6),
-                                queryResult.getString(7)
-                        );
-                        reservations.add(reservation);
-                    }
-                } catch (Exception exception) {
-                    exception.printStackTrace();
-                    exception.getCause();
-
-                }
-            }
-
-            System.out.println("total reservations: " + reservations.size());
-            reservedDates.clear();
-            for(int i = 0; i < reservations.size(); i++) {
-                Reservation reservation = reservations.get(i);
-                System.out.println(reservation.getArrival());
-                if(reservation.getListingID().equals(selectedListing.getId())) {
-                    System.out.println("there is resevation for this property");
-                    LocalDate date = reservation.getArrival();
-                    while(date.isBefore(reservation.getDeparture().plusDays(1))) {
-                        reservedDates.add(date);
-                        System.out.println("added" + date);
-                        date = date.plusDays(1);
-                    }
-                }
-            }
-
-            Callback<DatePicker, DateCell> reservedDayCellFactory = new Callback<>() {
-                public DateCell call(final DatePicker datePicker) {
-                    return new DateCell() {
-                        @Override
-                        public void updateItem(LocalDate item, boolean empty) {
-                            // Must call super
-                            super.updateItem(item, empty);
-
-                            //Show reserved dates in red
-                            if (!empty && item != null) {
-                                if (reservedDates.contains(item)) {
-                                    this.setStyle("-fx-background-color: #F96E3A");
-                                }
-                            }
-                        }
-                    };
-                }
-            };
-            checkInDate.setDayCellFactory(reservedDayCellFactory);
+            updateCalendar();
         }
 
 
@@ -199,45 +202,52 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
 
     public void reserveProperty() {
-        if(usingDatabase) {
-            System.out.println(currentUser.getAccountID());
-            BookingData usersData = currentUser.getBookingData();
-            String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
-                    usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "')";
-            //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
+        if(favoritesTable.getSelectionModel().getSelectedItem() != null && favoritesTable.getSelectionModel().getSelectedItem().getClass() == AirbnbListing.class) {
+            selectedListing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
+            if (usingDatabase && selectedListing != null) {
+                System.out.println(currentUser.getAccountID());
+                BookingData usersData = currentUser.getBookingData();
+                String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
+                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "')";
+                //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
-            try {
-                Statement statement = connectDB.createStatement();
-                boolean violation = false;
-                int index = 0;
+                try {
+                    Statement statement = connectDB.createStatement();
+                    boolean violation = false;
+                    int index = 0;
 
-                if (selectedListing != null ) {
-                    while(index < reservedDates.size() && !violation) {
-                        System.out.println("# of reserved dates: " + reservedDates.size());
-                        if(checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
-                            System.out.println("Some days are reserved in between your selection");
-                            violation = true;
-                        } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
-                            System.out.println("Some days are reserved at your selections");
-                            violation = true;
+                    if (selectedListing != null)
+                        while (index < reservedDates.size() && !violation) {
+                            System.out.println("# of reserved dates: " + reservedDates.size());
+                            if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
+                                System.out.println("Some days are reserved in between your selection");
+                                violation = true;
+                            } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
+                                System.out.println("Some days are reserved at your selections");
+                                violation = true;
+                            }
+                            index++;
                         }
-                        index++;
-                    }
-                    if(!violation) {statement.executeUpdate(createBooking); }
+                        if (!violation) {
+                            statement.executeUpdate(createBooking);
+                            data.remove(favoritesTable.getSelectionModel().getSelectedItem());
+                            favoritesTable.getSelectionModel().clearSelection();
+                        }
+                } catch (Exception e) {
+
                 }
-            } catch (Exception e) {
-
+            } else {
+                BookingData usersData = currentUser.getBookingData();
+                ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
+                Reservation reservation = new Reservation(reservations.size() + 1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
+                        selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
+                reservations.add(reservation);
             }
-        } else {
-            BookingData usersData = currentUser.getBookingData();
-            ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
-            Reservation reservation = new Reservation(reservations.size()+1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
-                    selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
-            reservations.add(reservation);
+
+
+            // Remove property from saved list
+
         }
-
-
-
 
 
     }

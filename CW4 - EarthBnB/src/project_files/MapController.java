@@ -81,6 +81,8 @@ public class MapController extends MainframeContentPanel implements Initializabl
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {
             e.printStackTrace();
+
+
         }
 
     }
