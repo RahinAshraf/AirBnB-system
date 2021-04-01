@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class StatisticsPanelController extends MainframeContentPanel {
     private Statistic accommodationType, availableProperties, averageNumReviews, mostExpensiveBorough,
-            closestListingToAttraction, statB, statC, statD;
+            closestListingToAttraction, StatMostLuxurious, StatBestOffer, statD;
 
     private StatsPanelElement panel1, panel2, panel3, panel4;
 
@@ -39,16 +39,16 @@ public class StatisticsPanelController extends MainframeContentPanel {
         averageNumReviews = new StatAverageNumReviews(filteredListings);
         mostExpensiveBorough = new StatMostExpensiveBorough(filteredListings);
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
-        statB = new StatB(filteredListings);
-        statC = new StatC(filteredListings);
+        StatMostLuxurious = new StatMostLuxurious(filteredListings);
+        StatBestOffer = new StatBestOffer(filteredListings);
         statD = new StatD(filteredListings);
 
         // Just a temporary list, specifies all elements that are not being shown.
         // Would be better to derive them from the ones being displayed, making sure no bs can happen.
         ArrayList<Statistic> statisticsInQueue = new ArrayList<>();
         statisticsInQueue.add(closestListingToAttraction);
-        statisticsInQueue.add(statB);
-        statisticsInQueue.add(statC);
+        statisticsInQueue.add(StatMostLuxurious);
+        statisticsInQueue.add(StatBestOffer);
         statisticsInQueue.add(statD);
 
         // Each panel stores the elements that it could possibly show later.
