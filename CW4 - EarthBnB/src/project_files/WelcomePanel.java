@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 /**
  * The WelcomePanelClass -
@@ -46,7 +47,7 @@ public class WelcomePanel extends MainframeContentPanel {
      * @param e
      */
     @FXML
-    private void setSubmitButton(ActionEvent e){
+    private void setSubmitButton(ActionEvent e) throws SQLException {
         if (checkEntries()) {
             int people = Integer.parseInt(numberOfPeople.getText());
             currentUser.setBookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID());

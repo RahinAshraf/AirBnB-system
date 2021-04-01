@@ -4,9 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.security.InvalidParameterException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -79,8 +86,7 @@ public class Listings {
      * This is the top filter of the filter-chain because it is expected to be changed the least.
      * @param bookingData The booking data the user has entered.
      */
-    public void changeBookingData(BookingData bookingData)
-    {
+    public void changeBookingData(BookingData bookingData) throws SQLException {
         this.bookingData = bookingData;
         filterBookingData();
     }
@@ -90,15 +96,14 @@ public class Listings {
      * Checked values are: Minimum and maximum nights, number of guests, price range, availability according to the database.
      * @return
      */
-    private void filterBookingData()
-    {
+    private void filterBookingData() throws SQLException {
         listingsFilteredByBookingData = originalListings.stream()
                 .filter(l -> l.getMinimumNights() <= bookingData.getDaysOfStay() && l.getMaximumNights() >= bookingData.getDaysOfStay())
                 .filter(l -> l.getMaxGuests() >= bookingData.getNumberOfPeople())
                 .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        //filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
+        filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
         filterPriceRange();
     }
 
@@ -233,8 +238,38 @@ public class Listings {
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
      */
-    private void filterDates(LocalDate checkIn, LocalDate checkOut) {
-        // @Barni
+    private void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
+
+        ArrayList<String> unavailableReservationIDs = new ArrayList<>();
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection connectDB = connection.getConnection();
+        Statement statement = connectDB.createStatement();
+
+
+        Date checkInDate = Date.from(checkIn.atStartOfDay(defaultZoneId).toInstant());
+        Date checkOutDate = Date.from(checkOut.atStartOfDay(defaultZoneId).toInstant());
+
+        // Returns all of the booking IDs that are in between the checkIn and checkOut dates
+        String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut+ "' ) OR (DEPARTURE BETWEEN '"
+                + checkIn + "' AND '" + checkOut + "' + INTERVAL 1 DAY ) GROUP BY listingID";
+
+        ResultSet queryResult = statement.executeQuery(filteredReservations);
+        while(queryResult.next()) {
+            unavailableReservationIDs.add(queryResult.getString(1));
+        }
+        System.out.println("checin: " + checkIn + ", checkindate: " + checkInDate);
+        for(int i=0; i<listingsFilteredByBookingData.size(); i++) {
+            for(int j=0; j<unavailableReservationIDs.size(); j++) {
+                if(listingsFilteredByBookingData.get(i).getId().equals(unavailableReservationIDs.get(j))) {
+                    System.out.print("removed: " + listingsFilteredByBookingData.get(i).getId() + "");
+                    listingsFilteredByBookingData.remove(i);
+                }
+            }
+        }
+
+
     }
 
     /**
