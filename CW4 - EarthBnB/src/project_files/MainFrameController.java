@@ -279,6 +279,7 @@ public class MainFrameController extends Application implements Initializable {
     /**
      * Maybe redo.
      * Loads the booking panel and passes in a listing to be displayed in combination with the search the user applied.
+     * Used for communication between the propertyDisplayer and the booking panel.
      * @param listing
      * @throws IOException
      */

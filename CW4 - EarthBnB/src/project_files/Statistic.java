@@ -1,5 +1,7 @@
 package project_files;
 
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,7 @@ public abstract class Statistic {
      * Get the result of the statistics calculation.
      * @return
      */
-    public String getStatistic(ArrayList<AirbnbListing> listings)
+    public Node getStatistic(ArrayList<AirbnbListing> listings)
     {
         return updateStatistic(listings);
     }
@@ -32,5 +34,5 @@ public abstract class Statistic {
      * @param listings
      * @return
      */
-    protected abstract String updateStatistic(ArrayList<AirbnbListing> listings);
+    protected abstract Node updateStatistic(ArrayList<AirbnbListing> listings);
 }

@@ -1,13 +1,16 @@
 package project_files;
 
+import javafx.scene.Node;
 import javafx.util.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class StatClosestListingToAttraction retrieves the closest apartments to given points. Creates a printable list.
  */
-public class StatClosestListingToAttraction extends Statistic {
+public class StatClosestListingToAttraction extends StatisticAsText {
 
     HashMap<String, double[]> locationsList = new HashMap<>();
     /**
@@ -29,7 +32,7 @@ public class StatClosestListingToAttraction extends Statistic {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected String updateStatistic(ArrayList<AirbnbListing> listings)
+    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
     {
         String result = "";
         for (Map.Entry<String, double[]> location : locationsList.entrySet())
@@ -37,7 +40,8 @@ public class StatClosestListingToAttraction extends Statistic {
             Pair<AirbnbListing, Integer> currentResult = getClosestTo(listings, location.getValue()[0], location.getValue()[1]); //Pass in the boroughListings and the two location values stored in the array
             result += location.getKey() + ": " + "\n" + currentResult.getKey().getName() + " " + currentResult.getValue() + "m\n"; // Get the name of the original location, the nearest apartment and the distance in meters
         }
-        return result;
+        statLabel.setText(result);
+        return statLabel;
     }
 
     /**

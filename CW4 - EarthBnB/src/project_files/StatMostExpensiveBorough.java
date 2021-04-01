@@ -1,5 +1,7 @@
 package project_files;
 
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -7,7 +9,7 @@ import java.util.stream.Collectors;
  * Class MostExpensiveBoroughStat is the statistic finding the most expensive borough in the given set of data.
  * The price for a property is the price per night * the minimum number of nights.
  */
-public class StatMostExpensiveBorough extends Statistic {
+public class StatMostExpensiveBorough extends StatisticAsText {
 
     /**
      * Create a statistic object for the most expensive borough.
@@ -24,10 +26,12 @@ public class StatMostExpensiveBorough extends Statistic {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected String updateStatistic(ArrayList<AirbnbListing> listings)
+    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        return listings.stream()
+        String mostExpensiveBorough = listings.stream()
                 .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.averagingDouble(AirbnbListing::getAveragePrice))) // Create a map mapping each borough to its average price
                 .entrySet().stream().max((borough1, borough2) -> borough1.getValue() > borough2.getValue() ? 1 : -1).get().getKey(); // Get the name (the key) of that map with the largest average price (value)
+        statLabel.setText(mostExpensiveBorough);
+        return statLabel;
     }
 }

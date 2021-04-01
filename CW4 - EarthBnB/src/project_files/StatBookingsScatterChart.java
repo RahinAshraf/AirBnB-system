@@ -1,16 +1,21 @@
 package project_files;
 
+import javafx.scene.Node;
+import javafx.scene.chart.ScatterChart;
+
 import java.util.ArrayList;
 
 /**
  * Class AccommodationTypeStat is the statistic of how many properties in the set of data are of the type "entire home and apartments"
  */
-public class StatMostLuxurious extends Statistic {
+public class StatBookingsScatterChart extends Statistic {
+
+    ScatterChart bookingsChart;
 
     /**
      * Create an object for the statistic counting the number of entire home and apartments listed.
      */
-    public StatMostLuxurious(ArrayList<AirbnbListing> listings)
+    public StatBookingsScatterChart(ArrayList<AirbnbListing> listings)
     {
         name = "Luxurious Offer!";
         updateStatistic(listings);
@@ -22,8 +27,8 @@ public class StatMostLuxurious extends Statistic {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected String updateStatistic(ArrayList<AirbnbListing> listings)
+    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        return "3"; // Calculate building with highest price and highest rating in the chosen borough.
+        return bookingsChart;
     }
 }

@@ -1,11 +1,13 @@
 package project_files;
 
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 
 /**
  * Class AverageNumReviewsStat represents the statistic calculating the average number of reviews each property has in the given set of data.
  */
-public class StatAverageNumReviews extends Statistic {
+public class StatAverageNumReviews extends StatisticAsText {
 
     /**
      * Create an object for the statistic of the average number of reviews per property.
@@ -22,9 +24,10 @@ public class StatAverageNumReviews extends Statistic {
      * @param listings A list of airbnb properties the statistic should be calculated for.
      * @return
      */
-    protected String updateStatistic(ArrayList<AirbnbListing> listings)
+    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
     {
         long average = Math.round(listings.stream().mapToInt(listing -> listing.getNumberOfReviews()).average().orElse(Double.NEGATIVE_INFINITY)); // Calculate the rounded average. If the given list is empty, the result is negative infinity
-        return "" + average;
+        statLabel.setText("" + average);
+        return statLabel;
     }
 }
