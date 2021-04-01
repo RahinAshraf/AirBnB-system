@@ -17,14 +17,11 @@ public class StatisticsPanelController extends MainframeContentPanel {
 
     private ArrayList<StatsPanelElement> allStatPanels;
 
-    //@FXML
-    //private Label statLbl1, statLbl2, statLbl3, statLbl4;
-
     @FXML
     private Label statNameLbl1, statNameLbl2, statNameLbl3, statNameLbl4;
 
     @FXML
-    private BorderPane statsBP1, statsBP2, statsBP3, statsBP4;
+    private BorderPane statsBP1, statsBP2, statsBP3, statsBP4; // Invoke .setCenter on these to show a statistic
 
     public StatisticsPanelController() {
         currentUser = null;
