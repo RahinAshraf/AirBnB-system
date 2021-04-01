@@ -1,12 +1,13 @@
 package project_files;
 
+import javafx.scene.Node;
+
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * Class AccommodationTypeStat is the statistic of how many properties in the set of data are of the type "entire home and apartments"
  */
-public class StatBestOffer extends Statistic {
+public class StatBestOffer extends StatisticAsText {
 
     /**
      * Create an object for the statistic counting the number of entire home and apartments listed.
@@ -22,9 +23,10 @@ public class StatBestOffer extends Statistic {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected String updateStatistic(ArrayList<AirbnbListing> listings)
+    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        return "2"; // Calculate building with lowest price but highest rating in the chosen borough.
+        statLabel.setText("Test");
+        return statLabel; // Calculate building with lowest price but highest rating in the chosen borough.
 
         // listings.stream()
         //         .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.averagingDouble(AirbnbListing::getAveragePrice)))

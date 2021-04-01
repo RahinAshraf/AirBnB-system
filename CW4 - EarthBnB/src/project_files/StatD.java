@@ -1,11 +1,13 @@
 package project_files;
 
+import javafx.scene.Node;
+
 import java.util.ArrayList;
 
 /**
  * Class AccommodationTypeStat is the statistic of how many properties in the set of data are of the type "entire home and apartments"
  */
-public class StatD extends Statistic {
+public class StatD extends StatisticAsText {
 
     /**
      * Create an object for the statistic counting the number of entire home and apartments listed.
@@ -21,9 +23,10 @@ public class StatD extends Statistic {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected String updateStatistic(ArrayList<AirbnbListing> listings)
+    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        return "4"; //used to get it to run - need changing
+        statLabel.setText("4");
+        return statLabel; //used to get it to run - need changing
 
     }
 }

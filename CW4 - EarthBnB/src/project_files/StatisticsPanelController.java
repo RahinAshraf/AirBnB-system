@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,10 @@ public class StatisticsPanelController extends MainframeContentPanel {
     private ArrayList<StatsPanelElement> allStatPanels;
 
     @FXML
-    private Label statLbl1, statLbl2, statLbl3, statLbl4;
+    private Label statNameLbl1, statNameLbl2, statNameLbl3, statNameLbl4;
 
     @FXML
-    private Label statNameLbl1, statNameLbl2, statNameLbl3, statNameLbl4;
+    private BorderPane statsBP1, statsBP2, statsBP3, statsBP4; // Invoke .setCenter on these to show a statistic
 
     public StatisticsPanelController() {
         currentUser = null;
@@ -39,7 +40,7 @@ public class StatisticsPanelController extends MainframeContentPanel {
         averageNumReviews = new StatAverageNumReviews(filteredListings);
         mostExpensiveBorough = new StatMostExpensiveBorough(filteredListings);
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
-        StatMostLuxurious = new StatMostLuxurious(filteredListings);
+        StatMostLuxurious = new StatBookingsScatterChart(filteredListings);
         StatBestOffer = new StatBestOffer(filteredListings);
         statD = new StatD(filteredListings);
 
@@ -52,10 +53,10 @@ public class StatisticsPanelController extends MainframeContentPanel {
         statisticsInQueue.add(statD);
 
         // Each panel stores the elements that it could possibly show later.
-        panel1 = new StatsPanelElement(statisticsInQueue, accommodationType, statNameLbl1, statLbl1, listings);
-        panel2 = new StatsPanelElement(statisticsInQueue, availableProperties, statNameLbl2, statLbl2, listings);
-        panel3 = new StatsPanelElement(statisticsInQueue, averageNumReviews, statNameLbl3, statLbl3, listings);
-        panel4 = new StatsPanelElement(statisticsInQueue, mostExpensiveBorough, statNameLbl4, statLbl4, listings);
+        panel1 = new StatsPanelElement(statsBP1, statisticsInQueue, accommodationType, statNameLbl1, listings);
+        panel2 = new StatsPanelElement(statsBP2, statisticsInQueue, availableProperties, statNameLbl2, listings);
+        panel3 = new StatsPanelElement(statsBP3, statisticsInQueue, averageNumReviews, statNameLbl3, listings);
+        panel4 = new StatsPanelElement(statsBP4, statisticsInQueue, mostExpensiveBorough, statNameLbl4, listings);
 
         allStatPanels = new ArrayList<>();
         allStatPanels.add(panel1);

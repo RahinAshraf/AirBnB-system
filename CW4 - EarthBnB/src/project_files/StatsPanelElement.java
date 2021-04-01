@@ -2,6 +2,7 @@ package project_files;
 
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 
 import java.util.ArrayList;
 
@@ -10,16 +11,17 @@ public class StatsPanelElement {
     private Statistic currentStatistic;
     private Listings listings;
 
-    private Label statNameLbl, statLbl;
+    private Label statNameLbl;
+    private BorderPane contentPane;
 
 
-    public StatsPanelElement(ArrayList<Statistic> freeStatisticsList, Statistic currentStatistic, Label statNameLbl, Label statLbl, Listings listings) {
+    public StatsPanelElement(BorderPane borderPane, ArrayList<Statistic> freeStatisticsList, Statistic currentStatistic, Label statNameLbl, Listings listings) {
+        contentPane = borderPane;
         this.statisticsQueue = new ArrayList<>();
         this.statisticsQueue.addAll(freeStatisticsList);
         this.statisticsQueue.add(0, currentStatistic);
         this.currentStatistic = currentStatistic;
         this.statNameLbl = statNameLbl;
-        this.statLbl = statLbl;
         this.listings = listings;
         displayStatistic();
     }
@@ -45,7 +47,8 @@ public class StatsPanelElement {
     public void displayStatistic()
     {
         statNameLbl.setText(currentStatistic.getName());
-        statLbl.setText(currentStatistic.getStatistic(listings.getFilteredListings()));
+        contentPane.setCenter(currentStatistic.getStatistic(listings.getFilteredListings()));
+        //statLbl.setText(currentStatistic.getStatistic(listings.getFilteredListings()));
     }
 
     // Get rid of code duplication in getNext and getPrev?
