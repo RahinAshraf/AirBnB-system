@@ -71,10 +71,15 @@ public class BoroughPropertiesController implements Initializable {
     }
 
     private void setFilterCheckBoxIds() {
-        wifiBox.setId(FilterNames.WIFI_FILTER.toString());
-        poolBox.setId(FilterNames.POOL_FILTER.toString());
-        superBox.setId(FilterNames.SUPER_FILTER.toString());
-        roomBox.setId(FilterNames.ROOM_FILTER.toString());
+        wifiBox.setId(FilterNames.WIFI_FILTER.name());
+        poolBox.setId(FilterNames.POOL_FILTER.name());
+        superBox.setId(FilterNames.SUPER_FILTER.name());
+        roomBox.setId(FilterNames.ROOM_FILTER.name());
+
+        wifiBox.setText(FilterNames.WIFI_FILTER.toString());
+        poolBox.setText(FilterNames.POOL_FILTER.toString());
+        superBox.setText(FilterNames.SUPER_FILTER.toString());
+        roomBox.setText(FilterNames.ROOM_FILTER.toString());
     }
 
     private void buildTable() {
@@ -128,15 +133,15 @@ public class BoroughPropertiesController implements Initializable {
      * Solution: Only create this controller once and later just show it. (Barni?)
      */
     private void setActivatedCheckboxFilters() {
-        for (String filter : listings.getActiveFilters())
+        for (FilterNames filter : listings.getActiveFilters())
         {
-            if (filter.equals(FilterNames.POOL_FILTER.toString()))
+            if (filter.name().equals(FilterNames.POOL_FILTER.name()))
                 poolBox.setSelected(true);
-            else if (filter.equals(FilterNames.WIFI_FILTER.toString()))
+            else if (filter.name().equals(FilterNames.WIFI_FILTER.name()))
                 wifiBox.setSelected(true);
-            else if (filter.equals(FilterNames.SUPER_FILTER.toString()))
+            else if (filter.name().equals(FilterNames.SUPER_FILTER.name()))
                 superBox.setSelected(true);
-            else if (filter.equals(FilterNames.ROOM_FILTER.toString()))
+            else if (filter.name().equals(FilterNames.ROOM_FILTER.name()))
                 roomBox.setSelected(true);
             /*
             switch (box.getId())
@@ -200,7 +205,6 @@ public class BoroughPropertiesController implements Initializable {
         }
     }
 
-    // FUCKED
     /**
      *
      */
@@ -209,10 +213,11 @@ public class BoroughPropertiesController implements Initializable {
             listings.changeSelectedBoroughs(new ArrayList<>()); // Reset the selected boroughs
             Stage stage = (Stage) mainFrameController.contentPane.getScene().getWindow();
             stage.show();
+            mainFrameController.updateCurrentPanel(); // make sure any modification made to filters are immediately loaded
             Stage thisStage = (Stage) propertiesTable.getScene().getWindow();
             thisStage.close();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -226,13 +231,18 @@ public class BoroughPropertiesController implements Initializable {
     public void changeFilter(ActionEvent e)
     {
         CheckBox checkBox;
-        System.out.println(e.getSource());
         if (e.getSource().getClass() == CheckBox.class) {
             checkBox = (CheckBox) e.getSource();
-            listings.changeActiveFilters(checkBox.getId());
-            System.out.println(listings.getFilteredListings().size());
+            if (FilterNames.getFilter(checkBox.getId()) != null)
+            listings.toggleActiveFilter(FilterNames.getFilter(checkBox.getId())); // get the filternames object from the previously stored names. (risky stuff, bad code?)
+            System.out.println("Toggled filter: ");
+            for (FilterNames f : listings.getActiveFilters())
+            {
+                System.out.println(f.name() + " ");
+            }
         }
         displayList();
+        mainFrameController.setChoiceComboBoxFilters(); // Update the filter selection in the main frame. Would be enough to check when "back is clicked" but safer this way.
     }
 
 
