@@ -1,6 +1,7 @@
 package project_files;
 
 import javafx.scene.Node;
+import project_files.AirbnbListing;
 
 import java.util.ArrayList;
 

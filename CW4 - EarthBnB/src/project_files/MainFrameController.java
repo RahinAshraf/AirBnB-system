@@ -1,5 +1,4 @@
 package project_files;
-
 // FIlter for properties in map controller
 
 import javafx.application.Application;

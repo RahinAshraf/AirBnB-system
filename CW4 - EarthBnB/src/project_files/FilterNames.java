@@ -1,7 +1,7 @@
 package project_files;
 
 public enum FilterNames {
-    POOL_FILTER("Pool"), ROOM_FILTER("Room"), SUPER_FILTER("Superhost"), WIFI_FILTER("Wi-fi");
+    POOL_FILTER("Pool"), ROOM_FILTER("Private Room"), SUPER_FILTER("Superhost"), WIFI_FILTER("Wi-fi");
 
     private String displayName;
 

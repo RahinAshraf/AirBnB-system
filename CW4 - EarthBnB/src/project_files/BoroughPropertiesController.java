@@ -283,7 +283,7 @@ public class BoroughPropertiesController implements Initializable {
         Parent root = displayerLoader.load();
         Stage newStage = new Stage();
         newStage.setTitle("Property");
-        newStage.setScene(new Scene(root, 950, 600));
+        newStage.setScene(new Scene(root, 950, 650));
 
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
         propertyDisplayer.loadData(property, currentUser); // Load the data into the window.

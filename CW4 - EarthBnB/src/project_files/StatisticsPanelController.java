@@ -131,12 +131,6 @@ public class StatisticsPanelController extends MainframeContentPanel {
      */
     @Override
     public void updatePanel() {
-        /*
-        for (StatsPanelElement panel : allStatPanels) {
-            panel.displayStatistic();
-        }
-
-         */
         for (StatsPanelElement panel : allStatPanels)
         {
             panel.updatePanelElement();

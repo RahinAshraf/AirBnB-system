@@ -22,7 +22,7 @@ public class ConnectionSelector {
         Parent root = mainLoader.load();
         Stage newStage = new Stage();
         newStage.setTitle("EarthBnB");
-        newStage.setScene(new Scene(root, 600, 500));
+        newStage.setScene(new Scene(root, 700, 550));
         newStage.setResizable(true);
         newStage.show();
         if(((Button)e.getSource()).getId().equals("dbSelectButton")) {

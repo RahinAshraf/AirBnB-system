@@ -8,19 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -182,22 +176,19 @@ public class BookingController extends MainframeContentPanel implements Initiali
      */
     @FXML
     public void rowClicked(MouseEvent e) throws IOException {
-        if(!(favoritesTable.getSelectionModel().getSelectedItem() == null)) {
-            Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
-            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
-                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
-                selectedListing = chosenProperty;
-                totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
-                calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
-                if (e.getClickCount() == 2)
-                {
+        if (e.getClickCount() == 2) {
+            if (!(favoritesTable.getSelectionModel().getSelectedItem() == null)) {
+                Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
+                if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
+                    AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+                    selectedListing = chosenProperty;
+                    totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
+                    calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
                     loadFromFavouritesTable(chosenProperty);
                 }
+                updateCalendar();
             }
-            updateCalendar();
         }
-
-
     }
 
 
