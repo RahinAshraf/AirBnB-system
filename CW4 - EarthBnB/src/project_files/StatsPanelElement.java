@@ -44,11 +44,16 @@ public class StatsPanelElement {
         System.out.println(this.toString() + " added: " + addStat.getName() + " removed " + removeStat.getName());
     }
 
-    public void displayStatistic()
+    private void displayStatistic()
     {
         statNameLbl.setText(currentStatistic.getName());
-        contentPane.setCenter(currentStatistic.getStatistic(listings.getFilteredListings()));
-        //statLbl.setText(currentStatistic.getStatistic(listings.getFilteredListings()));
+        contentPane.setCenter(currentStatistic.getStatistic());
+    }
+
+    public void updatePanelElement()
+    {
+        currentStatistic.updateStatistic(listings.getFilteredListings());
+        displayStatistic();
     }
 
     // Get rid of code duplication in getNext and getPrev?

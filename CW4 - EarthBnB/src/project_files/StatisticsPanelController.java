@@ -41,7 +41,7 @@ public class StatisticsPanelController extends MainframeContentPanel {
         mostExpensiveBorough = new StatMostExpensiveBorough(filteredListings);
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
         StatMostLuxurious = new StatBookingsScatterChart(filteredListings);
-        StatBestOffer = new StatBestOffer(filteredListings);
+        StatBestOffer = new StatBookingDevelopmentGraph(filteredListings);
         statD = new StatD(filteredListings);
 
         // Just a temporary list, specifies all elements that are not being shown.
@@ -131,8 +131,15 @@ public class StatisticsPanelController extends MainframeContentPanel {
      */
     @Override
     public void updatePanel() {
+        /*
         for (StatsPanelElement panel : allStatPanels) {
             panel.displayStatistic();
+        }
+
+         */
+        for (StatsPanelElement panel : allStatPanels)
+        {
+            panel.updatePanelElement();
         }
     }
 }

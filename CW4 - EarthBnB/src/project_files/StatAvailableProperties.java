@@ -1,7 +1,5 @@
 package project_files;
 
-import javafx.scene.Node;
-
 import java.util.ArrayList;
 
 /**
@@ -23,10 +21,9 @@ public class StatAvailableProperties extends StatisticAsText {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
+    protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         long available = listings.stream().filter(property -> property.getAvailability365() > 0).count();
         statLabel.setText("" + available);
-        return statLabel;
     }
 }

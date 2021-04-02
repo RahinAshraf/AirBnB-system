@@ -81,6 +81,7 @@ public class MainFrameController extends Application implements Initializable {
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("listings.csv");
+
         try {
             createPanels();
         } catch (IOException e) {
@@ -97,6 +98,8 @@ public class MainFrameController extends Application implements Initializable {
         offlineAccounts = new ArrayList<>();
         offlineReservations = new ArrayList<>();
     }
+
+
 
     private void initializeFiltersComboBox()
     {

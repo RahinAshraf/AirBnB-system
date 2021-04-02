@@ -13,7 +13,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -259,7 +258,7 @@ public class Listings {
         while(queryResult.next()) {
             unavailableReservationIDs.add(queryResult.getString(1));
         }
-        System.out.println("checin: " + checkIn + ", checkindate: " + checkInDate);
+        //System.out.println("checin: " + checkIn + ", checkindate: " + checkInDate);
         for(int i=0; i<listingsFilteredByBookingData.size(); i++) {
             for(int j=0; j<unavailableReservationIDs.size(); j++) {
                 if(listingsFilteredByBookingData.get(i).getId().equals(unavailableReservationIDs.get(j))) {
@@ -268,8 +267,6 @@ public class Listings {
                 }
             }
         }
-
-
     }
 
     /**

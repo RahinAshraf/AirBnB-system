@@ -1,7 +1,5 @@
 package project_files;
 
-import javafx.scene.Node;
-
 import java.util.ArrayList;
 
 /**
@@ -24,10 +22,9 @@ public class StatAccommodationType extends StatisticAsText {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
+    protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         long numHouses = listings.stream().filter(listing -> listing.getRoomType().equals("Entire home/apt")).count();
         statLabel.setText("" + numHouses);
-        return statLabel;
     }
 }
