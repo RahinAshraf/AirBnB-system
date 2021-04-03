@@ -126,11 +126,37 @@ public class MapController extends MainframeContentPanel implements Initializabl
         }
     }
 
+    public void setButtonColor(Button button) {
+        int boroughPropertyCount;
+        try {
+            boroughPropertyCount = propertyCount.get(button.getId()).intValue();
+        } catch(Exception e) {
+            boroughPropertyCount = 0;
+        }
+        try {
+            if (boroughPropertyCount >= 5000) {
+             button.setStyle("-fx-background-color: #FF1515");
+            } else if (boroughPropertyCount >= 300 && boroughPropertyCount < 5000) {
+                button.setStyle("-fx-background-color: #FFB06F");
+            } else if (boroughPropertyCount > 0 && boroughPropertyCount < 300) {
+                button.setStyle("-fx-background-color: #F2E02C");
+            } else {
+                button.setStyle("-fx-background-color: #CCCCCC");
+            }
+        } catch (Exception e) {
+            System.out.println("error");
+        }
+    }
+
     public void selectNewBorough(Button button) {
 
         if (selectedBoroughs.contains(button)) {
             selectedBoroughs.remove(button);
-            button.setStyle("-fx-background-color: #FFFFFF"); // Change back to old color instead of white
+            //button.setStyle("-fx-background-color: #FFFFFF"); // Change back to old color instead of white
+
+            setButtonColor(button);
+
+
         } else {
             selectedBoroughs.add(button);
             button.setStyle("-fx-background-color: #50B4D4");
