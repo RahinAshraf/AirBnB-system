@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.regex.*;
 
 public class RegisterController {
 
@@ -39,21 +40,26 @@ public class RegisterController {
             String checkSignup = "SELECT * FROM account WHERE username = '" + nameField.getText() + "'";
             if (nameField.getText().length() != 0 && pwField.getText().length() != 0 && pwField.getText().length() != 0 && pwConfField.getText().length() != 0) {
                 if ((pwField.getText().equals(pwConfField.getText()))) {
-                    try {
-                        Statement statement = connectDB.createStatement();
-                        ResultSet queryResult = statement.executeQuery(checkSignup);
-                        if (queryResult.next()) {
-                            feedbackLabel.setText("Account with this name exists!");
+                    if(validateEmail(emailField.getText())) {
+                        try {
+                            Statement statement = connectDB.createStatement();
+                            ResultSet queryResult = statement.executeQuery(checkSignup);
+                            if (queryResult.next()) {
+                                feedbackLabel.setText("Account with this name exists!");
+                                feedbackLabel.setTextFill(Color.RED);
+                            } else {
+                                statement.executeUpdate(createSignup);
+                                feedbackLabel.setText("Successful registration!");
+                                feedbackLabel.setTextFill(Color.GREEN);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            e.getCause();
+                            feedbackLabel.setText("The account could not be created!");
                             feedbackLabel.setTextFill(Color.RED);
-                        } else {
-                            statement.executeUpdate(createSignup);
-                            feedbackLabel.setText("Successful registration!");
-                            feedbackLabel.setTextFill(Color.GREEN);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        e.getCause();
-                        feedbackLabel.setText("The account could not be created!");
+                    } else {
+                        feedbackLabel.setText("Wrong email address format!");
                         feedbackLabel.setTextFill(Color.RED);
                     }
                 } else {
@@ -82,6 +88,13 @@ public class RegisterController {
                 feedbackLabel.setTextFill(Color.GREEN);
             }
         }
+    }
+
+
+    public boolean validateEmail(String email) {
+        Pattern pattern = Pattern.compile("^.+@.+\\..+$");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     public void setMainWindowController(MainFrameController mainFrameController) {
