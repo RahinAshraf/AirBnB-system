@@ -240,6 +240,7 @@ public class Listings {
      */
     private void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
 
+
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();
         ZoneId defaultZoneId = ZoneId.systemDefault();
 
@@ -263,7 +264,7 @@ public class Listings {
         for(int i=0; i<listingsFilteredByBookingData.size(); i++) {
             for(int j=0; j<unavailableReservationIDs.size(); j++) {
                 if(listingsFilteredByBookingData.get(i).getId().equals(unavailableReservationIDs.get(j))) {
-                    System.out.print("removed: " + listingsFilteredByBookingData.get(i).getId() + "");
+                    System.out.print("removed: " + listingsFilteredByBookingData.get(i).getId() + ", ");
                     listingsFilteredByBookingData.remove(i);
                 }
             }
