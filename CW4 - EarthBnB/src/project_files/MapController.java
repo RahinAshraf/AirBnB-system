@@ -98,8 +98,14 @@ public class MapController extends MainframeContentPanel implements Initializabl
     @Override
     public void updatePanel() {
         updateBoroughs();
+        System.out.println("called update");
         for(int i=0; i<33; i++) {
-            setButtonColor((Button) mapView.getChildren().get(i));
+            Button button = (Button) mapView.getChildren().get(i);
+            if(selectedBoroughs.contains(button)) {
+                button.setStyle("-fx-background-color: #50B4D4");
+            } else {
+                setButtonColor(button);
+            }
         }
     }
 

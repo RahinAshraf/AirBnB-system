@@ -112,8 +112,6 @@ public class LoginPanelController implements Initializable {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
 
-
-
             try {
                 String verifyLogin = "SELECT * FROM account WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashPW(passwordTextField.getText()) + "'";
 
@@ -144,9 +142,13 @@ public class LoginPanelController implements Initializable {
             ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
             boolean found = false;
             for(int i=0; i<accounts.size(); i++) {
-                if(accounts.get(i).getUsername().equals(usernameTextField.getText()) && accounts.get(i).getPassword().equals(passwordTextField.getText())) {
-                    user = accounts.get(i);
-                    found = true;
+                try {
+                    if (accounts.get(i).getUsername().equals(usernameTextField.getText()) && accounts.get(i).getPassword().equals(hashPW(passwordTextField.getText()))) {
+                        user = accounts.get(i);
+                        found = true;
+                    }
+                } catch(Exception e) {
+
                 }
             }
             if (found) {

@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -66,9 +67,13 @@ public class RegisterController {
         if (found) {
             createFeedback("Account already exists!", 2);
         } else {
-            Account newAccount = new Account(mainFrameController.getOfflineAccounts().size() + 1, nameField.getText(), pwField.getText(), emailField.getText());
-            accounts.add(newAccount);
-            createFeedback("Successful registration!", 1);
+            try {
+                Account newAccount = new Account(mainFrameController.getOfflineAccounts().size() + 1, nameField.getText(), hashPW(pwField.getText()), emailField.getText());
+                accounts.add(newAccount);
+                createFeedback("Successful registration!", 1);
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -83,15 +88,7 @@ public class RegisterController {
             if (queryResult.next()) {
                 createFeedback("Account with this name exists!", 2);
             } else {
-
-
-                MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-                messageDigest.reset();
-                messageDigest.update(pwField.getText().getBytes(StandardCharsets.UTF_8));
-
-                String hashedPW = String.format("%0128x", new BigInteger(1, messageDigest.digest()));
-
-                String createSignup = "INSERT INTO account VALUES (NULL, '" + nameField.getText() + "', '" + hashedPW + "', '" + emailField.getText() + "')";
+                String createSignup = "INSERT INTO account VALUES (NULL, '" + nameField.getText() + "', '" + hashPW(pwField.getText()) + "', '" + emailField.getText() + "')";
 
                 statement.executeUpdate(createSignup);
                 createFeedback("Successful registration!", 1);
@@ -101,6 +98,14 @@ public class RegisterController {
             e.getCause();
             createFeedback("The account could not be created!", 2);
         }
+    }
+
+    private String hashPW(String password) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+        messageDigest.reset();
+        messageDigest.update(password.getBytes(StandardCharsets.UTF_8));
+
+        return String.format("%0128x", new BigInteger(1, messageDigest.digest()));
     }
 
     private void createFeedback(String text, int type) {
