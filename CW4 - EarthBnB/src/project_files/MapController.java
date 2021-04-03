@@ -99,30 +99,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
     public void updatePanel() {
         updateBoroughs();
         for(int i=0; i<33; i++) {
-            String buttonID = mapView.getChildren().get(i).getId();
-            int boroughPropertyCount;
-            try {
-                boroughPropertyCount = propertyCount.get(buttonID).intValue();
-            } catch(Exception e) {
-                boroughPropertyCount = 0;
-            }
-            try {
-                if (boroughPropertyCount >= 5000) {
-                    mapView.getChildren().get(i).setStyle("-fx-background-color: #FF1515");
-                    System.out.println("Index: " + i + ", " + mapView.getChildren().get(i).getId() + ": " + boroughPropertyCount);
-                } else if (boroughPropertyCount >= 300 && boroughPropertyCount < 5000) {
-                    mapView.getChildren().get(i).setStyle("-fx-background-color: #FFB06F");
-                    System.out.println("Index: " + i + ", " + mapView.getChildren().get(i).getId() + ": " + boroughPropertyCount);
-                } else if (boroughPropertyCount > 0 && boroughPropertyCount < 300) {
-                    mapView.getChildren().get(i).setStyle("-fx-background-color: #F2E02C");
-                    System.out.println("Index: " + i + ", " + mapView.getChildren().get(i).getId() + ": " + boroughPropertyCount);
-                } else {
-                    mapView.getChildren().get(i).setStyle("-fx-background-color: #CCCCCC");
-                    System.out.println("Index: " + i + ", " + mapView.getChildren().get(i).getId() + ": " + boroughPropertyCount);
-                }
-            } catch (Exception e) {
-                System.out.println("error: " + i);
-            }
+            setButtonColor((Button) mapView.getChildren().get(i));
         }
     }
 
