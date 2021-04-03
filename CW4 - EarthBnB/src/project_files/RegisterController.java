@@ -36,62 +36,70 @@ public class RegisterController {
 
 
     public void validateRegister() {
-        if(mainFrameController.isUsingDatabase()) {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-
-            String checkSignup = "SELECT * FROM account WHERE username = '" + nameField.getText() + "'";
-            if (nameField.getText().length() != 0 && pwField.getText().length() != 0 && pwField.getText().length() != 0 && pwConfField.getText().length() != 0) {
-                if ((pwField.getText().equals(pwConfField.getText()))) {
-                    if(validateEmail(emailField.getText())) {
-                        try {
-                            Statement statement = connectDB.createStatement();
-                            ResultSet queryResult = statement.executeQuery(checkSignup);
-                            if (queryResult.next()) {
-                                createFeedback("Account with this name exists!", 2);
-                            } else {
-
-
-                                MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-                                messageDigest.reset();
-                                messageDigest.update(pwField.getText().getBytes(StandardCharsets.UTF_8));
-
-                                String hashedPW = String.format("%0128x", new BigInteger(1, messageDigest.digest()));
-
-                                String createSignup = "INSERT INTO account VALUES (NULL, '" + nameField.getText() + "', '" + hashedPW + "', '" + emailField.getText() + "')";
-
-                                statement.executeUpdate(createSignup);
-                                createFeedback("Successful registration!", 1);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            e.getCause();
-                            createFeedback("The account could not be created!", 2);
-                        }
+        if (nameField.getText().length() != 0 && pwField.getText().length() != 0 && pwField.getText().length() != 0 && pwConfField.getText().length() != 0) {
+            if ((pwField.getText().equals(pwConfField.getText()))) {
+                if(validateEmail(emailField.getText())) {
+                    if(mainFrameController.isUsingDatabase()) {
+                        validateDatabaseRegister();
                     } else {
-                        createFeedback("Wrong email address format!", 2);
+                        validateOfflineRegister();
                     }
                 } else {
-                    createFeedback("The two passwords don't match!", 2);
+                    createFeedback("Wrong email address format!", 2);
                 }
+            } else {
+                createFeedback("The two passwords don't match!", 2);
+            }
             } else {
                 createFeedback("Please fill in all fields!", 2);
             }
-        } else {
-            ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
-            boolean found = false;
-            for(int i=0; i<accounts.size(); i++) {
-                if(accounts.get(i).getUsername().equals(nameField.getText())) {
-                    found = true;
-                }
+    }
+
+    public void validateOfflineRegister() {
+        ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
+        boolean found = false;
+        for (int i = 0; i < accounts.size(); i++) {
+            if (accounts.get(i).getUsername().equals(nameField.getText())) {
+                found = true;
             }
-            if(found) {
-                createFeedback("Account already exists!", 2);
+        }
+        if (found) {
+            createFeedback("Account already exists!", 2);
+        } else {
+            Account newAccount = new Account(mainFrameController.getOfflineAccounts().size() + 1, nameField.getText(), pwField.getText(), emailField.getText());
+            accounts.add(newAccount);
+            createFeedback("Successful registration!", 1);
+        }
+    }
+
+
+    public void validateDatabaseRegister() {
+        try {
+            DatabaseConnection connection = new DatabaseConnection();
+            Connection connectDB = connection.getConnection();
+            Statement statement = connectDB.createStatement();
+            String checkSignup = "SELECT * FROM account WHERE username = '" + nameField.getText() + "'";
+            ResultSet queryResult = statement.executeQuery(checkSignup);
+            if (queryResult.next()) {
+                createFeedback("Account with this name exists!", 2);
             } else {
-                Account newAccount = new Account(mainFrameController.getOfflineAccounts().size()+1, nameField.getText(), pwField.getText(), emailField.getText());
-                accounts.add(newAccount);
+
+
+                MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+                messageDigest.reset();
+                messageDigest.update(pwField.getText().getBytes(StandardCharsets.UTF_8));
+
+                String hashedPW = String.format("%0128x", new BigInteger(1, messageDigest.digest()));
+
+                String createSignup = "INSERT INTO account VALUES (NULL, '" + nameField.getText() + "', '" + hashedPW + "', '" + emailField.getText() + "')";
+
+                statement.executeUpdate(createSignup);
                 createFeedback("Successful registration!", 1);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+            createFeedback("The account could not be created!", 2);
         }
     }
 
