@@ -5,6 +5,10 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -78,6 +82,27 @@ public class StatBookingsScatterChart extends Statistic {
             }else
                 locationsEntireHouse.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
         }
+
+        //Query request
+
+
+        try {
+            DatabaseConnection connection = new DatabaseConnection();
+            Connection connectDB = connection.getConnection();
+            Statement statement = connectDB.createStatement();
+
+            LocalDate currentDate = LocalDate.now();
+
+            String checkSignup = "SELECT listingID FROM booking WHERE listingID < '" + currentDate + "'";
+
+            ResultSet queryResult = statement.executeQuery(checkSignup);
+            while (queryResult.next()) {
+                // do something with the ID (queryResult is an ID integer)
+            }
+        } catch (Exception e) {
+
+        }
+
         // Two queries: booking of private room and entire house / apartment. Maybe only query for changes, faster.
         //get array and then .longitude to series.getData.add(new XYChart.Data(lat, long));
 

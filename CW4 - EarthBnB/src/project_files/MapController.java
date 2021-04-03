@@ -104,12 +104,12 @@ public class MapController extends MainframeContentPanel implements Initializabl
             if(selectedBoroughs.contains(button)) {
                 button.setStyle("-fx-background-color: #50B4D4");
             } else {
-                setButtonColor(button);
+                setBoroughDefaultColor(button);
             }
         }
     }
 
-    public void setButtonColor(Button button) {
+    public void setBoroughDefaultColor(Button button) {
         int boroughPropertyCount;
         try {
             boroughPropertyCount = propertyCount.get(button.getId()).intValue();
@@ -137,7 +137,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
             selectedBoroughs.remove(button);
             //button.setStyle("-fx-background-color: #FFFFFF"); // Change back to old color instead of white
 
-            setButtonColor(button);
+            setBoroughDefaultColor(button);
 
 
         } else {
