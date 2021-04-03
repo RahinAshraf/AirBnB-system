@@ -12,7 +12,11 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 
 import java.awt.event.MouseEvent;
+import java.math.BigInteger;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -42,9 +46,17 @@ public class AccountPanelController implements Initializable {
 
     }
     public void loadUserInformation() {
+
         userInformationList.add("Account ID: " + (currentUser.getAccountID()));
         userInformationList.add("Username: " + currentUser.getUsername());
-        userInformationList.add("Password: " + currentUser.getPassword());
         userInformationList.add("Email Address: " + currentUser.getEmailAddress());
+    }
+
+    private String hashPW(String password) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+        messageDigest.reset();
+        messageDigest.update(password.getBytes(StandardCharsets.UTF_8));
+
+        return String.format("%0128x", new BigInteger(1, messageDigest.digest()));
     }
 }
