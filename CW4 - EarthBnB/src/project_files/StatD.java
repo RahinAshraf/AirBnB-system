@@ -1,7 +1,5 @@
 package project_files;
 
-import javafx.scene.Node;
-
 import java.util.ArrayList;
 
 /**
@@ -23,10 +21,8 @@ public class StatD extends StatisticAsText {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
+    protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         statLabel.setText("4");
-        return statLabel; //used to get it to run - need changing
-
     }
 }

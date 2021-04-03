@@ -1,7 +1,5 @@
 package project_files;
 
-import javafx.scene.Node;
-
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -26,12 +24,11 @@ public class StatMostExpensiveBorough extends StatisticAsText {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
+    protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         String mostExpensiveBorough = listings.stream()
                 .collect(Collectors.groupingBy(AirbnbListing::getNeighbourhood, Collectors.averagingDouble(AirbnbListing::getAveragePrice))) // Create a map mapping each borough to its average price
                 .entrySet().stream().max((borough1, borough2) -> borough1.getValue() > borough2.getValue() ? 1 : -1).get().getKey(); // Get the name (the key) of that map with the largest average price (value)
         statLabel.setText(mostExpensiveBorough);
-        return statLabel;
     }
 }

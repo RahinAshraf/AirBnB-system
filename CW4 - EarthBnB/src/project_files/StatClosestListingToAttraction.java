@@ -1,6 +1,5 @@
 package project_files;
 
-import javafx.scene.Node;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class StatClosestListingToAttraction extends StatisticAsText {
      * @param listings A list of boroughListings the statistic should be calculated for.
      * @return
      */
-    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
+    protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         String result = "";
         for (Map.Entry<String, double[]> location : locationsList.entrySet())
@@ -41,7 +40,6 @@ public class StatClosestListingToAttraction extends StatisticAsText {
             result += location.getKey() + ": " + "\n" + currentResult.getKey().getName() + " " + currentResult.getValue() + "m\n"; // Get the name of the original location, the nearest apartment and the distance in meters
         }
         statLabel.setText(result);
-        return statLabel;
     }
 
     /**

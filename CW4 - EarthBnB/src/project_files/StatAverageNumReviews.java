@@ -1,7 +1,5 @@
 package project_files;
 
-import javafx.scene.Node;
-
 import java.util.ArrayList;
 
 /**
@@ -24,10 +22,9 @@ public class StatAverageNumReviews extends StatisticAsText {
      * @param listings A list of airbnb properties the statistic should be calculated for.
      * @return
      */
-    protected Node updateStatistic(ArrayList<AirbnbListing> listings)
+    protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         long average = Math.round(listings.stream().mapToInt(listing -> listing.getNumberOfReviews()).average().orElse(Double.NEGATIVE_INFINITY)); // Calculate the rounded average. If the given list is empty, the result is negative infinity
         statLabel.setText("" + average);
-        return statLabel;
     }
 }
