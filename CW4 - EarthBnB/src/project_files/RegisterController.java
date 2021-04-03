@@ -45,30 +45,24 @@ public class RegisterController {
                             Statement statement = connectDB.createStatement();
                             ResultSet queryResult = statement.executeQuery(checkSignup);
                             if (queryResult.next()) {
-                                feedbackLabel.setText("Account with this name exists!");
-                                feedbackLabel.setTextFill(Color.RED);
+                                createFeedback("Account with this name exists!", 2);
                             } else {
                                 statement.executeUpdate(createSignup);
-                                feedbackLabel.setText("Successful registration!");
-                                feedbackLabel.setTextFill(Color.GREEN);
+                                createFeedback("Successful registration!", 1);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                             e.getCause();
-                            feedbackLabel.setText("The account could not be created!");
-                            feedbackLabel.setTextFill(Color.RED);
+                            createFeedback("The account could not be created!", 2);
                         }
                     } else {
-                        feedbackLabel.setText("Wrong email address format!");
-                        feedbackLabel.setTextFill(Color.RED);
+                        createFeedback("Wrong email address format!", 2);
                     }
                 } else {
-                    feedbackLabel.setText("The two passwords don't match!");
-                    feedbackLabel.setTextFill(Color.RED);
+                    createFeedback("The two passwords don't match!", 2);
                 }
             } else {
-                feedbackLabel.setText("Please fill in all fields!");
-                feedbackLabel.setTextFill(Color.RED);
+                createFeedback("Please fill in all fields!", 2);
             }
         } else {
             ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
@@ -79,19 +73,33 @@ public class RegisterController {
                 }
             }
             if(found) {
-                feedbackLabel.setText("Account already exists!");
-                feedbackLabel.setTextFill(Color.RED);
+                createFeedback("Account already exists!", 2);
             } else {
                 Account newAccount = new Account(mainFrameController.getOfflineAccounts().size()+1, nameField.getText(), pwField.getText(), emailField.getText());
                 accounts.add(newAccount);
-                feedbackLabel.setText("Successful registration!");
-                feedbackLabel.setTextFill(Color.GREEN);
+                createFeedback("Successful registration!", 1);
             }
         }
     }
 
+    private void createFeedback(String text, int type) {
+        Color color;
+        switch (type) {
+            case 1:
+                color = Color.GREEN;
+                break;
+            case 2:
+                color = Color.RED;
+                break;
+            default:
+                color = Color.GREEN;
+        }
+        feedbackLabel.setText(text);
+        feedbackLabel.setTextFill(color);
+    }
 
-    public boolean validateEmail(String email) {
+
+    private boolean validateEmail(String email) {
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
