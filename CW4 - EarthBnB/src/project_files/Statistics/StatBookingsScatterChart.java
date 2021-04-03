@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Class AccommodationTypeStat is the statistic of how many properties in the set of data are of the type "entire home and apartments"
@@ -62,19 +63,76 @@ public class StatBookingsScatterChart extends Statistic {
         locationsPrivateRooms.getData().clear();
         locationsEntireHouse.getData().clear();
 
-        for (int i = 0; i < listings.size() * 0.1 ; i++) // Should be .size and run in thread
-        {
-            AirbnbListing l = listings.get(i);
-            if (l.getRoomType().equals("Private room"))
-            {
-                locationsPrivateRooms.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
-            }else
-                locationsEntireHouse.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
-        }
-
         //Query request
 
+        HashSet<String> bookedPropertyIds = getBookedPropertiesFromDB();
 
+
+
+        //System.out.println("DB: " + bookedPropertyIds.size());
+
+        // Create list of all ids listings following the current constraints (maybe in listings class?)
+        //HashSet<String> filteredListingsIds = listings.stream()
+         //       .map(l -> l.getId()).collect(Collectors.toCollection(HashSet::new));
+
+        //System.out.println("Filtered listings " + filteredListingsIds.size());
+
+        // Find the intersection with all properties which have been booked in the system (should be in the last year)
+        //filteredListingsIds.retainAll(bookedPropertyIds);
+
+        //System.out.println("Intersection" + filteredListingsIds.size());
+
+        /*
+        // Translate the ids to the Airbnblistings
+        HashMap<String, AirbnbListing> mappedListings = new HashMap<>();
+
+        // Create a map mapping ids to their listing --> fast access for finding the right listings
+        for (AirbnbListing l : listings) {
+            mappedListings.put(l.getId(), l);
+        }
+
+        //System.out.println("Map " + mappedListings.size());
+
+        // Find the listing matching the id and add it to the matching series
+        for (String id : filteredListingsIds)
+        {
+            AirbnbListing l = mappedListings.get(id);
+            if (l != null)
+            {
+                if (l.getRoomType().equals("Private room"))
+                    locationsPrivateRooms.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
+                else
+                    locationsEntireHouse.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
+            }
+        }
+
+         */
+
+
+        long time = System.currentTimeMillis();
+        for (String id : bookedPropertyIds)
+        {
+            for (int i = 0; i < listings.size(); i++)
+            {
+                AirbnbListing l = listings.get(i);
+                if (id.equals(l.getId()))
+                {
+                    if (listings.get(i).getRoomType().equals("Private room"))
+                        locationsPrivateRooms.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
+                    else
+                        locationsEntireHouse.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
+                }
+            }
+        }
+        bookingsChart.getData().setAll(locationsPrivateRooms, locationsEntireHouse); // Add the new data to the graph
+        System.out.println(System.currentTimeMillis() - time);
+
+    }
+
+
+
+    private HashSet<String> getBookedPropertiesFromDB() {
+        HashSet<String> bookedPropertyIds = new HashSet<>();
         try {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
@@ -86,16 +144,10 @@ public class StatBookingsScatterChart extends Statistic {
 
             ResultSet queryResult = statement.executeQuery(checkSignup);
             while (queryResult.next()) {
-                // do something with the ID (queryResult is an ID integer)
+                bookedPropertyIds.add(queryResult.getString(1)); // Unsafe operation?
             }
         } catch (Exception e) {
-
         }
-
-        // Two queries: booking of private room and entire house / apartment. Maybe only query for changes, faster.
-        //get array and then .longitude to series.getData.add(new XYChart.Data(lat, long));
-
-        bookingsChart.getData().setAll(locationsPrivateRooms, locationsEntireHouse); // Add the new data to the graph
+        return bookedPropertyIds;
     }
-
 }

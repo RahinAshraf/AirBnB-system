@@ -3,7 +3,6 @@ package project_files;
 import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 /**
  * The BookingData Class stores the data received from the welcome panel.
@@ -62,10 +61,7 @@ public class BookingData {
         this.bookerID = bookerID;
     }
 
-    public BookingData()
-    {
-    }
-
+    public BookingData() {}
 
     public int getDaysOfStay()
     {

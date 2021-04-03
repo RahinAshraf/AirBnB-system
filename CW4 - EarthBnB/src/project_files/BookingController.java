@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 public class BookingController extends MainframeContentPanel implements Initializable {
 
 
-    //ArrayList<AirbnbListing> listings;
     TableColumn propertyNameCol;
     TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
@@ -43,7 +42,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     @FXML
     DatePicker checkInDate, checkOutDate;
 
-    boolean usingDatabase;
+    private boolean usingDatabase;
 
     public BookingController()
     {

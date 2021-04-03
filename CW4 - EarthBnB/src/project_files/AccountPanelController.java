@@ -5,20 +5,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.MouseButton;
 
-import java.awt.event.MouseEvent;
 import java.math.BigInteger;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class AccountPanelController implements Initializable {
@@ -27,10 +20,13 @@ public class AccountPanelController implements Initializable {
     //private Listings listings;
     private Account currentUser;
     private ObservableList<String> userInformationList = FXCollections.observableArrayList();
-
+    private ObservableList<Reservation> upcomingTrips = FXCollections.observableArrayList();
 
     @FXML
     ListView informationList;
+
+    @FXML
+    TableView tripsTable;
 
     public void initializeAccount(Account currentUser) {
         //this.listings = listings;
@@ -38,6 +34,7 @@ public class AccountPanelController implements Initializable {
         this.currentUser = currentUser;
         loadUserInformation();
         informationList.setItems(userInformationList);
+        tripsTable.setItems(upcomingTrips);
     }
 
     @Override

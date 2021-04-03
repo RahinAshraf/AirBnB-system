@@ -208,23 +208,6 @@ public class Listings {
                         listingsFilteredByCheckboxes = filterPrivateRoom(listingsFilteredByCheckboxes);
                     else if (filter.name().equals(FilterNames.SUPER_FILTER.name()))
                         listingsFilteredByCheckboxes = filterSuperHost(listingsFilteredByCheckboxes);
-                    /*
-                    switch (box.getId()) {
-                        case FilterNames.POOL_FILTER.toString():
-                            listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Wifi");
-                            break;
-                        case "poolBox":
-                            listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Pool");
-                            break;
-                        case "roomBox":
-                            listingsFilteredByCheckboxes = filterPrivateRoom(listingsFilteredByCheckboxes);
-                            break;
-                        case "superBox":
-                            listingsFilteredByCheckboxes = filterSuperHost(listingsFilteredByCheckboxes);
-                            break;
-                    }
-
-                     */
                 }
             }
             filteredListings.clear();
@@ -259,11 +242,10 @@ public class Listings {
         while(queryResult.next()) {
             unavailableReservationIDs.add(queryResult.getString(1));
         }
-        //System.out.println("checin: " + checkIn + ", checkindate: " + checkInDate);
+
         for(int i=0; i<listingsFilteredByBookingData.size(); i++) {
             for(int j=0; j<unavailableReservationIDs.size(); j++) {
                 if(listingsFilteredByBookingData.get(i).getId().equals(unavailableReservationIDs.get(j))) {
-                    System.out.print("removed: " + listingsFilteredByBookingData.get(i).getId() + ", ");
                     listingsFilteredByBookingData.remove(i);
                 }
             }

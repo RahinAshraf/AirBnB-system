@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -147,7 +148,7 @@ public class PropertyDisplayerController implements Initializable {
         currentUser.addFavouriteProperty(displayedListing); // Using a hashset, therefore not added twice.
         try {
             mainFrameController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
-
+            mainFrameController.getListings().changeSelectedBoroughs(new ArrayList<>()); // Reset the active filter
             // Pass on this listing to bookingPanel somehow
 
             Stage thisStage = (Stage) saveButton.getScene().getWindow(); // Get the stage of this window from a random control

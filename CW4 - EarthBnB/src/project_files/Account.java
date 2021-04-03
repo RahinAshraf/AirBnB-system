@@ -64,10 +64,6 @@ public class Account {
         return bookingData;
     }
 
-    public void setBookingData(BookingData bookingData) {
-        this.bookingData = bookingData;
-    }
-
     public void setBookingData(LocalDate checkIn, LocalDate checkOut, int people, int accountID) {
         bookingData.setCheckIn(checkIn);
         bookingData.setCheckOut(checkOut);
