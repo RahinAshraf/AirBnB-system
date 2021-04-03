@@ -6,6 +6,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -36,7 +40,6 @@ public class RegisterController {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
 
-            String createSignup = "INSERT INTO account VALUES (NULL, '" + nameField.getText() + "', '" + pwField.getText() + "', '" + emailField.getText() + "')";
             String checkSignup = "SELECT * FROM account WHERE username = '" + nameField.getText() + "'";
             if (nameField.getText().length() != 0 && pwField.getText().length() != 0 && pwField.getText().length() != 0 && pwConfField.getText().length() != 0) {
                 if ((pwField.getText().equals(pwConfField.getText()))) {
@@ -47,6 +50,16 @@ public class RegisterController {
                             if (queryResult.next()) {
                                 createFeedback("Account with this name exists!", 2);
                             } else {
+
+
+                                MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+                                messageDigest.reset();
+                                messageDigest.update(pwField.getText().getBytes(StandardCharsets.UTF_8));
+
+                                String hashedPW = String.format("%0128x", new BigInteger(1, messageDigest.digest()));
+
+                                String createSignup = "INSERT INTO account VALUES (NULL, '" + nameField.getText() + "', '" + hashedPW + "', '" + emailField.getText() + "')";
+
                                 statement.executeUpdate(createSignup);
                                 createFeedback("Successful registration!", 1);
                             }

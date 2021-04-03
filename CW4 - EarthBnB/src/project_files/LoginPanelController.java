@@ -11,7 +11,11 @@ import javafx.scene.layout.BorderPane;
 
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -94,6 +98,13 @@ public class LoginPanelController implements Initializable {
         }
 
     }
+    public String hashPW(String password) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+        messageDigest.reset();
+        messageDigest.update(password.getBytes(StandardCharsets.UTF_8));
+
+        return String.format("%0128x", new BigInteger(1, messageDigest.digest()));
+    }
 
 
     public void validateLogin() {
@@ -101,8 +112,11 @@ public class LoginPanelController implements Initializable {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
 
-            String verifyLogin = "SELECT * FROM account WHERE username = '" + usernameTextField.getText() + "' AND password = '" + passwordTextField.getText() + "'";
+
+
             try {
+                String verifyLogin = "SELECT * FROM account WHERE username = '" + usernameTextField.getText() + "' AND password = '" + hashPW(passwordTextField.getText()) + "'";
+
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(verifyLogin);
 
