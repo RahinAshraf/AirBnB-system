@@ -233,8 +233,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
                 reservations.add(reservation);
             }
-
-
             // Remove property from saved list
 
         }

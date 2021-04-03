@@ -63,52 +63,7 @@ public class StatBookingsScatterChart extends Statistic {
         locationsPrivateRooms.getData().clear();
         locationsEntireHouse.getData().clear();
 
-        //Query request
-
         HashSet<String> bookedPropertyIds = getBookedPropertiesFromDB();
-
-
-
-        //System.out.println("DB: " + bookedPropertyIds.size());
-
-        // Create list of all ids listings following the current constraints (maybe in listings class?)
-        //HashSet<String> filteredListingsIds = listings.stream()
-         //       .map(l -> l.getId()).collect(Collectors.toCollection(HashSet::new));
-
-        //System.out.println("Filtered listings " + filteredListingsIds.size());
-
-        // Find the intersection with all properties which have been booked in the system (should be in the last year)
-        //filteredListingsIds.retainAll(bookedPropertyIds);
-
-        //System.out.println("Intersection" + filteredListingsIds.size());
-
-        /*
-        // Translate the ids to the Airbnblistings
-        HashMap<String, AirbnbListing> mappedListings = new HashMap<>();
-
-        // Create a map mapping ids to their listing --> fast access for finding the right listings
-        for (AirbnbListing l : listings) {
-            mappedListings.put(l.getId(), l);
-        }
-
-        //System.out.println("Map " + mappedListings.size());
-
-        // Find the listing matching the id and add it to the matching series
-        for (String id : filteredListingsIds)
-        {
-            AirbnbListing l = mappedListings.get(id);
-            if (l != null)
-            {
-                if (l.getRoomType().equals("Private room"))
-                    locationsPrivateRooms.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
-                else
-                    locationsEntireHouse.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
-            }
-        }
-
-         */
-
-
         long time = System.currentTimeMillis();
         for (String id : bookedPropertyIds)
         {
@@ -126,7 +81,6 @@ public class StatBookingsScatterChart extends Statistic {
         }
         bookingsChart.getData().setAll(locationsPrivateRooms, locationsEntireHouse); // Add the new data to the graph
         System.out.println(System.currentTimeMillis() - time);
-
     }
 
 
@@ -148,6 +102,7 @@ public class StatBookingsScatterChart extends Statistic {
             }
         } catch (Exception e) {
         }
+        System.out.println(bookedPropertyIds.size());
         return bookedPropertyIds;
     }
 }
