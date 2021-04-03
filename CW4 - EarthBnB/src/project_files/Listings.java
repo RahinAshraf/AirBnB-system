@@ -32,18 +32,18 @@ import java.util.stream.Collectors;
 public class Listings {
 
     // The different stages the listing can take. Stored so not every filter needs to be applied newly in case something is changed.
-    private ArrayList<AirbnbListing> originalListings;
-    private ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
-    private ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
-    private ArrayList<AirbnbListing> listingsFilteredBySelectedBoroughs = new ArrayList<>();
-    private ArrayList<AirbnbListing> listingsFilteredByCheckboxes = new ArrayList<>();
-    private ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
+    private static ArrayList<AirbnbListing> originalListings;
+    private static ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
+    private static ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
+    private static ArrayList<AirbnbListing> listingsFilteredBySelectedBoroughs = new ArrayList<>();
+    private static ArrayList<AirbnbListing> listingsFilteredByCheckboxes = new ArrayList<>();
+    private static ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
 
     // The filters that can be applied.
-    private BookingData bookingData; // Checkin, checkout, number of people
-    private int[] priceRange = new int[2]; // Min, max
-    private ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
-    private HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
+    private static BookingData bookingData; // Checkin, checkout, number of people
+    private static int[] priceRange = new int[2]; // Min, max
+    private static ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
+    private static HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
 
 
     /**

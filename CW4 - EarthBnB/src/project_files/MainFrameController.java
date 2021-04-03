@@ -1,5 +1,4 @@
 package project_files;
-// FIlter for properties in map controller
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -125,11 +124,6 @@ public class MainFrameController extends Application implements Initializable {
 
     public void setChoiceComboBoxFilters()
     {
-        /*System.out.println("setting checkboxes: ");
-        for (FilterNames f : listings.getActiveFilters())
-            System.out.println(f.name());
-
-         */
         filtersComboBox.getCheckModel().clearChecks();
 
         for (FilterNames filter : listings.getActiveFilters()) {
@@ -145,7 +139,7 @@ public class MainFrameController extends Application implements Initializable {
 
     private void createPanels() throws IOException {
        // Names of all views that should be displayed in the main frame. Displayed in the order added.
-       String[] panelViewsStrings = new String[] {"welcomePanelView.fxml", "mapView.fxml", "statisticsView.fxml", "bookingView.fxml"};
+       String[] panelViewsStrings = new String[] {"welcomePanelView.fxml", "mapView.fxml", "Statistics/statisticsView.fxml", "bookingView.fxml"};
        contentPanels = new MainframeContentPanel[panelViewsStrings.length];
        for (int i = 0; i < panelViewsStrings.length; i++)
        {
