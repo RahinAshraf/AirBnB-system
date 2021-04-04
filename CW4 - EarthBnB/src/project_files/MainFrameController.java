@@ -80,7 +80,7 @@ public class MainFrameController extends Application implements Initializable {
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("listings.csv");
-        //generateBookings();
+        //teagenerateBookings();
         //generateUsers();
         try {
             createPanels();
