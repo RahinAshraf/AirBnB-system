@@ -268,7 +268,7 @@ public class Listings {
      * @param filterString The amenity to be filtered by.
      * @return A new list only containing the properties which supply the specified amenity.
      */
-    private ArrayList<AirbnbListing> filterAmenity(ArrayList<AirbnbListing> list, String filterString)
+    public ArrayList<AirbnbListing> filterAmenity(ArrayList<AirbnbListing> list, String filterString)
     {
         return list.stream()
                 .filter(airbnbListing -> airbnbListing.getAmenities().contains(filterString))
@@ -281,7 +281,7 @@ public class Listings {
      * @param list The list to be filtered.
      * @return A new list only containing superhosts.
      */
-    private ArrayList<AirbnbListing> filterSuperHost(ArrayList<AirbnbListing> list){
+    public ArrayList<AirbnbListing> filterSuperHost(ArrayList<AirbnbListing> list){
         return list.stream()
                 .filter(airbnbListing -> airbnbListing.isHostSuperhost())
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -292,7 +292,7 @@ public class Listings {
      * @param list The list to be filtered.
      * @return A new list only containing private rooms.
      */
-    private ArrayList<AirbnbListing> filterPrivateRoom(ArrayList<AirbnbListing> list){
+    public ArrayList<AirbnbListing> filterPrivateRoom(ArrayList<AirbnbListing> list){
         return list.stream()
                 .filter(airbnbListing -> airbnbListing.getRoomType().equals("Private room"))
                 .collect(Collectors.toCollection(ArrayList::new));
