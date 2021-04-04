@@ -105,10 +105,7 @@ public class MainFrameController extends Application implements Initializable {
     private void initializeFiltersComboBox()
     {
         ObservableList<FilterNames> filterNamesObservableList = FXCollections.observableArrayList(FilterNames.WIFI_FILTER, FilterNames.SUPER_FILTER, FilterNames.ROOM_FILTER, FilterNames.POOL_FILTER);
-        //ObservableList<String> testList = FXCollections.observableArrayList(new String[] {"1", "2", "3", "4"});
-
         filtersComboBox.getItems().addAll(filterNamesObservableList);
-
         filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> activatedFilters(event));
     }
 
