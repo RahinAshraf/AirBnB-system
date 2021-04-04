@@ -39,7 +39,7 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     Label bathroomsLbl, hostIsSuperHostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl, bedsLbl, propertyTypeLbl, propertyNameLbl;
     @FXML
-    Button saveButton;
+    Button saveButton, bookButton;
     @FXML
     Label pricePerNight;
     @FXML
@@ -199,6 +199,11 @@ public class PropertyDisplayerController implements Initializable {
     public void setBoroughPropertiesController(BoroughPropertiesController controller)
     {
         this.boroughPropertiesController = controller;
+    }
+
+    public void setBookingButtonDisabled(boolean disabled)
+    {
+        bookButton.setDisable(true);
     }
 
 }

@@ -13,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import javax.sound.midi.SysexMessage;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
@@ -25,8 +24,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class AccountPanelController implements Initializable {
@@ -207,38 +204,9 @@ public class AccountPanelController implements Initializable {
 //                return originalListings.get(i);
 //            }
 //        }
-        return originalListings.get(iterativeSearch(originalListings, chosenProperty.getListingID()));
+        return Listings.iterativeSearch(originalListings, chosenProperty.getListingID());
 
         //Also has to return null
-    }
-
-    public static int iterativeSearch(ArrayList<AirbnbListing> arrayToSearch, String element) {
-        int lowIndex = 0;
-        int highIndex = arrayToSearch.size()-1;
-        System.out.println("high: " + highIndex);
-
-        // Holds the position in array for given element
-        // Initial negative integer set to be returned if no match was found on array
-        int elementPos = -1;
-
-        // If lowIndex less than highIndex, there's still elements in the array
-        while (lowIndex <= highIndex) {
-            int midIndex = (lowIndex + highIndex) / 2;
-            int midID = Integer.parseInt(arrayToSearch.get(midIndex).getId());
-            int elementInteger = Integer.parseInt(element);
-            if (element.equals(arrayToSearch.get(midIndex).getId())) {
-                elementPos = midIndex;
-                System.out.println("Returnedd: " + elementPos);
-                System.out.println("listingID: " + arrayToSearch.get(elementPos).getId());
-                return elementPos;
-            } else if (elementInteger < midID) {
-                highIndex = midIndex-1;
-            } else if (elementInteger > midID) {
-                lowIndex = midIndex+1;
-            }
-        }
-        System.out.println("Returned: " + elementPos);
-        return elementPos;
     }
 
 

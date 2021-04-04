@@ -302,4 +302,28 @@ public class Listings {
                 .filter(airbnbListing -> airbnbListing.getRoomType().equals("Private room"))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
+
+    public static AirbnbListing iterativeSearch(ArrayList<AirbnbListing> arrayToSearch, String element) {
+        int lowIndex = 0;
+        int highIndex = arrayToSearch.size()-1;
+
+        // Holds the position in array for given element
+        // Initial negative integer set to be returned if no match was found on array
+        //int elementPos = -1;
+
+        // If lowIndex less than highIndex, there's still elements in the array
+        while (lowIndex <= highIndex) {
+            int midIndex = (lowIndex + highIndex) / 2;
+            int midID = Integer.parseInt(arrayToSearch.get(midIndex).getId());
+            int elementInteger = Integer.parseInt(element);
+            if (element.equals(arrayToSearch.get(midIndex).getId())) {
+                return arrayToSearch.get(midIndex);
+            } else if (elementInteger < midID) {
+                highIndex = midIndex-1;
+            } else if (elementInteger > midID) {
+                lowIndex = midIndex+1;
+            }
+        }
+        return null;
+    }
 }
