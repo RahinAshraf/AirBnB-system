@@ -79,7 +79,7 @@ public class MainFrameController extends Application implements Initializable {
         firstRequestSubmitted = false;
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
-        loadListings("listings.csv");
+        loadListings("airbnb-listings.csv");
         //teagenerateBookings();
         //generateUsers();
         try {
