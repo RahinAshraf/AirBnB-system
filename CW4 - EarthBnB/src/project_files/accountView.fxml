@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -27,9 +29,16 @@
             </AnchorPane>
          </top>
          <left>
-            <TableView id="tripsTable" fx:id="tripsTable" prefHeight="234.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView id="tripsTable" fx:id="tripsTable" onMouseClicked="#rowClicked" prefHeight="234.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
               </columns>
+               <contextMenu>
+                  <ContextMenu fx:id="checkBookingCMenu" onAction="#checkBooking">
+                    <items>
+                      <MenuItem fx:id="checkBookingItem" mnemonicParsing="false" text="Check Booking" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
             </TableView>
          </left>
          <right>

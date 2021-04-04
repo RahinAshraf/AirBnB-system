@@ -190,7 +190,7 @@ public class MainFrameController extends Application implements Initializable {
                 FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
-                accountPanelController.initializeAccount(currentUser);
+                accountPanelController.initializeAccount(currentUser, this, listings);
                 accountOpen = true;
                 accountButton.setText("Exit");
                 setFrameSwitchingButtonsActive(false);

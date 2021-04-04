@@ -73,6 +73,11 @@ public class Listings {
         return filteredListings;
     }
 
+    public ArrayList<AirbnbListing> getOriginalListings()
+    {
+        return originalListings;
+    }
+
     /**
      * Returns an observable list which is used for displaying content in e.g. a tableview.
      * @return The result as an ObservableList
