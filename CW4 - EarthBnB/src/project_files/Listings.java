@@ -45,15 +45,18 @@ public class Listings {
     private static ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
     private static HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
 
+    private boolean usingDatabase;
+
 
     /**
      * Create a new Listings object. Initializes the different lists so the user can add any filter at the beginning.
      * @param originalListings
      */
-    public Listings(ArrayList<AirbnbListing> originalListings)
+    public Listings(ArrayList<AirbnbListing> originalListings, boolean usingDatabase)
     {
         // Initializing stages of filtering making sure the user can start with any filter without problems.
         this.originalListings = originalListings;
+        this.usingDatabase = usingDatabase;
         listingsFilteredByBookingData.addAll(originalListings);
         listingsFilteredByPrice.addAll(originalListings);
         listingsFilteredBySelectedBoroughs.addAll(originalListings);
@@ -107,7 +110,9 @@ public class Listings {
                 .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
+        if(usingDatabase)
+            filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
+
         filterPriceRange();
     }
 
@@ -255,6 +260,9 @@ public class Listings {
                 }
             }
         }
+
+
+
     }
 
     /**

@@ -87,6 +87,7 @@ public class StatBookingsScatterChart extends Statistic {
 
     private HashSet<String> getBookedPropertiesFromDB() {
         HashSet<String> bookedPropertyIds = new HashSet<>();
+
         try {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
