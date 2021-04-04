@@ -31,9 +31,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
     List<LocalDate> reservedDates = new ArrayList<>();
 
-    DatabaseConnection connection = new DatabaseConnection();
-    Connection connectDB = connection.getConnection();
-
     AirbnbListing selectedListing;
 
     @FXML
@@ -111,6 +108,8 @@ public class BookingController extends MainframeContentPanel implements Initiali
             String getReservations = "SELECT * FROM booking";
 
             try {
+                DatabaseConnection connection = new DatabaseConnection();
+                Connection connectDB = connection.getConnection();
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getReservations);
                 while (queryResult.next()) {
@@ -205,36 +204,53 @@ public class BookingController extends MainframeContentPanel implements Initiali
     @FXML
     private void userCalendarChange(ActionEvent e) {
 
-        AirbnbListing listing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
-        long daysBetween = ChronoUnit.DAYS.between(checkInDate.getValue(), checkOutDate.getValue());
+        if(selectedListing != null) {
 
-        if(daysBetween < 0) {
-            checkOutDate.setValue(checkInDate.getValue());
-        }
-        LocalDate localDate = LocalDate.now();
-        if((daysBetween(checkInDate.getValue(), localDate) > 0)) {
-            checkInDate.setValue(localDate);
-            checkOutDate.setValue(localDate);
-        }
 
-        calculationLabel.setText(getCalculationString(listing.getPrice(), daysBetween));
-        totalLabel.setText("Total: " + (listing.getPrice() * daysBetween) + "€");
+            //AirbnbListing listing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
+            long daysBetween = ChronoUnit.DAYS.between(checkInDate.getValue(), checkOutDate.getValue());
+
+            if (daysBetween <= 0) {
+                checkOutDate.setValue(checkInDate.getValue().plusDays(1));
+
+                calculationLabel.setText(getCalculationString(selectedListing.getPrice(), 1));
+                totalLabel.setText("Total: " + (selectedListing.getPrice() * 1) + "€");
+            } else {
+                LocalDate localDate = LocalDate.now();
+                if ((daysBetween(checkInDate.getValue(), localDate) > 0) || (daysBetween(checkOutDate.getValue(), localDate) > 0)) {
+                    checkInDate.setValue(localDate);
+                    checkOutDate.setValue(localDate.plusDays(1));
+
+                    calculationLabel.setText(getCalculationString(selectedListing.getPrice(), 1));
+                    totalLabel.setText("Total: " + (selectedListing.getPrice() * 1) + "€");
+                } else {
+                    calculationLabel.setText(getCalculationString(selectedListing.getPrice(), daysBetween));
+                    totalLabel.setText("Total: " + (selectedListing.getPrice() * daysBetween) + "€");
+                }
+            }
+        } else {
+            if(e.getTarget() == checkInDate) {
+                checkInDate.setValue(checkOutDate.getValue());
+            } else {
+                checkOutDate.setValue(checkInDate.getValue());
+            }
+            calculationLabel.setText("Unknown");
+            totalLabel.setText("Total: unknown");
+        }
     }
 
 
     public void reserveProperty() {
         if(favoritesTable.getSelectionModel().getSelectedItem() != null && favoritesTable.getSelectionModel().getSelectedItem().getClass() == AirbnbListing.class) {
             selectedListing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
-            if (usingDatabase && selectedListing != null) {
+            LocalDate currentDate = LocalDate.now();
+            if (selectedListing != null) {
                 System.out.println(currentUser.getAccountID());
                 BookingData usersData = currentUser.getBookingData();
-                LocalDate currentDate = LocalDate.now();
                 String createBooking = "INSERT INTO booking VALUES (NULL, '" + checkInDate.getValue() + "', '" + checkOutDate.getValue() + "', '" + currentUser.getAccountID() + "', '" +
-                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "', '" + currentDate + "')";
+                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()) + "', '" + selectedListing.getId() + "', '" + currentDate + "')";
                 //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
-                try {
-                    Statement statement = connectDB.createStatement();
                     boolean violation = false;
                     int index = 0;
 
@@ -251,26 +267,37 @@ public class BookingController extends MainframeContentPanel implements Initiali
                             index++;
                         }
                     }
-                    System.out.println("violation: " + violation);
-                    if (violation == false) {
-                        System.out.println("executed");
-                        statement.executeUpdate(createBooking);
-                        System.out.println("removed");
-                        //data.remove(favoritesTable.getSelectionModel().getSelectedItem());
-                        favoritesTable.getSelectionModel().clearSelection();
-                    }
-                } catch (Exception e) {
+                if(usingDatabase) {
+                    try {
+                        DatabaseConnection connection = new DatabaseConnection();
+                        Connection connectDB = connection.getConnection();
+                        System.out.println("violation: " + violation);
+                        Statement statement = connectDB.createStatement();
+                        if (violation == false) {
+                            System.out.println("executed");
+                            statement.executeUpdate(createBooking);
+                            System.out.println("removed");
+                            //data.remove(favoritesTable.getSelectionModel().getSelectedItem());
+                            favoritesTable.getSelectionModel().clearSelection();
+                        }
+                    } catch (Exception e) {
 
+                    }
+                } else {
+                    if(violation == false) {
+                        ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
+                        Reservation reservation = new Reservation(reservations.size() + 1, checkInDate.getValue(), checkOutDate.getValue(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
+                                selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
+                        reservations.add(reservation);
+                        currentUser.addOfflineReservation(reservation);
+                        System.out.println("Created offline reservation");
+                        favoritesTable.getSelectionModel().clearSelection();
+                        selectedListing = null;
+                    }
                 }
             } else {
-                BookingData usersData = currentUser.getBookingData();
-                ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
-                Reservation reservation = new Reservation(reservations.size() + 1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
-                        selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
-                reservations.add(reservation);
+                // Remove property from saved list
             }
-            // Remove property from saved list
-
         }
 
 

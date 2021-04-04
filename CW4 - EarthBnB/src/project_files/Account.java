@@ -14,6 +14,8 @@ public class Account {
     private ArrayList<Integer> reservedTrips;
     private BookingData bookingData;
 
+    private ArrayList<Reservation> offlineReservations;
+
     Account(int accountID, String username, String password, String emailAddress) {
         this.accountID = accountID;
         this.username = username;
@@ -22,6 +24,7 @@ public class Account {
         favouriteProperties = new HashSet<>();
         reservedTrips = new ArrayList<>();
         bookingData = new BookingData();
+        offlineReservations = new ArrayList<>();
     }
 
 
@@ -31,6 +34,14 @@ public class Account {
 
     public void addReservedTrip(Integer tripID) {
         reservedTrips.add(tripID);
+    }
+
+    public void addOfflineReservation(Reservation reservation) {
+        offlineReservations.add(reservation);
+    }
+
+    public ArrayList<Reservation> getOfflineReservations() {
+        return offlineReservations;
     }
 
     public void addFavouriteProperty(AirbnbListing property) {
