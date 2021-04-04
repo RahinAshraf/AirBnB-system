@@ -69,7 +69,6 @@ public class MainFrameController extends Application implements Initializable {
         primaryStage.setScene(new Scene(root, 600, 300));
         primaryStage.setResizable(true);
         primaryStage.show();
-
     }
 
 
@@ -80,6 +79,8 @@ public class MainFrameController extends Application implements Initializable {
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("airbnb-listings.csv");
+        if (!usingDatabase)
+            new OfflineData(listings); // Loads the offline bookingdata (is static)
         //teagenerateBookings();
         //generateUsers();
         try {
@@ -98,8 +99,6 @@ public class MainFrameController extends Application implements Initializable {
         offlineAccounts = new ArrayList<>();
         offlineReservations = new ArrayList<>();
     }
-
-
 
 
     private void initializeFiltersComboBox()

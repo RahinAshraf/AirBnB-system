@@ -5,6 +5,8 @@ import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import project_files.AirbnbListing;
 import project_files.DatabaseConnection;
+import project_files.OfflineData;
+import project_files.Reservation;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -87,7 +89,7 @@ public class StatBookingsScatterChart extends Statistic {
 
     private HashSet<String> getBookedPropertiesFromDB() {
         HashSet<String> bookedPropertyIds = new HashSet<>();
-
+        ArrayList<Reservation> reservations = OfflineData.getDummyReservations();
         try {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();

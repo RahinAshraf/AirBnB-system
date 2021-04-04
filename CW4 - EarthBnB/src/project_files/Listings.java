@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -232,17 +231,12 @@ public class Listings {
      */
     private void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
 
-
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();
         ZoneId defaultZoneId = ZoneId.systemDefault();
 
         DatabaseConnection connection = new DatabaseConnection();
         Connection connectDB = connection.getConnection();
         Statement statement = connectDB.createStatement();
-
-
-        Date checkInDate = Date.from(checkIn.atStartOfDay(defaultZoneId).toInstant());
-        Date checkOutDate = Date.from(checkOut.atStartOfDay(defaultZoneId).toInstant());
 
         // Returns all of the booking IDs that are in between the checkIn and checkOut dates
         String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut+ "' ) OR (DEPARTURE BETWEEN '"
