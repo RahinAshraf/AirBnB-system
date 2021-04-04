@@ -197,8 +197,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
             if (usingDatabase && selectedListing != null) {
                 System.out.println(currentUser.getAccountID());
                 BookingData usersData = currentUser.getBookingData();
+                LocalDate currentDate = LocalDate.now();
                 String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
-                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "')";
+                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "', '" + currentDate + "')";
                 //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
                 try {
@@ -206,7 +207,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                     boolean violation = false;
                     int index = 0;
 
-                    if (selectedListing != null)
+                    if (selectedListing != null) {
                         while (index < reservedDates.size() && !violation) {
                             System.out.println("# of reserved dates: " + reservedDates.size());
                             if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
@@ -218,11 +219,15 @@ public class BookingController extends MainframeContentPanel implements Initiali
                             }
                             index++;
                         }
-                        if (!violation) {
-                            statement.executeUpdate(createBooking);
-                            data.remove(favoritesTable.getSelectionModel().getSelectedItem());
-                            favoritesTable.getSelectionModel().clearSelection();
-                        }
+                    }
+                    System.out.println("violation: " + violation);
+                    if (violation == false) {
+                        System.out.println("executed");
+                        statement.executeUpdate(createBooking);
+                        System.out.println("removed");
+                        data.remove(favoritesTable.getSelectionModel().getSelectedItem());
+                        favoritesTable.getSelectionModel().clearSelection();
+                    }
                 } catch (Exception e) {
 
                 }
