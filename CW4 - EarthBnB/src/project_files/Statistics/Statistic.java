@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public abstract class Statistic {
     protected String name; // The name of the statistic. Displayed as the label of each statistic.
-    protected Node statistic;
+    protected Node statistic; // The node to be displayed in the panel.
 
     /**
      * Get the name of the statistic. Displayed in the label of a statistics panel.
@@ -27,7 +27,7 @@ public abstract class Statistic {
 
     /**
      * Get the result of the statistics calculation.
-     * @return
+     * @return The node to he displayed in the statspanel
      */
     public Node getStatistic()
     {
@@ -37,8 +37,7 @@ public abstract class Statistic {
 
     /**
      * Update the current statistic.
-     * @param listings
-     * @return
+     * @param listings The listings to calculate the statistic for.
      */
     protected abstract void updateStatistic(ArrayList<AirbnbListing> listings);
 }

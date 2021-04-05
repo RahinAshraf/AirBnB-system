@@ -13,13 +13,16 @@ import project_files.MainframeContentPanel;
 import java.util.ArrayList;
 
 /**
+ * Class StatisticsPanelController - The statisticspanel is displayed within the mainframe and shows different statistics
+ * about the currently filtered data. It contains four "StatsPanelElements" which themselves communicate with the statistic currently shown in them.
+ * This class supplies the gui for displaying the content and coordinates StatsPanelElements.
  * @author Valentin Magis
  * @version 1.0
  * @since 2021-03-11
  */
 public class StatisticsPanelController extends MainframeContentPanel {
     private Statistic accommodationType, availableProperties, averageNumReviews, mostExpensiveBorough,
-            closestListingToAttraction, StatMostLuxurious, StatBestOffer, statD;
+            closestListingToAttraction, StatMostLuxurious, StatBestOffer, averageRevenuePerListingLastYear;
 
     private StatsPanelElement panel1, panel2, panel3, panel4;
 
@@ -50,15 +53,14 @@ public class StatisticsPanelController extends MainframeContentPanel {
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
         StatMostLuxurious = new StatBookingsScatterChart(filteredListings);
         StatBestOffer = new StatBookingDevelopmentGraph(filteredListings);
-        statD = new AverageRevenuePerListingLastYear(filteredListings);
+        averageRevenuePerListingLastYear = new AverageRevenuePerListingLastYear(filteredListings);
 
-        // Just a temporary list, specifies all elements that are not being shown.
-        // Would be better to derive them from the ones being displayed, making sure no bs can happen.
+        // Temporary list, specifies all elements that are not being shown.
         ArrayList<Statistic> statisticsInQueue = new ArrayList<>();
         statisticsInQueue.add(closestListingToAttraction);
         statisticsInQueue.add(StatMostLuxurious);
         statisticsInQueue.add(StatBestOffer);
-        statisticsInQueue.add(statD);
+        statisticsInQueue.add(averageRevenuePerListingLastYear);
 
         // Each panel stores the elements that it could possibly show later.
         panel1 = new StatsPanelElement(statsBP1, statisticsInQueue, accommodationType, statNameLbl1, listings);
