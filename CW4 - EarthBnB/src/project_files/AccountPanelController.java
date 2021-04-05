@@ -198,6 +198,7 @@ public class AccountPanelController implements Initializable {
         PropertyDisplayerController propertyDisplayer = displayerLoader.getController();
         propertyDisplayer.loadData(findListingByID(), currentUser); // Load the data into the window.
         propertyDisplayer.setMainWindowController(mainFrameController);
+        propertyDisplayer.hideNavigationButtons();
         //propertyDisplayer.setBoroughPropertiesController(this);
         newStage.show();
     }

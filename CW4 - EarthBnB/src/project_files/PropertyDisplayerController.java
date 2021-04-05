@@ -169,6 +169,11 @@ public class PropertyDisplayerController implements Initializable {
         }
     }
 
+    public void hideNavigationButtons() {
+        saveButton.setVisible(false);
+        bookButton.setVisible(false);
+    }
+
     @FXML
     public void saveProperty() {
         if(currentUser.removeFavouriteProperty(displayedListing)) {

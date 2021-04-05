@@ -154,6 +154,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
             }
         };
         checkInDate.setDayCellFactory(reservedDayCellFactory);
+        checkOutDate.setDayCellFactory(reservedDayCellFactory);
     }
 
 
