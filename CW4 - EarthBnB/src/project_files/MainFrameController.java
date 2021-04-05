@@ -266,7 +266,7 @@ public class MainFrameController extends Application implements Initializable {
     }
 
     public void loginNavigationClicked() throws IOException {
-        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("loginPanel.fxml"));
+        FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("loginPanelView.fxml"));
         Parent root = loginLoader.load();
         Stage newStage = new Stage();
         newStage.setScene(new Scene(root, 600, 500));

@@ -18,6 +18,16 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+
+
+/**
+ * The MapController class displays all of the boroughs in London. Each of the boroughs can be selected by the user.
+ * Multiple boroughs can also be selected, and boroughs can be deselected.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class MapController extends MainframeContentPanel implements Initializable {
 
     //private Button selectedBorough;
@@ -39,16 +49,30 @@ public class MapController extends MainframeContentPanel implements Initializabl
         name = "Map";
     }
 
+
+    /**
+     * This method initializes some of the controller's method's fields.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         selectedBoroughs = new ArrayList<>();
         currentUser = null;
     }
 
+    /**
+     * This method is called when the user clicks on a borough. It converts the clicked item's source to a button,
+     * and uses it as parameter for the selectNewBorough method call.
+     */
+    @FXML
     public void selectBorough(javafx.event.ActionEvent actionEvent) {
         selectNewBorough((Button)actionEvent.getSource());
     }
 
+    /**
+     * Instantiates a new boroughPropertiesView and sends passes a list of borough IDs that are selected by the user.
+     * It is called when the user clicks on the search properties button.
+     */
+    @FXML
     public void searchProperties(javafx.event.ActionEvent actionEvent) {
         for(int i = 0; i<selectedBoroughs.size(); i++) {
             System.out.println(selectedBoroughs.get(i));
@@ -87,6 +111,11 @@ public class MapController extends MainframeContentPanel implements Initializabl
 
     }
 
+    /**
+     * Initializes some of the fields of the controller. Calls the updatePanel method.
+     * @param listings  the filtered listings that is used to set the colors of the boroughs
+     * @param currentUser   the current logged in user
+     */
     @Override
     public void initializeList(Listings listings, Account currentUser)
     {
@@ -95,6 +124,10 @@ public class MapController extends MainframeContentPanel implements Initializabl
         updatePanel();
     }
 
+    /**
+     * Instantiates a new boroughPropertiesView and sends passes a list of borough IDs that are selected by the user.
+     * It is called when the user clicks on the search properties button.
+     */
     @Override
     public void updatePanel() {
         updateBoroughs();
@@ -109,6 +142,10 @@ public class MapController extends MainframeContentPanel implements Initializabl
         }
     }
 
+    /**
+     * Sets the colors of the boroughs based on the filtered listings that is passed to the object.
+     * @param button    the button whose colors is to be set.
+     */
     public void setBoroughDefaultColor(Button button) {
         int boroughPropertyCount;
         try {
@@ -131,15 +168,16 @@ public class MapController extends MainframeContentPanel implements Initializabl
         }
     }
 
+    /**
+     * This method is called when the user clicks on a borough. It changes the color of the borough button to blue
+     * if it is selected. If it is deselected, the color is changed back to the original.
+     * @param button    the button that is clicked
+     */
     public void selectNewBorough(Button button) {
 
         if (selectedBoroughs.contains(button)) {
             selectedBoroughs.remove(button);
-            //button.setStyle("-fx-background-color: #FFFFFF"); // Change back to old color instead of white
-
             setBoroughDefaultColor(button);
-
-
         } else {
             selectedBoroughs.add(button);
             button.setStyle("-fx-background-color: #50B4D4");
@@ -148,11 +186,11 @@ public class MapController extends MainframeContentPanel implements Initializabl
         System.out.println(borough);
     }
 
-    public void updateFilter(MouseEvent mouseEvent) {
-        filterValue = filterSlider.getValue();
-    }
-
-    private void updateBoroughs() // !! Change to only save the first word of the borough
+    /**
+     * Counts the number of properties in each of the boroughs. Also calls the method resizePropertyNeighbourhood to
+     * only store the first word of the borough.
+     */
+    private void updateBoroughs()
     {
         resizePropertyNeighbourhood();
         propertyCount = listings.getFilteredListings().stream()
@@ -160,6 +198,10 @@ public class MapController extends MainframeContentPanel implements Initializabl
     }
 
 
+    /**
+     * Goes through the filtered listings and only keeps the first word of the boroughs.
+     * The boroughs are compared to the button IDs later; thus, they have to match.
+     */
     public void resizePropertyNeighbourhood() {
         for(int i = 0; i<listings.getFilteredListings().size(); i++) {
            listings.getFilteredListings().get(i).chopNeighbourhoodName();

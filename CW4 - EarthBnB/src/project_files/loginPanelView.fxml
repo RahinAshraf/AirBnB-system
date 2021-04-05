@@ -11,7 +11,7 @@
          <top>
             <AnchorPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="backToSignIn" fx:id="backToSignIn" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#navigateToRegister" style="-fx-background-color: #FF9171;" text="SIGN IN" />
+                  <Button id="backToSignIn" fx:id="backToSignIn" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#loginRegisterNavigator" style="-fx-background-color: #FF9171;" text="SIGN IN" />
                </children></AnchorPane>
          </top>
          <center>
@@ -30,7 +30,7 @@
                                     <Insets left="10.0" />
                                  </padding>
                               </Label>
-                              <Button id="signupMenu" fx:id="signupMenu" mnemonicParsing="false" onAction="#navigateToRegister" prefHeight="27.0" prefWidth="71.0" style="-fx-background-color: space grey; -fx-border-color: grey;" text="Sign up">
+                              <Button id="signupMenu" fx:id="signupMenu" mnemonicParsing="false" onAction="#loginRegisterNavigator" prefHeight="27.0" prefWidth="71.0" style="-fx-background-color: space grey; -fx-border-color: grey;" text="Sign up">
                                  <HBox.margin>
                                     <Insets bottom="5.0" top="5.0" />
                                  </HBox.margin>

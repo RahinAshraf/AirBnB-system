@@ -22,6 +22,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+
+/**
+ * This class is the controller for the loginPanelView. It is opened when the log in button is pressed in the welcome
+ * panel. It allows the user to log in to an account. A log in can be validated through either the database, or through
+ * the Account arraylist.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class LoginPanelController implements Initializable {
 
     private Account user;
@@ -64,6 +74,10 @@ public class LoginPanelController implements Initializable {
     }
 
 
+    /**
+     * This method is called when the users clicks on the back button. It hides the login panel stage. It also sends
+     * the newly created Account object to the instantiated MainFrameController object.
+     */
     public void goBack() {
         try {
             if(user != null) {
@@ -77,11 +91,22 @@ public class LoginPanelController implements Initializable {
         }
     }
 
+    /**
+     * A method to initialize the MainFrameController. It is called when the class is instantiated in order for it to
+     * have access to the main window.
+     * @param   mainFrameController the MainFrameController object that is open in the background.
+     */
     public void setMainWindowController(MainFrameController mainFrameController) {
         this.mainFrameController = mainFrameController;
     }
 
-    public void navigateToRegister(javafx.event.ActionEvent actionEvent) throws IOException {
+
+    /**
+     * This method is called when the user clicks on the sign up button. It creates a new registerView and sets is into
+     * the center of the current panel. When the user is on the register panel, the center of the pane is switched
+     * back to the login panel.
+     */
+    public void loginRegisterNavigator(javafx.event.ActionEvent actionEvent) throws IOException {
 
         if(((Button) actionEvent.getSource()).getId().equals("signupMenu")) {
             if(registerPanel == null) {
@@ -98,6 +123,13 @@ public class LoginPanelController implements Initializable {
         }
 
     }
+
+    /**
+     * This method generates a hashed password using the SHA-512 cryptographic hash function. It instantiates an
+     * object of type MessageDigest, which provides the functionality of creating one-way algorithms.
+     * @param password  the password string that is to be hashed
+     * @return  String  the generated hashed password
+     */
     public String hashPW(String password) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
         messageDigest.reset();
@@ -107,6 +139,12 @@ public class LoginPanelController implements Initializable {
     }
 
 
+    /**
+     * This methods checks whether there exists an Account with the username and password combination entered by the
+     * user. If the application is using a database, this information is queried from the database. If it is not
+     * using the database, than the combination is compared to the Account objects that have been saved in an
+     * ArrayList.
+     */
     public void validateLogin() {
         if(MainFrameController.isUsingDatabase()) {
             DatabaseConnection connection = new DatabaseConnection();
@@ -162,10 +200,12 @@ public class LoginPanelController implements Initializable {
     }
 
 
+    /**
+     * This method initializes some of the controller's instance variables and button states.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentPanel = false;
-        //signinMenu.setStyle("-fx-background-color: #FF5733");
         user = null;
         backToSignIn.setVisible(false);
     }
