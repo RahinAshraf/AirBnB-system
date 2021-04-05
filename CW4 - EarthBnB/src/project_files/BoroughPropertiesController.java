@@ -8,10 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
@@ -43,7 +40,10 @@ public class BoroughPropertiesController implements Initializable {
 
     //
     @FXML
-    Button backNavigation, sortReviews, sortPrice, sortHost;
+    Button backNavigation;
+
+    @FXML
+    ComboBox comboBox;
     //
     @FXML
     TableView propertiesTable;
@@ -65,12 +65,16 @@ public class BoroughPropertiesController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        sortReviews.setVisible(false);
-        sortPrice.setVisible(false);
-        sortHost.setVisible(false);
         isDropClicked = false;
         setFilterCheckBoxIds();
         buildTable();
+
+        comboBox.getItems().addAll(
+                "# of Reviews",
+            "Price",
+            "Host Name"
+        );
+
     }
 
     private void setFilterCheckBoxIds() {
@@ -92,6 +96,7 @@ public class BoroughPropertiesController implements Initializable {
         boroughHostCol.setMaxWidth(120);
         boroughHostCol.setCellFactory(TextFieldTableCell.forTableColumn());
         boroughHostCol.setCellValueFactory(new PropertyValueFactory<AirbnbListing, String>("hostName"));
+
 
         // Creates a table column which contains the borough's names.
         TableColumn boroughCol = new TableColumn("Borough");
@@ -173,36 +178,20 @@ public class BoroughPropertiesController implements Initializable {
         propertiesTable.setItems(displayData);
     }
 
-
-    public void dropDownClicked(javafx.event.ActionEvent actionEvent) {
-        if(isDropClicked) {
-            sortReviews.setVisible(false);
-            sortPrice.setVisible(false);
-            sortHost.setVisible(false);
-            isDropClicked = false;
-        } else {
-            sortReviews.setVisible(true);
-            sortPrice.setVisible(true);
-            sortHost.setVisible(true);
-            isDropClicked = true;
-        }
-    }
-
     /**
      * Sorts properties by number of reviews, price or host name.
      */
     public void updateSort(javafx.event.ActionEvent actionEvent) {
         propertiesTable.getSortOrder().clear();
-
-        if(((Button) actionEvent.getSource()).getId().equals("sortReviews")) {
+        if((comboBox.getValue().equals("# of Reviews"))) {
             propertiesTable.getSortOrder().add(reviewsCountCol);
             propertiesTable.sort();
         }
-        else if (((Button) actionEvent.getSource()).getId().equals("sortPrice")){
+        else if ((comboBox.getValue().equals("Price"))){
             propertiesTable.getSortOrder().add(boroughPriceCol);
             propertiesTable.sort();
         }
-        else if (((Button) actionEvent.getSource()).getId().equals("sortHost")){
+        else if ((comboBox.getValue().equals("Host Name"))){
             propertiesTable.getSortOrder().add(boroughHostCol);
             propertiesTable.sort();
         }

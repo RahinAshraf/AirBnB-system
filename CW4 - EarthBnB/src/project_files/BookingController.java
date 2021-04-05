@@ -14,6 +14,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Duration;
@@ -113,18 +114,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getReservations);
                 while (queryResult.next()) {
-                    LocalDate arrivalDate = new java.sql.Date(queryResult.getDate(2).getTime()).toLocalDate();
-                    LocalDate departureDate = new java.sql.Date(queryResult.getDate(3).getTime()).toLocalDate();
-                    Reservation reservation = new Reservation(
-                            queryResult.getInt(1),
-                            arrivalDate,
-                            departureDate,
-                            queryResult.getInt(4),
-                            queryResult.getInt(5),
-                            queryResult.getInt(6),
-                            queryResult.getString(7)
-                    );
-                    reservations.add(reservation);
+                    reservations.add(AccountPanelController.createReservation(queryResult));
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -154,6 +144,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
             }
         };
         checkInDate.setDayCellFactory(reservedDayCellFactory);
+        checkOutDate.setDayCellFactory(reservedDayCellFactory);
     }
 
 

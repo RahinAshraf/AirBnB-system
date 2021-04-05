@@ -2,6 +2,7 @@ package project_files;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class OfflineData {
 
@@ -13,15 +14,17 @@ public class OfflineData {
     }
 
     private void generateBookings(Listings listings) {
-        LocalDate currentDate = LocalDate.now();
-
+        LocalDate currentDate = LocalDate.now().plusDays(365);
+        Random rand = new Random();
         for (int i = 0; i < 1000; i++)
         {
-            AirbnbListing listing = listings.getOriginalListings().get(i);
+            AirbnbListing l = listings.getOriginalListings().get(i);
             int reservationId = i+1;
+            int daysOfStay = rand.nextInt((l.getMaximumNights() % 30) + 5);
             LocalDate departure = currentDate.minusDays(i);
-            LocalDate arrival = departure.minusDays(listing.getMaximumNights());
-            dummyReservations.add(new Reservation(reservationId, arrival, departure, 0, listing.getMaxGuests(), listing.getPrice() * listing.getMaximumNights(), listing.getId()));
+            LocalDate arrival = departure.minusDays(i+daysOfStay);
+
+            dummyReservations.add(new Reservation(reservationId, arrival, departure, 0, l.getMaxGuests(), l.getPrice() * daysOfStay, l.getId()));
         }
     }
 

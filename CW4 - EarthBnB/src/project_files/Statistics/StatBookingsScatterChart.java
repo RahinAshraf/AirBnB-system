@@ -3,10 +3,7 @@ package project_files.Statistics;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import project_files.AirbnbListing;
-import project_files.DatabaseConnection;
-import project_files.OfflineData;
-import project_files.Reservation;
+import project_files.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -21,8 +18,8 @@ import java.util.HashSet;
 public class StatBookingsScatterChart extends Statistic {
 
 
-    final NumberAxis xAxis = new NumberAxis(51.3, 51.68, 0.01); // The southern and northern boundaries of london
-    final NumberAxis yAxis = new NumberAxis(-0.515, 0.29, 0.01); // The western and eastern boundaries of london
+    final NumberAxis yAxis = new NumberAxis(51.3, 51.68, 0.01); // The southern and northern boundaries of london
+    final NumberAxis xAxis = new NumberAxis(-0.515, 0.29, 0.01); // The western and eastern boundaries of london
     ScatterChart<Number, Number> bookingsChart = new ScatterChart<>(xAxis, yAxis);
     XYChart.Series locationsPrivateRooms = new XYChart.Series();
     XYChart.Series locationsEntireHouse = new XYChart.Series();
@@ -31,7 +28,7 @@ public class StatBookingsScatterChart extends Statistic {
      */
     public StatBookingsScatterChart(ArrayList<AirbnbListing> listings)
     {
-        name = "Locations of bookings";
+        name = "Locations of past bookings";
         statistic = bookingsChart;
         bookingsChart.setVerticalZeroLineVisible(false);
         bookingsChart.setVerticalGridLinesVisible(false);
@@ -42,11 +39,14 @@ public class StatBookingsScatterChart extends Statistic {
         locationsPrivateRooms.setName("Private Room");
         locationsEntireHouse.setName("Entire house/ apartment");
 
-        xAxis.setTickLabelsVisible(false);
-        yAxis.setTickLabelsVisible(false);
+        xAxis.setLabel("Longitude");
+        yAxis.setLabel("Latitude");
 
-        xAxis.setTickMarkVisible(false);
-        yAxis.setTickMarkVisible(false);
+        xAxis.setTickLabelsVisible(true);
+        yAxis.setTickLabelsVisible(true);
+
+        xAxis.setTickMarkVisible(true);
+        yAxis.setTickMarkVisible(true);
 
         xAxis.setMinorTickVisible(false);
         yAxis.setMinorTickVisible(false);
@@ -64,48 +64,50 @@ public class StatBookingsScatterChart extends Statistic {
     {
         locationsPrivateRooms.getData().clear();
         locationsEntireHouse.getData().clear();
-
-        HashSet<String> bookedPropertyIds = getBookedPropertiesFromDB();
-        long time = System.currentTimeMillis();
-        for (String id : bookedPropertyIds)
-        {
-            for (int i = 0; i < listings.size(); i++)
-            {
-                AirbnbListing l = listings.get(i);
-                if (id.equals(l.getId()))
-                {
-                    if (listings.get(i).getRoomType().equals("Private room"))
-                        locationsPrivateRooms.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
+        if (!listings.isEmpty()) {
+            HashSet<String> bookedPropertyIds = getBookedProperties();
+            for (String id : bookedPropertyIds) {
+                AirbnbListing listing = Listings.iterativeSearch(listings, id);
+                if (listing != null) {
+                    if (listing.getRoomType().equals("Private room"))
+                        locationsPrivateRooms.getData().add(new XYChart.Data(listing.getLongitude(),listing.getLatitude()));
                     else
-                        locationsEntireHouse.getData().add(new XYChart.Data(l.getLatitude(), l.getLongitude()));
+                        locationsEntireHouse.getData().add(new XYChart.Data(listing.getLongitude(), listing.getLatitude()));
                 }
             }
         }
         bookingsChart.getData().setAll(locationsPrivateRooms, locationsEntireHouse); // Add the new data to the graph
-        System.out.println(System.currentTimeMillis() - time);
     }
 
 
 
-    private HashSet<String> getBookedPropertiesFromDB() {
+    private HashSet<String> getBookedProperties() {
         HashSet<String> bookedPropertyIds = new HashSet<>();
-        ArrayList<Reservation> reservations = OfflineData.getDummyReservations();
-        try {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-            Statement statement = connectDB.createStatement();
 
-            LocalDate currentDate = LocalDate.now();
+        if (!MainFrameController.isUsingDatabase()) {
+            for (Reservation r : OfflineData.getDummyReservations())
+            {
+                bookedPropertyIds.add(r.getListingID());
+            }
+        }
+
+        else {
+            try {
+                DatabaseConnection connection = new DatabaseConnection();
+                Connection connectDB = connection.getConnection();
+                Statement statement = connectDB.createStatement();
+
+                LocalDate currentDate = LocalDate.now();
 
             String checkSignup = "SELECT listingID FROM booking WHERE listingID < '" + currentDate + "'";
 
-            ResultSet queryResult = statement.executeQuery(checkSignup);
-            while (queryResult.next()) {
-                bookedPropertyIds.add(queryResult.getString(1)); // Unsafe operation?
+                ResultSet queryResult = statement.executeQuery(checkSignup);
+                while (queryResult.next()) {
+                    bookedPropertyIds.add(queryResult.getString(1)); // Unsafe operation?
+                }
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
         }
-        System.out.println(bookedPropertyIds.size());
         return bookedPropertyIds;
     }
 }

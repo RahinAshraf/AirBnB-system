@@ -1,15 +1,14 @@
 package project_files;
 
-
+import javafx.collections.FXCollections;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * A test class for the class Listings.
@@ -22,183 +21,102 @@ public class ListingsTest {
     // An Array List for the parameter of the constructor of class Listings.
     private ArrayList<AirbnbListing> listingArrayList = new ArrayList<>();
     // An object type of class Listings
-    private Listings listings = new Listings(listingArrayList, false);
+    private Listings listings = new Listings(listingArrayList);
 
-    // An object type of class BookingData.
-    private BookingData bookingData;
     // The Array lists which the are for different filters:
     // The first and complete list of data.
     private ArrayList<AirbnbListing> originalListing;
     // The list of check box filters
     private ArrayList<AirbnbListing> checkBoxFilters;
-    // An array list for our active check box filters.
-    private ArrayList<FilterNames> checkedFilters = new ArrayList<>();
     // The list of the filtered data.
     private ArrayList<AirbnbListing> filteredList;
-    // The list for the booking data that is set.
-    private ArrayList<AirbnbListing> bookingDataList;
-    // The list for the price ranges which the user has chose.
-    private ArrayList<AirbnbListing> priceRangeList;
-    // The list for the boroughs which are filtered by other filters.
-    private ArrayList<AirbnbListing> boroughFilteredList;
-    // The boroughs selected by the user.
-    private ArrayList<String> selectedBoroughs = new ArrayList<>();
+    // The list of check box filters (Wifi, Pool, Room, SuperHost).
+    private HashSet<FilterNames> activeFilters = new HashSet<>();
 
+    @Test
+    public void getFilteredListings() {
+        Assert.assertEquals(filteredList, listings.getFilteredListings());
+    }
 
-    private URL urlPic = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
-    private URL urlHost = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
-    private URL urlPic1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
-    private ArrayList<String> amenities = new ArrayList<>();
+    @Test
+    public void getObservableFilteredListings() {
+        Assert.assertEquals(FXCollections.observableArrayList(filteredList), listings.getObservableFilteredListings());
+    }
 
-    // The first object type of AirbnbListing.
-    private AirbnbListing data = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
-            "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
-            "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
-            "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
-            "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
-            , urlPic, "54730", "Alina", "within a few hours", false, urlHost
-            , urlPic1, 3, "Islington", 51.56802, -0.11121, "room", 1
-            , "1 shared bath", 1,
-            amenities, 500, 1, 2, 365, 21, 50,
-            5, 5, 5, 0.16);
+    @Test
+    public void changeBookingData() {
+    }
 
-    private URL urlPic3 = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
-    private URL urlHost1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
-    private URL urlPic4 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
-    private ArrayList<String> amenities1 = new ArrayList<>();
+    @Test
+    public void changePriceRange() {
+    }
 
-    // The second object type of AirbnbListing.
-    private AirbnbListing data1 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
-            "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
-            "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
-            "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
-            "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
-            , urlPic3, "54730", "Alina", "within a few hours", true, urlHost1
-            , urlPic4, 3, "Islington", 51.56802, -0.11121, "Private room", 3
-            , "1 shared bath", 1,
-            amenities1, 40, 1, 29, 365, 21, 50,
-            5, 5, 5, 0.16);
+    @Test
+    public void changeSelectedBoroughs() {
+    }
 
-    /**
-     * The constructor of the test class ListingsTest.
-     * @throws MalformedURLException
-     */
-    public ListingsTest() throws MalformedURLException {
+    @Test
+    public void setActiveFilters() {
+    }
+
+    @Test
+    public void toggleActiveFilter() {
+    }
+
+    @Test
+    public void getActiveFilters() {
+    }
+
+    @Before
+    public void init() throws MalformedURLException {
+        URL urlPic = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities = new ArrayList<>();
         amenities.add("Toys");
         amenities.add("Books");
         amenities.add("Washer");
         amenities.add("Balcony");
 
+        AirbnbListing data = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic, "54730", "Alina", "within a few hours", false, urlHost
+                , urlPic1, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+
+        URL urlPic3 = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic4 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities1 = new ArrayList<>();
         amenities1.add("Wifi");
         amenities1.add("Pool");
         amenities1.add("Toys");
         amenities1.add("Books");
         amenities1.add("Washer");
 
-        originalListing =  new ArrayList<>();
-        originalListing.add(data);
-        originalListing.add(data1);
+        AirbnbListing data1 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic3, "54730", "Alina", "within a few hours", true, urlHost1
+                , urlPic4, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities1, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
 
-        LocalDate checkIn = LocalDate.of(2021, 04, 12);
-        LocalDate checkOut = LocalDate.of(2021, 04, 29);
-        bookingData = new BookingData(checkIn, checkOut, 3, 123);
-    }
-
-    /**
-     * Initializes the elements of each of the lists before the testing occurs.
-     */
-    @Before
-    public void init(){
-        // Adding the data to the check box list.
         checkBoxFilters = new ArrayList<>();
         checkBoxFilters.add(data);
         checkBoxFilters.add(data1);
-        // Adding the data to the booking data list.
-        bookingDataList = new ArrayList<>();
-        bookingDataList.add(data);
-        bookingDataList.add(data1);
-        // Adding the data to the price range list.
-        priceRangeList = new ArrayList<>();
-        priceRangeList.add(data);
-        priceRangeList.add(data1);
-        // Adding the active filters to the hash set.
-        checkedFilters.add(FilterNames.WIFI_FILTER);
-        checkedFilters.add(FilterNames.SUPER_FILTER);
-        listings.setActiveFilters(checkedFilters);
-        //
-        selectedBoroughs.add("Kensington");
-        selectedBoroughs.add("Hammersmith");
-        listings.changeSelectedBoroughs(selectedBoroughs);
 
         filteredList = new ArrayList<>();
     }
 
-    /**
-     * Checks if the method filters the Airbnb Listing data by the
-     * check-in date, check-out date and number of guests written by
-     * the user and applies it to the list.
-     */
-    @Test
-    public void filterBookingData() throws SQLException {
-       // listings.changeBookingData(bookingData);
-       // listings.filterBookingData();
-       // Assert.assertEquals(1, bookingDataList.size());
-    }
-
-    /**
-     * Checks if the method filters the Airbnb Listing data by the
-     * boroughs selected by the user and applies to the list.
-     */
-    @Test
-    public void filterBoroughs(){
-        // listings.filterBoroughs();
-        // boroughFilteredList.addAll(listings.filterBoroughs());
-        // Assert.assertEquals(2, boroughFilteredList.size());
-    }
-
-    /**
-     * Checks if the method filters the Airbnb Listing data by the
-     * dates selected by the user and applies to the list.
-     */
-    @Test
-    public void filterDates(){
-    }
-
-    /**
-     * Checks if the method filters the Airbnb Lisitng data
-     * by the price range selected by the user and applies it to the list.
-     */
-    @Test
-    public void filterPriceRange(){
-        // listings.changePriceRange(1, 50);
-        // Assert.assertEquals(1, filteredList.size());
-    }
-
-    /**
-     * Checks if the method returns the correct amount of filters which
-     * are active.
-     */
-    @Test
-    public void setActiveFilters() {
-        Assert.assertEquals(2, listings.getActiveFilterSize());
-    }
-
-    /**
-     * Checks if it deletes or adds the check box filters into the array list
-     * to be applied to the filtered list.
-     */
-    @Test
-    public void toggleActiveFilter() {
-        listings.toggleActiveFilter(FilterNames.POOL_FILTER);
-        Assert.assertEquals(3, listings.getActiveFilterSize());
-
-        listings.toggleActiveFilter(FilterNames.WIFI_FILTER);
-        Assert.assertEquals(2, listings.getActiveFilterSize());
-    }
-
-    /**
-     * Checks if the method adds and apply the filter to the filtered list.
-     */
     @Test
     public void filterForActiveFilters() {
         checkBoxFilters = listings.filterAmenity(checkBoxFilters, "Wifi");
@@ -208,9 +126,56 @@ public class ListingsTest {
 
     /**
      * Checks if the method returns a data form with a private room.
+     *
+     * @throws MalformedURLException
      */
     @Test
-    public void filterPrivateRoom(){
+    public void filterPrivateRoom() throws MalformedURLException {
+        URL urlPic = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities = new ArrayList<>();
+        amenities.add("Toys");
+        amenities.add("Books");
+        amenities.add("Washer");
+        amenities.add("Balcony");
+
+        AirbnbListing data = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic, "54730", "Alina", "within a few hours", false, urlHost
+                , urlPic1, 3, "Islington", 51.56802, -0.11121, "room", 2
+                , "1 shared bath", 1,
+                amenities, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+
+        URL urlPic3 = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic4 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities1 = new ArrayList<>();
+        amenities1.add("Wifi");
+        amenities1.add("Pool");
+        amenities1.add("Toys");
+        amenities1.add("Books");
+        amenities1.add("Washer");
+
+        AirbnbListing data1 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic3, "54730", "Alina", "within a few hours", true, urlHost1
+                , urlPic4, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities1, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+
+        originalListing =  new ArrayList<>();
+        originalListing.add(data);
+        originalListing.add(data1);
+
         filteredList =  new ArrayList<>();
         filteredList.add(data1);
 
@@ -220,9 +185,55 @@ public class ListingsTest {
 
     /**
      * Checks if the method returns a data form with Wifi or a pool.
+     *
+     * @throws MalformedURLException
      */
     @Test
     public void filterAmenities() throws MalformedURLException {
+        URL urlPic = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities = new ArrayList<>();
+        amenities.add("Toys");
+        amenities.add("Books");
+        amenities.add("Washer");
+        amenities.add("Balcony");
+
+        AirbnbListing data = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic, "54730", "Alina", "within a few hours", false, urlHost
+                , urlPic1, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+
+        URL urlPic3 = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic4 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities1 = new ArrayList<>();
+        amenities1.add("Wifi");
+        amenities1.add("Pool");
+        amenities1.add("Toys");
+        amenities1.add("Books");
+        amenities1.add("Washer");
+
+        AirbnbListing data1 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic3, "54730", "Alina", "within a few hours", true, urlHost1
+                , urlPic4, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities1, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+        originalListing =  new ArrayList<>();
+        originalListing.add(data);
+        originalListing.add(data1);
+
         filteredList =  new ArrayList<>();
         filteredList.add(data1);
 
@@ -283,9 +294,56 @@ public class ListingsTest {
 
     /**
      * Checks if the method returns a data form with a super host.
+     *
+     * @throws MalformedURLException
      */
     @Test
-    public void filterSuperHost(){
+    public void filterSuperHost() throws MalformedURLException {
+        URL urlPic = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities = new ArrayList<>();
+        amenities.add("Toys");
+        amenities.add("Books");
+        amenities.add("Washer");
+        amenities.add("Balcony");
+
+        AirbnbListing data = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic, "54730", "Alina", "within a few hours", false, urlHost
+                , urlPic1, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+
+        URL urlPic3 = new URL("https://a0.muscache.com/pictures/miso/Hosting-13913/original/7e27055e-5eed-48ac-8c75-355336f1eaea.jpeg");
+        URL urlHost1 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_small");
+        URL urlPic4 = new URL("https://a0.muscache.com/im/users/54730/profile_pic/1327774386/original.jpg?aki_policy=profile_x_medium");
+        ArrayList<String> amenities1 = new ArrayList<>();
+        amenities1.add("Wifi");
+        amenities1.add("Pool");
+        amenities1.add("Toys");
+        amenities1.add("Books");
+        amenities1.add("Washer");
+
+        AirbnbListing data1 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Finsbury Park is a friendly " +
+                "melting pot community composed of Turkish, French, Spanish, Middle Eastern, Irish and English families. " +
+                "<br />We have a wonderful variety of international restaurants directly under us on Stroud Green Road. " +
+                "And there are many shops and large Tescos supermarket right next door. <br /><br />But you can also venture " +
+                "up to Crouch End and along Greens Lanes where there will endless choice of Turkish and Middle Eastern cuisines.s"
+                , urlPic3, "54730", "Alina", "within a few hours", true, urlHost1
+                , urlPic4, 3, "Islington", 51.56802, -0.11121, "Private room", 2
+                , "1 shared bath", 1,
+                amenities1, 40, 1, 29, 365, 21, 50,
+                5, 5, 5, 0.16);
+
+        originalListing = new ArrayList<>();
+        originalListing.add(data);
+        originalListing.add(data1);
+
         filteredList = new ArrayList<>();
         filteredList.add(data1);
 
