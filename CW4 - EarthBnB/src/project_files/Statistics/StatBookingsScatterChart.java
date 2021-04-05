@@ -68,6 +68,7 @@ public class StatBookingsScatterChart extends Statistic {
         // Clear the data from the last update
         locationsPrivateRooms.getData().clear();
         locationsEntireHouse.getData().clear();
+        listings.sort(AirbnbListing::compareTo);
         if (!listings.isEmpty()) {
             HashSet<String> bookedPropertyIds = getBookedProperties();
             for (String id : bookedPropertyIds) {

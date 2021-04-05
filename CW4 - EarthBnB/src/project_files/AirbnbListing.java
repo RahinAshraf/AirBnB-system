@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * has a corresponding field.
  */ 
 
-public class AirbnbListing {
+public class AirbnbListing implements Comparable{
 
     /**
      * The id and name of the individual property
@@ -285,6 +285,28 @@ public class AirbnbListing {
      * @return The average price
      */
     public int getAveragePrice() { return price * minimumNights; }
+
+    /**
+     * Compare to listings
+     * @param o The listing to compare this listing to.
+     * @return 0 if the listings are the same, 1 if the id of this listing is larger than the compared one and -1 if the compared one is larger.
+     */
+    @Override
+    public int compareTo(Object o) {
+        if (o.getClass() == AirbnbListing.class)
+        {
+            AirbnbListing otherListing = (AirbnbListing) o;
+            Integer thisId = Integer.parseInt(this.getId());
+            Integer otherId = Integer.parseInt(otherListing.getId());
+            if (this.getId().equals(otherListing.getId()))
+                return 0;
+            else if (thisId < otherId)
+                return -1;
+            else if (thisId > otherId)
+                return 1;
+        }
+        return 0;
+    }
 }
 
 

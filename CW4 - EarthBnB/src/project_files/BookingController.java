@@ -360,7 +360,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
      * @param currentUser   the current logged in user
      */
     @Override
-    public void initializeList(Listings listings, Account currentUser) {
+    public void initializeData(Listings listings, Account currentUser) {
         System.out.println("called");
         this.currentUser = currentUser;
         this.listings = listings;

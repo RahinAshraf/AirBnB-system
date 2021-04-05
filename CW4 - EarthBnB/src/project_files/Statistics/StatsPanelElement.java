@@ -41,37 +41,59 @@ public class StatsPanelElement {
         displayStatistic();
     }
 
-
+    /**
+     * Get the statistic which is currently being displayed.
+     * @return The current statistic.
+     */
     public Statistic getCurrentStatistic()
     {
         return currentStatistic;
     }
 
+    /**
+     * Get the index of the current statistic  in the statisticsQueue.
+     * @return The index of the current statistic in the statisticsQueue
+     */
     public int getIndexOfCurrent()
     {
         return statisticsQueue.indexOf(currentStatistic);
     }
 
+    /**
+     * Update the statistics list. If another panel is changed, the stat it changed to is removed from this panels queue
+     * and the stat that now is available from the other panel is added to the list of this panel to potentially be shown.
+     * @param addStat The stat to be added.
+     * @param removeStat The stat to be removed.
+     */
     public void updateList(Statistic addStat, Statistic removeStat)
     {
         statisticsQueue.add(addStat);
         statisticsQueue.remove(removeStat);
     }
 
+    /**
+     * Display the statistic.
+     * Sets the title and the content.
+     */
     private void displayStatistic()
     {
         statNameLbl.setText(currentStatistic.getName());
         contentPane.setCenter(currentStatistic.getStatistic());
     }
 
+    /**
+     * Reload the currently shown statistic. Always invoke when a filter has been changed.
+     */
     public void updatePanelElement()
     {
         currentStatistic.updateStatistic(listings.getFilteredListings());
         displayStatistic();
     }
 
-    // Get rid of code duplication in getNext and getPrev?
-
+    /**
+     * Load the stat which is in the queue before the current stat.
+     * @return The new statistic being displayed.
+     */
     public Statistic getPrevStat()
     {
         Statistic nextStat;
@@ -87,7 +109,10 @@ public class StatsPanelElement {
         return nextStat;
     }
 
-
+    /**
+     * Load the stat which in the queue after the current stat.
+     * @return The next statistic being displayed.
+     */
     public Statistic getNextStat()
     {
         Statistic nextStat;

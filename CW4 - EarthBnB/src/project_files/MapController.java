@@ -105,8 +105,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {
             e.printStackTrace();
-
-
         }
 
     }
@@ -117,7 +115,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
      * @param currentUser   the current logged in user
      */
     @Override
-    public void initializeList(Listings listings, Account currentUser)
+    public void initializeData(Listings listings, Account currentUser)
     {
         this.listings = listings;
         this.currentUser = currentUser;
@@ -186,11 +184,11 @@ public class MapController extends MainframeContentPanel implements Initializabl
         System.out.println(borough);
     }
 
-    /**
-     * Counts the number of properties in each of the boroughs. Also calls the method resizePropertyNeighbourhood to
-     * only store the first word of the borough.
-     */
-    private void updateBoroughs()
+    public void updateFilter(MouseEvent mouseEvent) {
+        filterValue = filterSlider.getValue();
+    }
+
+    private void updateBoroughs() // !! Change to only save the first word of the borough
     {
         resizePropertyNeighbourhood();
         propertyCount = listings.getFilteredListings().stream()

@@ -1,5 +1,7 @@
 package project_files.Statistics;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -10,10 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,7 +61,7 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
         HashSet<IdDatePair> allBookings = getArrivalDates();
         ArrayList<IdDatePair> superhostPairs = new ArrayList<>();
         ArrayList<IdDatePair> notSuperhostPairs = new ArrayList<>();
-
+        listings.sort(AirbnbListing::compareTo); // Make sure listings are in order for the following binary search.
         // Sort the pairs to superhost and not-superhost
         for (IdDatePair pair : allBookings) {
             AirbnbListing listing = Listings.iterativeSearch(listings, pair.getId());
@@ -93,6 +92,23 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
 
         // Add both series
         bookingsGraph.getData().setAll(monthlySuperhostBookings, monthlyNonSuperhostBookings);
+
+        setCategoriesManually(superhostCounter, notSuperhostCounter);
+    }
+
+    /**
+     * Implemented because the automatic ordering of the LineChart is buggy.
+     * Solution suggested by Galya, https://stackoverflow.com/questions/19264919/javafx-linechart-areachart-wrong-sorted-values-on-x-axis-categoryaxis
+     * @param superhostCounter The counter of the superhost.
+     * @param notSuperhostCounter The counter of the nonSuperhosts
+     */
+    private void setCategoriesManually(TreeMap<YearMonth, Long> superhostCounter, TreeMap<YearMonth, Long> notSuperhostCounter) {
+        superhostCounter.putAll(notSuperhostCounter);
+        CategoryAxis xAxis = (CategoryAxis) bookingsGraph.getXAxis();
+        ObservableList<String> months = superhostCounter.keySet().stream().map(s -> s.toString()).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        Collections.sort(months);
+        xAxis.setAutoRanging(true);
+        xAxis.setCategories(months);
     }
 
     /**
