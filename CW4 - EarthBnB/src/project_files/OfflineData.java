@@ -6,7 +6,9 @@ import java.util.Random;
 
 public class OfflineData {
 
-    private static ArrayList<Reservation> dummyReservations = new ArrayList<>();
+    private static ArrayList<Reservation> reservations = new ArrayList<>();
+    private static ArrayList<Account> offlineAccounts = new ArrayList<>();
+    private static ArrayList<Reservation> offlineReservations = new ArrayList<>();
 
     public OfflineData(Listings listings)
     {
@@ -24,11 +26,26 @@ public class OfflineData {
             LocalDate departure = currentDate.minusDays(i);
             LocalDate arrival = departure.minusDays(i+daysOfStay);
 
-            dummyReservations.add(new Reservation(reservationId, arrival, departure, 0, l.getMaxGuests(), l.getPrice() * daysOfStay, l.getId()));
+            reservations.add(new Reservation(reservationId, arrival, departure, 0, l.getMaxGuests(), l.getPrice() * daysOfStay, l.getId()));
         }
     }
 
-    public static ArrayList<Reservation> getDummyReservations() {
-        return dummyReservations;
+    public static ArrayList<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public static ArrayList<Account> getAccounts()
+    {
+        return offlineAccounts;
+    }
+
+    public static void addAccount(Account account)
+    {
+        offlineAccounts.add(account);
+    }
+
+    public static void addReservation(Reservation reservation)
+    {
+        reservations.add(reservation);
     }
 }

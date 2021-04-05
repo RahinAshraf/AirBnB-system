@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 /**
  * Class MostExpensiveBoroughStat is the statistic finding the most expensive borough in the given set of data.
  * The price for a property is the price per night * the minimum number of nights.
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public class StatMostExpensiveBorough extends StatisticAsText {
 

@@ -1,7 +1,5 @@
 package project_files;
 
-import javafx.fxml.FXML;
-
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -287,30 +285,6 @@ public class AirbnbListing {
      * @return The average price
      */
     public int getAveragePrice() { return price * minimumNights; }
-
-    /*
-    @Override
-    public String toString() {
-        return "AirbnbListing{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", host_id='" + host_id + '\'' +
-                ", host_name='" + host_name + '\'' +
-                ", neighbourhood='" + neighbourhood + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", room_type='" + room_type + '\'' +
-                ", price=" + price +
-                ", minimumNights=" + minimumNights +
-                ", numberOfReviews=" + numberOfReviews +
-                ", lastReview='" + lastReview + '\'' +
-                ", reviewsPerMonth=" + reviewsPerMonth +
-                ", calculatedHostListingsCount=" + calculatedHostListingsCount +
-                ", availability365=" + availability365 +
-                '}';
-    }
-
-     */
 }
 
 

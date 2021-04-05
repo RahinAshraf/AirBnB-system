@@ -7,6 +7,11 @@ import project_files.Listings;
 
 import java.util.ArrayList;
 
+/**
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
+ */
 public class StatsPanelElement {
     private ArrayList<Statistic> statisticsQueue;
     private Statistic currentStatistic;

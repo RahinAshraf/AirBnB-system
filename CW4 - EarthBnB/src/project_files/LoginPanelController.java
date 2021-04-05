@@ -139,7 +139,7 @@ public class LoginPanelController implements Initializable {
                 e.getCause();
             }
         } else {
-            ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
+            ArrayList<Account> accounts = OfflineData.getAccounts();
             boolean found = false;
             for(int i=0; i<accounts.size(); i++) {
                 try {

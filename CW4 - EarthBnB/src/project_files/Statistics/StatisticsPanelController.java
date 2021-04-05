@@ -12,7 +12,11 @@ import project_files.MainframeContentPanel;
 
 import java.util.ArrayList;
 
-
+/**
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
+ */
 public class StatisticsPanelController extends MainframeContentPanel {
     private Statistic accommodationType, availableProperties, averageNumReviews, mostExpensiveBorough,
             closestListingToAttraction, StatMostLuxurious, StatBestOffer, statD;
@@ -46,7 +50,7 @@ public class StatisticsPanelController extends MainframeContentPanel {
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
         StatMostLuxurious = new StatBookingsScatterChart(filteredListings);
         StatBestOffer = new StatBookingDevelopmentGraph(filteredListings);
-        statD = new StatD(filteredListings);
+        statD = new AverageRevenuePerListingLastYear(filteredListings);
 
         // Just a temporary list, specifies all elements that are not being shown.
         // Would be better to derive them from the ones being displayed, making sure no bs can happen.
