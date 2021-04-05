@@ -6,11 +6,15 @@ import java.util.ArrayList;
 
 /**
  * Class AverageNumReviewsStat represents the statistic calculating the average number of reviews each property has in the given set of data.
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public class StatAverageNumReviews extends StatisticAsText {
 
     /**
      * Create an object for the statistic of the average number of reviews per property.
+     * @param listings The listings to calculate the statistic for.
      */
     public StatAverageNumReviews(ArrayList<AirbnbListing> listings)
     {
@@ -22,7 +26,6 @@ public class StatAverageNumReviews extends StatisticAsText {
     /**
      * Update the statistic.
      * @param listings A list of airbnb properties the statistic should be calculated for.
-     * @return
      */
     protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {

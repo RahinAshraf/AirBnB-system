@@ -14,16 +14,24 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
+/**
+ * This class provides a controller for the bookingView. It provides the user with the possibility to select a saved
+ * property from a TableView and reserve it if it has not been booked by someone else at that time period.
+ * The user can also edit the settings for the chosen dates.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class BookingController extends MainframeContentPanel implements Initializable {
 
 
@@ -33,6 +41,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     List<LocalDate> reservedDates = new ArrayList<>();
 
     AirbnbListing selectedListing;
+    ArrayList<Reservation> reservations;
 
     @FXML
     TableView favoritesTable;
@@ -45,6 +54,10 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
     private boolean usingDatabase;
 
+
+    /**
+     * This constructor method is used to initialize the booking window, and some of its instance variables.
+     */
     public BookingController()
     {
         name = "Bookings";
@@ -56,19 +69,15 @@ public class BookingController extends MainframeContentPanel implements Initiali
         this.usingDatabase = usingDatabase;
     }
 
-
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //currentUser = null;
         selectedListing = null;
-
     }
 
     /**
      * Initialize the booking panel with a given property
-     * @param listing
+     * @param listing   the listing that has been selected from the TableView
      */
     public void initializeWithProperty(AirbnbListing listing)
     {
@@ -88,6 +97,11 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+    /**
+     * This method is used to iterate through all of the saved properties of the user, and check whether they are
+     * valid regarding the current filtered settings. If they are, they are added to the data, which is then displayed
+     * in the TableView.
+     */
     public void loadSavedProperties() {
         data.clear();
         System.out.println(listings.getFilteredListings().size());
@@ -99,11 +113,17 @@ public class BookingController extends MainframeContentPanel implements Initiali
         }
     }
 
-    ArrayList<Reservation> reservations;
+
+
+    /**
+     * This method is used to update the calendar by highlighting the days which the property is already reserved in
+     * red. If the program is using the database, the reservations are loaded from the database. Otherwise, the
+     * reservations are loaded from the user.
+     */
     public void updateCalendar() {
         System.out.println("updatecalendar called");
         if(!usingDatabase) {
-            reservations = mainFrameController.getOfflineReservations();
+            reservations = OfflineData.getReservations();
         } else {
             reservations = new ArrayList<>();
             String getReservations = "SELECT * FROM booking";
@@ -148,6 +168,11 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+    /**
+     * This method is called when the calendar is updated. It iterates through the previous reservations made by
+     * everybody searching for the selected property of the user, and adds the dates reserved for that property in the
+     * reservedDates.
+     */
     public void updateDate() {
         System.out.println("total reservations: " + reservations.size());
         reservedDates.clear();
@@ -192,12 +217,15 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+
+    /**
+     * This method is called when the user changes the dates of the calendar on the booking page. The dates are
+     * validated and the price and calculations are updated based on the newly selected dates.
+     */
     @FXML
     private void userCalendarChange(ActionEvent e) {
 
         if(selectedListing != null) {
-
-
             //AirbnbListing listing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
             long daysBetween = ChronoUnit.DAYS.between(checkInDate.getValue(), checkOutDate.getValue());
 
@@ -231,6 +259,12 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+    /**
+     This method is called when the user clicks on reserve button. It validates the reservation by checking if the
+     selected dates in the calendar are not reserved yet for the selected property. If there are no violations in
+     the validation, a new reservation is instantiated. The new reservation is saved either in the database, if it is
+     turned on, or in the user's Account object.
+     */
     public void reserveProperty() {
         if(favoritesTable.getSelectionModel().getSelectedItem() != null && favoritesTable.getSelectionModel().getSelectedItem().getClass() == AirbnbListing.class) {
             selectedListing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
@@ -245,18 +279,16 @@ public class BookingController extends MainframeContentPanel implements Initiali
                     boolean violation = false;
                     int index = 0;
 
-                    if (selectedListing != null) {
-                        while (index < reservedDates.size() && !violation) {
-                            System.out.println("# of reserved dates: " + reservedDates.size());
-                            if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
-                                System.out.println("Some days are reserved in between your selection");
-                                violation = true;
-                            } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
-                                System.out.println("Some days are reserved at your selections");
-                                violation = true;
-                            }
-                            index++;
+                    while (index < reservedDates.size() && !violation) {
+                        System.out.println("# of reserved dates: " + reservedDates.size());
+                        if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
+                            System.out.println("Some days are reserved in between your selection");
+                            violation = true;
+                        } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
+                            System.out.println("Some days are reserved at your selections");
+                            violation = true;
                         }
+                        index++;
                     }
                 if(usingDatabase) {
                     try {
@@ -264,7 +296,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         Connection connectDB = connection.getConnection();
                         System.out.println("violation: " + violation);
                         Statement statement = connectDB.createStatement();
-                        if (violation == false) {
+                        if (!violation) {
                             System.out.println("executed");
                             statement.executeUpdate(createBooking);
                             System.out.println("removed");
@@ -275,25 +307,31 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
                     }
                 } else {
-                    if(violation == false) {
-                        ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
+                    if(!violation) {
+                        ArrayList<Reservation> reservations = OfflineData.getReservations();
                         Reservation reservation = new Reservation(reservations.size() + 1, checkInDate.getValue(), checkOutDate.getValue(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
                                 selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
                         reservations.add(reservation);
                         currentUser.addOfflineReservation(reservation);
+                        OfflineData.addReservation(reservation);
                         System.out.println("Created offline reservation");
                         favoritesTable.getSelectionModel().clearSelection();
                         selectedListing = null;
                     }
                 }
             } else {
-                // Remove property from saved list
+
             }
         }
 
 
     }
 
+    /**
+     * This method is used to validate the reservation to the current settings when it is selected from the TableView.
+     * If it is not compatible with the current settings, an error message is issued.
+     * @param chosenProperty    the property that is selected from the TableView
+     */
     private void loadFromFavouritesTable(AirbnbListing chosenProperty) {
         if (canBeBooked(chosenProperty))
             initializeWithProperty(chosenProperty);
@@ -301,6 +339,10 @@ public class BookingController extends MainframeContentPanel implements Initiali
             incompatibleBooking();
     }
 
+    /**
+     * This method checks whether a particular property matches the current settings of the user.
+     * @param property  the property that is selected from the TableView
+     */
     private boolean canBeBooked(AirbnbListing property) {
         BookingData bookingData = currentUser.getBookingData();
         return property.getMinimumNights() <= bookingData.getDaysOfStay()
@@ -310,6 +352,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
     }
 
 
+    /**
+     * This method is used initialize the TableView when the window is created. It loads the table with a list of
+     * peroperties that have been saved by the current user. It creates columns for the table to display the name and
+     * the neighbourhood of the property, so that it can be identified.
+     * @param listings  the listings with the current filters
+     * @param currentUser   the current logged in user
+     */
     @Override
     public void initializeList(Listings listings, Account currentUser) {
         System.out.println("called");

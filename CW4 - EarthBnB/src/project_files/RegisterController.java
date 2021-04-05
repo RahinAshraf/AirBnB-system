@@ -57,7 +57,7 @@ public class RegisterController {
     }
 
     public void validateOfflineRegister() {
-        ArrayList<Account> accounts = mainFrameController.getOfflineAccounts();
+        ArrayList<Account> accounts = OfflineData.getAccounts();
         boolean found = false;
         for (int i = 0; i < accounts.size(); i++) {
             if (accounts.get(i).getUsername().equals(nameField.getText())) {
@@ -68,7 +68,7 @@ public class RegisterController {
             createFeedback("Account already exists!", 2);
         } else {
             try {
-                Account newAccount = new Account(mainFrameController.getOfflineAccounts().size() + 1, nameField.getText(), hashPW(pwField.getText()), emailField.getText());
+                Account newAccount = new Account(OfflineData.getAccounts().size() + 1, nameField.getText(), hashPW(pwField.getText()), emailField.getText());
                 accounts.add(newAccount);
                 createFeedback("Successful registration!", 1);
             } catch (Exception e) {

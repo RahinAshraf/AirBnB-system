@@ -149,7 +149,13 @@ public class AccountPanelController implements Initializable {
 
     }
 
-    static Reservation createReservation(ResultSet queryResult) throws SQLException {
+
+    /**
+     * This method is used to create a Reservation object from a booking query result.
+     * @param   queryResult the queryResult from a successful database query
+     * @return  Reservation the Reservation object that is created
+     */
+     static Reservation createReservation(ResultSet queryResult) throws SQLException {
         LocalDate arrivalDate = new Date(queryResult.getDate(2).getTime()).toLocalDate();
         LocalDate departureDate = new Date(queryResult.getDate(3).getTime()).toLocalDate();
         Reservation reservation = new Reservation(

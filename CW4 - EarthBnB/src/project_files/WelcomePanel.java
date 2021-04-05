@@ -18,9 +18,7 @@ public class WelcomePanel extends MainframeContentPanel {
 
 
     @FXML
-    Label welcomeLabel;
-    @FXML
-    Label enterLabel;
+    Label welcomeLabel, enterLabel, minPriceRangeLabel, maxPriceRangeLabel;
     @FXML
     DatePicker checkIn;
     @FXML
@@ -111,6 +109,23 @@ public class WelcomePanel extends MainframeContentPanel {
                 }
             }
         }
+    }
+
+    /**
+     * Set labels displaying the price range
+     * @param min The String of the minimum price range.
+     * @param max The String of the maximum price range.
+     */
+    public void setPriceRangeLabels(Integer min, Integer max)
+    {
+        if (min != null)
+            minPriceRangeLabel.setText(min.toString());
+        else
+            minPriceRangeLabel.setText("-");
+        if (max != null)
+            maxPriceRangeLabel.setText(max.toString());
+        else
+            maxPriceRangeLabel.setText("-");
     }
 
 

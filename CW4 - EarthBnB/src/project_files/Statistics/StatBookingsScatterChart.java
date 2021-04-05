@@ -8,27 +8,31 @@ import project_files.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Class AccommodationTypeStat is the statistic of how many properties in the set of data are of the type "entire home and apartments"
+ * Class StatsBookingsScatterChart - Creates a graph showing the locations of listings booked on a scatterchart.
+ * Differentiates between entire homes and private rooms. Uses latitude and longitude to display the exact location.
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public class StatBookingsScatterChart extends Statistic {
-
 
     final NumberAxis yAxis = new NumberAxis(51.3, 51.68, 0.01); // The southern and northern boundaries of london
     final NumberAxis xAxis = new NumberAxis(-0.515, 0.29, 0.01); // The western and eastern boundaries of london
     ScatterChart<Number, Number> bookingsChart = new ScatterChart<>(xAxis, yAxis);
     XYChart.Series locationsPrivateRooms = new XYChart.Series();
     XYChart.Series locationsEntireHouse = new XYChart.Series();
+
     /**
-     * Create an object for the statistic counting the number of entire home and apartments listed.
+     * Create an object for the statistic counting the number of entire home and apartments listed, initialize the looks.
+     * @param listings The listings the statistic should initially be calculated for.
      */
     public StatBookingsScatterChart(ArrayList<AirbnbListing> listings)
     {
-        name = "Locations of past bookings";
+        name = "Locations of all bookings";
         statistic = bookingsChart;
         bookingsChart.setVerticalZeroLineVisible(false);
         bookingsChart.setVerticalGridLinesVisible(false);
@@ -56,12 +60,12 @@ public class StatBookingsScatterChart extends Statistic {
 
 
     /**
-     * Update the statistic.
-     * @param listings A list of boroughListings the statistic should be calculated for.
-     * @return
+     * Update the statistic for a new list of AirbnbListings
+     * @param listings The listings the statistic should be calculated for.
      */
     protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
+        // Clear the data from the last update
         locationsPrivateRooms.getData().clear();
         locationsEntireHouse.getData().clear();
         if (!listings.isEmpty()) {
@@ -80,12 +84,15 @@ public class StatBookingsScatterChart extends Statistic {
     }
 
 
-
+    /**
+     * Get the ids of all properties which have been booked.
+     * @return A set of all booked properties. (Using a set to avoid duplicates since every booked listing is only displayed once regardless of how many times it was booked)
+     */
     private HashSet<String> getBookedProperties() {
         HashSet<String> bookedPropertyIds = new HashSet<>();
 
         if (!MainFrameController.isUsingDatabase()) {
-            for (Reservation r : OfflineData.getDummyReservations())
+            for (Reservation r : OfflineData.getReservations())
             {
                 bookedPropertyIds.add(r.getListingID());
             }
@@ -96,8 +103,6 @@ public class StatBookingsScatterChart extends Statistic {
                 DatabaseConnection connection = new DatabaseConnection();
                 Connection connectDB = connection.getConnection();
                 Statement statement = connectDB.createStatement();
-
-                LocalDate currentDate = LocalDate.now();
 
             String checkSignup = "SELECT listingID FROM booking WHERE listingID < '" + currentDate + "'";
 
