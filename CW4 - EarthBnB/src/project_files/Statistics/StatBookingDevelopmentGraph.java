@@ -67,6 +67,9 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
             }
         }
 
+        System.out.println("superhost" + superhostPairs.size());
+        System.out.println("not superhost" + notSuperhostPairs.size());
+
         // Count the occurrences and put them in a treemap sorted by the year and month.
         TreeMap<YearMonth, Long> superhostCounter = superhostPairs.stream()
                 .collect(Collectors.groupingBy(IdDatePair::getYearMonth, TreeMap::new, Collectors.counting()));
@@ -89,14 +92,11 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
 
     private HashSet<IdDatePair> getArrivalDates() {
         HashSet<IdDatePair> allBookings = new HashSet<>();
-
         if (!MainFrameController.isUsingDatabase()) {
-            for (Reservation r : OfflineData.getDummyReservations())
-            {
+            for (Reservation r : OfflineData.getDummyReservations()) {
                 allBookings.add(new IdDatePair(r.getListingID(), YearMonth.from(r.getArrival())));
             }
         }
-
         else {
             try {
                 DatabaseConnection connection = new DatabaseConnection();
@@ -118,7 +118,7 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
 
 
     /**
-     * Maybe implement Comparable and use treeSet?
+     *
      */
     private class IdDatePair {
         private String id;

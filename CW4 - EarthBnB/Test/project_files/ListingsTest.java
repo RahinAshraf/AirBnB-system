@@ -1,7 +1,6 @@
 package project_files;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class ListingsTest {
     // An Array List for the parameter of the constructor of class Listings.
     private ArrayList<AirbnbListing> listingArrayList = new ArrayList<>();
     // An object type of class Listings
-    private Listings listings = new Listings(listingArrayList, false);
+    private Listings listings = new Listings(listingArrayList);
 
     // The Array lists which the are for different filters:
     // The first and complete list of data.

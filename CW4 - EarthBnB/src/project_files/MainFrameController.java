@@ -159,7 +159,7 @@ public class MainFrameController extends Application implements Initializable {
 
     public void loadListings(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
-        listings = new Listings(loader.load(filename), usingDatabase);
+        listings = new Listings(loader.load(filename));
     }
 
     public void addOfflineAccount(Account account) {
