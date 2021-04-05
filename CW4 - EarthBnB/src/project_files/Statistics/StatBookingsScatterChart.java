@@ -105,7 +105,7 @@ public class StatBookingsScatterChart extends Statistic {
                 Connection connectDB = connection.getConnection();
                 Statement statement = connectDB.createStatement();
 
-            String checkSignup = "SELECT listingID FROM booking WHERE listingID < '" + currentDate + "'";
+                String checkSignup = "SELECT listingID FROM booking";
 
                 ResultSet queryResult = statement.executeQuery(checkSignup);
                 while (queryResult.next()) {
