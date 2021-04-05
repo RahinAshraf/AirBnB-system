@@ -1,6 +1,7 @@
 package project_files;
 
 import javafx.application.Application;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +12,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This is the controller class for the connectionSelectorView. It is the first window that opens up when the program
+ * is launched. The user can select whether to use the database connected to the program or not. This selection is
+ * later stored as a boolean value.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
+public class ConnectionSelector {
 public class ConnectionSelector extends Application {
 
     @FXML
@@ -26,8 +37,13 @@ public class ConnectionSelector extends Application {
         stage.show();
     }
 
+
+    /**
+     * This method is called when the user selects one of the two options. It closes the current window and
+     * instantiates and shows a new stage with the MainFrameView.
+     */
     @FXML
-    public void selectDBConnection(ActionEvent e) throws IOException {
+    private void selectDBConnection(ActionEvent e) throws IOException {
         boolean usingDatabase = false;
         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("MainFrameView.fxml"));
         Parent root = mainLoader.load();
