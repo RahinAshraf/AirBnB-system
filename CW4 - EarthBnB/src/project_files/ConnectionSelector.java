@@ -1,5 +1,6 @@
 package project_files;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +11,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ConnectionSelector {
+public class ConnectionSelector extends Application {
 
     @FXML
     Button dbSelectButton, offlineSelectButton;
+
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("connectionSelectorView.fxml"));
+        stage.setTitle("EarthBnB");
+        stage.setScene(new Scene(root, 600, 300));
+        stage.setResizable(true);
+        stage.show();
+    }
 
     @FXML
     public void selectDBConnection(ActionEvent e) throws IOException {
@@ -33,4 +44,11 @@ public class ConnectionSelector {
         dbSelectButton.getScene().getWindow().hide();
     }
 
+    /**
+     * Launch the program.
+     * @param args
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

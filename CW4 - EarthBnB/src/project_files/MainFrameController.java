@@ -22,25 +22,31 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
+ * Class MainFrameController - This is the main frame in which the other content panels are being displayed.
+ * It provides functionalities such as choosing a price range, logging in, selecting filters and opening an panel displaying information about the users account.
+ * If different panels have to communicate with each other, this is done through this class because it holds references to the contentpanels and all other windows hold
+ * a reference to this frame.
+ *
  * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
  * @version 1.0
  * @since   2021-03-11
  */
-public class MainFrameController extends Application implements Initializable {
+public class MainFrameController implements Initializable {
 
     private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
+
+    // Booleans used to activate different buttons at the beginning of the user interaction.
     private boolean firstRequestSubmitted = false;
     private boolean initialPriceRangeSelected = false;
 
-    private static boolean usingDatabase;
+    private static boolean usingDatabase; // whether the user chose to run the program with our without the online database.
 
-    private int currentPage = 0;
+    private int currentPage = 0; // The current page being displayed.
 
-    private MainframeContentPanel[] contentPanels;
+    private MainframeContentPanel[] contentPanels; // An array holding all panels to be displayd inside the mainframe.
 
-    // Filters the list according to the search and price range the user has entered (maybe also the checkboxes?)
-    private Listings listings;
+    private Listings listings;   // Filters the list according to the input the user gives.
 
     @FXML
     Button nextPaneBtn, prevPaneBtn;
@@ -58,20 +64,6 @@ public class MainFrameController extends Application implements Initializable {
 
     @FXML
     Label nameOfCurrent;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("connectionSelectorView.fxml"));
-        primaryStage.setTitle("EarthBnB");
-        primaryStage.setScene(new Scene(root, 600, 300));
-        primaryStage.setResizable(true);
-        primaryStage.show();
-    }
 
 
     @Override
@@ -422,6 +414,9 @@ public class MainFrameController extends Application implements Initializable {
         firstRequestSubmitted = submitted;
         setFrameSwitchingButtonsActive(firstRequestSubmitted);
     }
+
+
+
 
     /*
 

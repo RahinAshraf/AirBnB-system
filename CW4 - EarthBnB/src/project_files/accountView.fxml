@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.AccountPanelController">
-   <children>
-      <BorderPane layoutX="144.0" layoutY="52.0" maxHeight="300.0" minHeight="300.0" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <top>
-            <AnchorPane prefHeight="67.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label layoutX="14.0" layoutY="23.0" text="Upcoming Trips">
-                     <font>
-                        <Font name="Montserrat Medium" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="416.0" layoutY="23.0" text="Account Information">
-                     <font>
-                        <Font name="Montserrat Medium" size="16.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-         </top>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.AccountPanelController">
          <left>
-            <TableView id="tripsTable" fx:id="tripsTable" onMouseClicked="#rowClicked" prefHeight="234.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <columns>
+      <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+         <children>
+                  <Label text="Upcoming Trips">
+                     <font>
+                        <Font name="Montserrat Medium" size="16.0" />
+                     </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+                  </Label>
+                  <TableView id="tripsTable" fx:id="tripsTable" maxHeight="1.7976931348623157E308" onMouseClicked="#rowClicked" prefHeight="234.0" prefWidth="230.0">
+                    <columns>
               </columns>
-               <contextMenu>
-                  <ContextMenu fx:id="checkBookingCMenu" onAction="#checkBooking">
-                    <items>
-                      <MenuItem fx:id="checkBookingItem" mnemonicParsing="false" text="Check Booking" />
-                    </items>
-                  </ContextMenu>
-               </contextMenu>
-            </TableView>
+                     <contextMenu>
+                        <ContextMenu fx:id="checkBookingCMenu" onAction="#checkBooking">
+                          <items>
+                            <MenuItem fx:id="checkBookingItem" mnemonicParsing="false" text="Check Booking" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu>
+                  </TableView>
+         </children>
+      </VBox>
          </left>
          <right>
-            <ListView id="informationList" fx:id="informationList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+         <children>
+                  <Label text="Account Information">
+                     <font>
+                        <Font name="Montserrat Medium" size="16.0" />
+                     </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+                  </Label>
+                  <ListView id="informationList" fx:id="informationList" maxHeight="1.7976931348623157E308" prefHeight="238.0" prefWidth="230.0" />
+         </children>
+      </VBox>
          </right>
+   <top>
+      <Region prefHeight="50.0" BorderPane.alignment="CENTER" />
+   </top>
       </BorderPane>
-   </children>
-</AnchorPane>
