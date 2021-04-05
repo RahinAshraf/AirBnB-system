@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -45,15 +44,18 @@ public class Listings {
     private static ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
     private static HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
 
+    private boolean usingDatabase;
+
 
     /**
      * Create a new Listings object. Initializes the different lists so the user can add any filter at the beginning.
      * @param originalListings
      */
-    public Listings(ArrayList<AirbnbListing> originalListings)
+    public Listings(ArrayList<AirbnbListing> originalListings, boolean usingDatabase)
     {
         // Initializing stages of filtering making sure the user can start with any filter without problems.
         this.originalListings = originalListings;
+        this.usingDatabase = usingDatabase;
         listingsFilteredByBookingData.addAll(originalListings);
         listingsFilteredByPrice.addAll(originalListings);
         listingsFilteredBySelectedBoroughs.addAll(originalListings);
@@ -71,6 +73,11 @@ public class Listings {
     public ArrayList<AirbnbListing> getFilteredListings()
     {
         return filteredListings;
+    }
+
+    public ArrayList<AirbnbListing> getOriginalListings()
+    {
+        return originalListings;
     }
 
     /**
@@ -102,7 +109,9 @@ public class Listings {
                 .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
+        if(usingDatabase)
+            filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
+
         filterPriceRange();
     }
 
@@ -220,17 +229,12 @@ public class Listings {
      */
     public void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
 
-
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();
         ZoneId defaultZoneId = ZoneId.systemDefault();
 
         DatabaseConnection connection = new DatabaseConnection();
         Connection connectDB = connection.getConnection();
         Statement statement = connectDB.createStatement();
-
-
-        Date checkInDate = Date.from(checkIn.atStartOfDay(defaultZoneId).toInstant());
-        Date checkOutDate = Date.from(checkOut.atStartOfDay(defaultZoneId).toInstant());
 
         // Returns all of the booking IDs that are in between the checkIn and checkOut dates
         String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut+ "' ) OR (DEPARTURE BETWEEN '"
@@ -248,6 +252,9 @@ public class Listings {
                 }
             }
         }
+
+
+
     }
 
     /**
@@ -294,5 +301,29 @@ public class Listings {
         return list.stream()
                 .filter(airbnbListing -> airbnbListing.getRoomType().equals("Private room"))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public static AirbnbListing iterativeSearch(ArrayList<AirbnbListing> arrayToSearch, String element) {
+        int lowIndex = 0;
+        int highIndex = arrayToSearch.size()-1;
+
+        // Holds the position in array for given element
+        // Initial negative integer set to be returned if no match was found on array
+        //int elementPos = -1;
+
+        // If lowIndex less than highIndex, there's still elements in the array
+        while (lowIndex <= highIndex) {
+            int midIndex = (lowIndex + highIndex) / 2;
+            int midID = Integer.parseInt(arrayToSearch.get(midIndex).getId());
+            int elementInteger = Integer.parseInt(element);
+            if (element.equals(arrayToSearch.get(midIndex).getId())) {
+                return arrayToSearch.get(midIndex);
+            } else if (elementInteger < midID) {
+                highIndex = midIndex-1;
+            } else if (elementInteger > midID) {
+                lowIndex = midIndex+1;
+            }
+        }
+        return null;
     }
 }

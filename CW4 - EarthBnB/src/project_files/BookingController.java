@@ -2,6 +2,7 @@ package project_files;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -15,7 +16,9 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,9 +30,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
     TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
     List<LocalDate> reservedDates = new ArrayList<>();
-
-    DatabaseConnection connection = new DatabaseConnection();
-    Connection connectDB = connection.getConnection();
 
     AirbnbListing selectedListing;
 
@@ -82,6 +82,10 @@ public class BookingController extends MainframeContentPanel implements Initiali
         return "" + price + "€ x " + daysOfStay + " days";
     }
 
+    private String getCalculationString(int price, long daysOfStay) {
+        return "" + price + "€ x " + daysOfStay + " days";
+    }
+
 
     public void loadSavedProperties() {
         data.clear();
@@ -96,7 +100,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
     ArrayList<Reservation> reservations;
     public void updateCalendar() {
-
+        System.out.println("updatecalendar called");
         if(!usingDatabase) {
             reservations = mainFrameController.getOfflineReservations();
         } else {
@@ -104,6 +108,8 @@ public class BookingController extends MainframeContentPanel implements Initiali
             String getReservations = "SELECT * FROM booking";
 
             try {
+                DatabaseConnection connection = new DatabaseConnection();
+                Connection connectDB = connection.getConnection();
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getReservations);
                 while (queryResult.next()) {
@@ -158,7 +164,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
             Reservation reservation = reservations.get(i);
             System.out.println(reservation.getArrival());
             if(reservation.getListingID().equals(selectedListing.getId())) {
-                System.out.println("there is resevation for this property");
+                System.out.println("there is reservation for this property");
                 LocalDate date = reservation.getArrival();
                 while(date.isBefore(reservation.getDeparture().plusDays(1))) {
                     reservedDates.add(date);
@@ -175,18 +181,61 @@ public class BookingController extends MainframeContentPanel implements Initiali
      */
     @FXML
     public void rowClicked(MouseEvent e) throws IOException {
-        if (e.getClickCount() == 2) {
-            if (!(favoritesTable.getSelectionModel().getSelectedItem() == null)) {
-                Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
-                if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
-                    AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
-                    selectedListing = chosenProperty;
-                    totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
-                    calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
-                    loadFromFavouritesTable(chosenProperty);
-                }
-                updateCalendar();
+        if (!(favoritesTable.getSelectionModel().getSelectedItem() == null)) {
+            Object chosenObject = favoritesTable.getSelectionModel().getSelectedItem();
+            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
+                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
+                selectedListing = chosenProperty;
+                totalLabel.setText("Total: " + (selectedListing.getPrice() * currentUser.getBookingData().getDaysOfStay()) + "€");
+                calculationLabel.setText(getCalculationString(selectedListing.getPrice(), currentUser.getBookingData().getDaysOfStay()));
+                loadFromFavouritesTable(chosenProperty);
             }
+            updateCalendar();
+        } else {
+            System.out.println("selected item is null");
+        }
+    }
+
+    private long daysBetween(LocalDate date1, LocalDate date2) {
+        return ChronoUnit.DAYS.between(date1, date2);
+    }
+
+
+    @FXML
+    private void userCalendarChange(ActionEvent e) {
+
+        if(selectedListing != null) {
+
+
+            //AirbnbListing listing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
+            long daysBetween = ChronoUnit.DAYS.between(checkInDate.getValue(), checkOutDate.getValue());
+
+            if (daysBetween <= 0) {
+                checkOutDate.setValue(checkInDate.getValue().plusDays(1));
+
+                calculationLabel.setText(getCalculationString(selectedListing.getPrice(), 1));
+                totalLabel.setText("Total: " + (selectedListing.getPrice() * 1) + "€");
+            } else {
+                LocalDate localDate = LocalDate.now();
+                if ((daysBetween(checkInDate.getValue(), localDate) > 0) || (daysBetween(checkOutDate.getValue(), localDate) > 0)) {
+                    checkInDate.setValue(localDate);
+                    checkOutDate.setValue(localDate.plusDays(1));
+
+                    calculationLabel.setText(getCalculationString(selectedListing.getPrice(), 1));
+                    totalLabel.setText("Total: " + (selectedListing.getPrice() * 1) + "€");
+                } else {
+                    calculationLabel.setText(getCalculationString(selectedListing.getPrice(), daysBetween));
+                    totalLabel.setText("Total: " + (selectedListing.getPrice() * daysBetween) + "€");
+                }
+            }
+        } else {
+            if(e.getTarget() == checkInDate) {
+                checkInDate.setValue(checkOutDate.getValue());
+            } else {
+                checkOutDate.setValue(checkInDate.getValue());
+            }
+            calculationLabel.setText("Unknown");
+            totalLabel.setText("Total: unknown");
         }
     }
 
@@ -194,19 +243,18 @@ public class BookingController extends MainframeContentPanel implements Initiali
     public void reserveProperty() {
         if(favoritesTable.getSelectionModel().getSelectedItem() != null && favoritesTable.getSelectionModel().getSelectedItem().getClass() == AirbnbListing.class) {
             selectedListing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
-            if (usingDatabase && selectedListing != null) {
+            LocalDate currentDate = LocalDate.now();
+            if (selectedListing != null) {
                 System.out.println(currentUser.getAccountID());
                 BookingData usersData = currentUser.getBookingData();
-                String createBooking = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + currentUser.getAccountID() + "', '" +
-                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * usersData.getDaysOfStay() + "', '" + selectedListing.getId() + "')";
+                String createBooking = "INSERT INTO booking VALUES (NULL, '" + checkInDate.getValue() + "', '" + checkOutDate.getValue() + "', '" + currentUser.getAccountID() + "', '" +
+                        usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()) + "', '" + selectedListing.getId() + "', '" + currentDate + "')";
                 //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
-                try {
-                    Statement statement = connectDB.createStatement();
                     boolean violation = false;
                     int index = 0;
 
-                    if (selectedListing != null)
+                    if (selectedListing != null) {
                         while (index < reservedDates.size() && !violation) {
                             System.out.println("# of reserved dates: " + reservedDates.size());
                             if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
@@ -218,23 +266,38 @@ public class BookingController extends MainframeContentPanel implements Initiali
                             }
                             index++;
                         }
-                        if (!violation) {
+                    }
+                if(usingDatabase) {
+                    try {
+                        DatabaseConnection connection = new DatabaseConnection();
+                        Connection connectDB = connection.getConnection();
+                        System.out.println("violation: " + violation);
+                        Statement statement = connectDB.createStatement();
+                        if (violation == false) {
+                            System.out.println("executed");
                             statement.executeUpdate(createBooking);
-                            data.remove(favoritesTable.getSelectionModel().getSelectedItem());
+                            System.out.println("removed");
+                            //data.remove(favoritesTable.getSelectionModel().getSelectedItem());
                             favoritesTable.getSelectionModel().clearSelection();
                         }
-                } catch (Exception e) {
+                    } catch (Exception e) {
 
+                    }
+                } else {
+                    if(violation == false) {
+                        ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
+                        Reservation reservation = new Reservation(reservations.size() + 1, checkInDate.getValue(), checkOutDate.getValue(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
+                                selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
+                        reservations.add(reservation);
+                        currentUser.addOfflineReservation(reservation);
+                        System.out.println("Created offline reservation");
+                        favoritesTable.getSelectionModel().clearSelection();
+                        selectedListing = null;
+                    }
                 }
             } else {
-                BookingData usersData = currentUser.getBookingData();
-                ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
-                Reservation reservation = new Reservation(reservations.size() + 1, usersData.getCheckIn(), usersData.getCheckOut(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
-                        selectedListing.getPrice() * usersData.getDaysOfStay(), selectedListing.getId());
-                reservations.add(reservation);
+                // Remove property from saved list
             }
-            // Remove property from saved list
-
         }
 
 

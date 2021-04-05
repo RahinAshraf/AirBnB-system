@@ -39,7 +39,7 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     Label bathroomsLbl, hostIsSuperHostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl, bedsLbl, propertyTypeLbl, propertyNameLbl;
     @FXML
-    Button saveButton;
+    Button saveButton, bookButton;
     @FXML
     Label pricePerNight;
     @FXML
@@ -145,23 +145,27 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     private void goToBookingScreen()
     {
-        currentUser.addFavouriteProperty(displayedListing); // Using a hashset, therefore not added twice.
-        try {
-            mainFrameController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
-            mainFrameController.getListings().changeSelectedBoroughs(new ArrayList<>()); // Reset the active filter
-            // Pass on this listing to bookingPanel somehow
+        if (boroughPropertiesController != null) {
+            currentUser.addFavouriteProperty(displayedListing); // Using a hashset, therefore not added twice.
+            try {
+                mainFrameController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
+                mainFrameController.getListings().changeSelectedBoroughs(new ArrayList<>()); // Reset the active filter
+                // Pass on this listing to bookingPanel somehow
 
-            Stage thisStage = (Stage) saveButton.getScene().getWindow(); // Get the stage of this window from a random control
-            thisStage.close(); // Close the stage.
+                Stage thisStage = (Stage) saveButton.getScene().getWindow(); // Get the stage of this window from a random control
+                thisStage.close(); // Close the stage.
 
-            Stage boroughsStage = (Stage) boroughPropertiesController.propertiesTable.getScene().getWindow();
-            boroughsStage.close();
+                Stage boroughsStage = (Stage) boroughPropertiesController.propertiesTable.getScene().getWindow();
+                boroughsStage.close();
 
-            Stage mainWindowStage = (Stage) mainFrameController.contentPane.getScene().getWindow();
-            mainWindowStage.show();
+                Stage mainWindowStage = (Stage) mainFrameController.contentPane.getScene().getWindow();
+                mainWindowStage.show();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+        }
+        } else {
+            System.out.println("Go back to account");
         }
     }
 
@@ -195,6 +199,11 @@ public class PropertyDisplayerController implements Initializable {
     public void setBoroughPropertiesController(BoroughPropertiesController controller)
     {
         this.boroughPropertiesController = controller;
+    }
+
+    public void setBookingButtonDisabled(boolean disabled)
+    {
+        bookButton.setDisable(true);
     }
 
 }

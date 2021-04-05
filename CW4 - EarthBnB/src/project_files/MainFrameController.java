@@ -69,7 +69,6 @@ public class MainFrameController extends Application implements Initializable {
         primaryStage.setScene(new Scene(root, 600, 300));
         primaryStage.setResizable(true);
         primaryStage.show();
-
     }
 
 
@@ -80,6 +79,8 @@ public class MainFrameController extends Application implements Initializable {
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("airbnb-listings.csv");
+        if (!usingDatabase)
+            new OfflineData(listings); // Loads the offline bookingdata (is static)
         //teagenerateBookings();
         //generateUsers();
         try {
@@ -100,15 +101,10 @@ public class MainFrameController extends Application implements Initializable {
     }
 
 
-
-
     private void initializeFiltersComboBox()
     {
         ObservableList<FilterNames> filterNamesObservableList = FXCollections.observableArrayList(FilterNames.WIFI_FILTER, FilterNames.SUPER_FILTER, FilterNames.ROOM_FILTER, FilterNames.POOL_FILTER);
-        //ObservableList<String> testList = FXCollections.observableArrayList(new String[] {"1", "2", "3", "4"});
-
         filtersComboBox.getItems().addAll(filterNamesObservableList);
-
         filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> activatedFilters(event));
     }
 
@@ -165,7 +161,7 @@ public class MainFrameController extends Application implements Initializable {
 
     public void loadListings(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
-        listings = new Listings(loader.load(filename));
+        listings = new Listings(loader.load(filename), usingDatabase);
     }
 
     public void addOfflineAccount(Account account) {
@@ -190,7 +186,7 @@ public class MainFrameController extends Application implements Initializable {
                 FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
-                accountPanelController.initializeAccount(currentUser);
+                accountPanelController.initializeAccount(currentUser, this, listings);
                 accountOpen = true;
                 accountButton.setText("Exit");
                 setFrameSwitchingButtonsActive(false);

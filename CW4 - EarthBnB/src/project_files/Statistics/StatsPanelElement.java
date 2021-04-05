@@ -42,7 +42,6 @@ public class StatsPanelElement {
     {
         statisticsQueue.add(addStat);
         statisticsQueue.remove(removeStat);
-        System.out.println(this.toString() + " added: " + addStat.getName() + " removed " + removeStat.getName());
     }
 
     private void displayStatistic()
