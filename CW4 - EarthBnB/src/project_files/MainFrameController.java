@@ -21,7 +21,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
+/**
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class MainFrameController extends Application implements Initializable {
 
     private Account currentUser; // null if not logged in.
@@ -205,7 +209,7 @@ public class MainFrameController extends Application implements Initializable {
             String direction = btn.getId();
 
             MainframeContentPanel controller = getNextView(direction);
-            controller.initializeList(listings, currentUser);
+            controller.initializeData(listings, currentUser);
             contentPane.setCenter(controller.getPanelRoot());
             nameOfCurrent.setText(controller.getName());
         }
@@ -257,7 +261,7 @@ public class MainFrameController extends Application implements Initializable {
     public void loadBookingPanel(AirbnbListing listing) throws IOException {
         MainframeContentPanel controller = contentPanels[3];
         if (controller.getClass() == BookingController.class) {
-            controller.initializeList(listings, currentUser);
+            controller.initializeData(listings, currentUser);
             ((BookingController) controller).initializeWithProperty(listing);
             ((BookingController) controller).setUsingDatabase(usingDatabase);
             contentPane.setCenter(controller.getPanelRoot());

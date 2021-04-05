@@ -81,14 +81,12 @@ public class MapController extends MainframeContentPanel implements Initializabl
             mapView.getScene().getWindow().hide();
         } catch(Exception e) {
             e.printStackTrace();
-
-
         }
 
     }
 
     @Override
-    public void initializeList(Listings listings, Account currentUser)
+    public void initializeData(Listings listings, Account currentUser)
     {
         this.listings = listings;
         this.currentUser = currentUser;
@@ -152,7 +150,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
         filterValue = filterSlider.getValue();
     }
 
-    private void updateBoroughs() // !! Change to only save the first word of the borough
+    private void updateBoroughs()
     {
         resizePropertyNeighbourhood();
         propertyCount = listings.getFilteredListings().stream()

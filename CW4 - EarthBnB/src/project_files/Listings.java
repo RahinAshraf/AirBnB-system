@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * The filters are invoked by the previous filters or by a public changeXY method.
  *
  * @version 01-04-2021
- * @author Valentin Magis - Vandad Vafai Tabrizi
+ * @author Valentin Magis, Vandad Vafai Tabrizi, Barnabas Szalai
  */
 
 public class Listings {
@@ -45,12 +45,13 @@ public class Listings {
 
     /**
      * Create a new Listings object. Initializes the different lists so the user can add any filter at the beginning.
-     * @param originalListings
+     * @param originalListings The original listings loaded from the csv file.
      */
     public Listings(ArrayList<AirbnbListing> originalListings)
     {
         // Initializing stages of filtering making sure the user can start with any filter without problems.
         this.originalListings = originalListings;
+        originalListings.sort(AirbnbListing::compareTo);
         listingsFilteredByBookingData.addAll(originalListings);
         listingsFilteredByPrice.addAll(originalListings);
         listingsFilteredBySelectedBoroughs.addAll(originalListings);
@@ -70,6 +71,10 @@ public class Listings {
         return filteredListings;
     }
 
+    /**
+     * Get the original listings loaded at the beginning.
+     * @return The original listings.
+     */
     public ArrayList<AirbnbListing> getOriginalListings()
     {
         return originalListings;
@@ -95,7 +100,7 @@ public class Listings {
     /**
      * Filter for entered booking data. Uses to original listings to avoid loss of data.
      * Checked values are: Minimum and maximum nights, number of guests, price range, availability according to the database.
-     * @return
+     * @return The list filtered by the booking data and all following filters.
      */
     private void filterBookingData() throws SQLException {
         listingsFilteredByBookingData = originalListings.stream()
@@ -109,7 +114,8 @@ public class Listings {
     }
 
     /**
-     * Filter for the properties which have not been booked by other users.
+     * Filter for the properties which have not been booked by other users in the specified timeframe.
+     * Uses the database or offline generated data depending on the users selection at the beginning.
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
      */
@@ -117,6 +123,7 @@ public class Listings {
 
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();
 
+        // Offline Filter
         if (!MainFrameController.isUsingDatabase()) {
             ArrayList<Reservation> reservations = OfflineData.getReservations();
             //System.out.println("Filterdates: dummy reservations " + reservations.size());
@@ -131,6 +138,7 @@ public class Listings {
             System.out.println("Found reservations" + unavailableReservationIDs.size());
         }
 
+        // Online Filter
         else {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
@@ -146,14 +154,11 @@ public class Listings {
             }
         }
 
-        for(int i=0; i<listingsFilteredByBookingData.size(); i++) {
-            for(int j=0; j<unavailableReservationIDs.size(); j++) {
-                if(listingsFilteredByBookingData.get(i).getId().equals(unavailableReservationIDs.get(j))) {
-                    listingsFilteredByBookingData.remove(i);
-                }
-            }
+        // Remove the found reservations from the listings. The user wont be able to book them.
+        for (String id : unavailableReservationIDs)
+        {
+            listingsFilteredByBookingData.remove(iterativeSearch(listingsFilteredByBookingData, id));
         }
-        System.out.println(listingsFilteredByBookingData.size());
     }
 
     /**
@@ -184,8 +189,9 @@ public class Listings {
     }
 
     /**
-     * Change the boroughs filtered for.
-     * @param selectedBoroughs
+     * Change the boroughs filtered for. The filter is only activated when a borough is selected and the user searches for the properties.
+     * Other panels in the mainframecontroller should not be affected by this filter.
+     * @param selectedBoroughs The boroughs to be filtered for.
      */
     public void changeSelectedBoroughs(ArrayList<String> selectedBoroughs)
     {
@@ -195,7 +201,6 @@ public class Listings {
 
     /**
      * Filters the list for the searched boroughs.
-     * Just a temporary filter and not part of the further filtering process.
      */
     private void filterBoroughs() {
         if (!selectedBoroughs.isEmpty()) {
@@ -255,14 +260,11 @@ public class Listings {
             }
             filteredListings.clear();
             filteredListings.addAll(listingsFilteredByCheckboxes);
-
     }
-
-
 
     /**
      * Get the checkbox filters that have been activated.
-     * @return
+     * @return The activated filters.
      */
     public HashSet<FilterNames> getActiveFilters()
     {
@@ -270,8 +272,8 @@ public class Listings {
     }
 
     /**
-     * A method to help us with the Test Class.
-     * @return   The size of the active filter hash set.
+     * Helper method for the Unit Test.
+     * @return  The size of the active filter hash set.
      */
     public int getActiveFilterSize(){
         return activeFilters.size();
@@ -313,6 +315,12 @@ public class Listings {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    /**
+     * Binary Search with ID in an arrayList. Utilizing the fact that the loaded csv file is ordered by ids.
+     * @param arrayToSearch The array to be searched for the element.
+     * @param element The element to be searched for in the array.
+     * @return The Airbnblisting if found, otherwise null.
+     */
     public static AirbnbListing iterativeSearch(ArrayList<AirbnbListing> arrayToSearch, String element) {
         int lowIndex = 0;
         int highIndex = arrayToSearch.size()-1;

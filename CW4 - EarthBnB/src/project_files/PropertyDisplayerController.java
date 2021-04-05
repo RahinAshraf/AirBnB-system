@@ -34,26 +34,21 @@ public class PropertyDisplayerController implements Initializable {
     private BoroughPropertiesController boroughPropertiesController;
 
     @FXML
-    ImageView propertyImg, hostLargeImg;
-
+    private ImageView propertyImg, hostLargeImg;
     @FXML
-    Label bathroomsLbl, hostIsSuperHostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl, bedsLbl, propertyTypeLbl, propertyNameLbl;
+    private Label bathroomsLbl, hostIsSuperHostLbl, hostNameLbl, boroughLbl, neighbourHoodDescriptionLbl, bedsLbl, propertyTypeLbl, propertyNameLbl;
     @FXML
-    Button saveButton, bookButton;
+    private Button saveButton, bookButton;
     @FXML
-    Label pricePerNight;
+    private Label pricePerNight;
     @FXML
-    Label maxNumberOfPeople;
-
+    private Label maxNumberOfPeople;
     @FXML
-    TextArea amenitiesText; // Expand thing, only show a couple
-
+    private TextArea amenitiesText; // Expand thing, only show a couple
     @FXML
-    ProgressBar cleanlinessBar, communicationBar, locationBar, totalBar;
-
-
+    private ProgressBar cleanlinessBar, communicationBar, locationBar, totalBar;
     @FXML
-    WebView mapWebView; // View for displaying webEngine
+    private WebView mapWebView; // View for displaying webEngine
     private WebEngine webEngine; // Non-visible, used for loading content.
 
 
@@ -128,7 +123,6 @@ public class PropertyDisplayerController implements Initializable {
     @FXML
     private void loadMap(ActionEvent e)
     {
-        mapWebView.setVisible(true);
         double latitude = displayedListing.getLatitude();
         double longitude = displayedListing.getLongitude();
 
@@ -139,14 +133,17 @@ public class PropertyDisplayerController implements Initializable {
                 "document.goToLocation(window.lat, window.lon);"
         );
         mapWebView.setVisible(true);
-        System.out.println("Map loaded");
     }
 
+    /**
+     * The user has clicked "book". Close this window and load the booking screen to show the selected listing.
+     * Communication is done through the mainFrameController as a central connection point of other panels.
+     */
     @FXML
     private void goToBookingScreen()
     {
         if (boroughPropertiesController != null) {
-            currentUser.addFavouriteProperty(displayedListing); // Using a hashset, therefore not added twice.
+            currentUser.addFavouriteProperty(displayedListing); // Using a hashset, enforcing unique values.
             try {
                 mainFrameController.loadBookingPanel(displayedListing); // Load the bookingPanel into the mainframe
                 mainFrameController.getListings().changeSelectedBoroughs(new ArrayList<>()); // Reset the active filter
@@ -161,19 +158,22 @@ public class PropertyDisplayerController implements Initializable {
                 Stage mainWindowStage = (Stage) mainFrameController.contentPane.getScene().getWindow();
                 mainWindowStage.show();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-        }
-        } else {
-            System.out.println("Go back to account");
+            } catch (IOException e) { e.printStackTrace(); }
         }
     }
 
+    /**
+     * Hide the buttons save and book. Used when the user enters the booking via account --> upcoming trips --> right click check booking --> check property.
+     */
     public void hideNavigationButtons() {
         saveButton.setVisible(false);
         bookButton.setVisible(false);
     }
 
+    /**
+     * Set or remove a saved property. Saved properties are discarded at the end of each session.
+     * The user can use it to select various properties that they can later choose in the booking panel to reserve.
+     */
     @FXML
     public void saveProperty() {
         if(currentUser.removeFavouriteProperty(displayedListing)) {
@@ -184,6 +184,10 @@ public class PropertyDisplayerController implements Initializable {
         }
     }
 
+    /**
+     * Changes the style of the save button according to if the property has been saved or not.
+     * @param saved True if the listing has been saved.
+     */
     private void setSaved(boolean saved)
     {
         if (!saved) {
@@ -196,19 +200,23 @@ public class PropertyDisplayerController implements Initializable {
         }
     }
 
+    /**
+     * Set the object of the MainWindowController. Used to communicate back in case the user presses "book".
+     * @param mainFrameController The object of the mainFrameController this PropertyDisplayerController has been opened from.
+     */
     public void setMainWindowController(MainFrameController mainFrameController)
     {
         this.mainFrameController = mainFrameController;
     }
 
+    /**
+     * Set the boroughPropertiesController. Used to close the window of the boroughPropertiesController when the user clicks "book"
+     * @param controller The object of the BoroughPropertiesController.
+     */
     public void setBoroughPropertiesController(BoroughPropertiesController controller)
     {
         this.boroughPropertiesController = controller;
     }
 
-    public void setBookingButtonDisabled(boolean disabled)
-    {
-        bookButton.setDisable(true);
-    }
 
 }

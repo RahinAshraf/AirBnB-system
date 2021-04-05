@@ -8,37 +8,49 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.sql.SQLException;
 import java.time.LocalDate;
 /**
- * The WelcomePanelClass - The class for the panel which welcomes you to the app
- * and saves your data and information for the dates, price, number of guests , etc.
+ * The WelcomePanelClass - This contentPanel is first shown in the MainFrame. It welcomes the user.
+ * The user has to enter a search request (and select a price range in the MainFrame) to be able to switch to other panels.
+ * For the search, the user can select arrival and departure date and number of guests.
  *
- * @author Vandad Vafai Tabrizi - add your names
+ * @author Vandad Vafai Tabrizi, Rahin Ashraf, Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 
 public class WelcomePanel extends MainframeContentPanel {
 
-
     @FXML
     Label welcomeLabel, enterLabel, minPriceRangeLabel, maxPriceRangeLabel;
     @FXML
-    DatePicker checkIn;
-    @FXML
-    DatePicker checkOut;
+    DatePicker checkIn, checkOut;
     @FXML
     TextField numberOfPeople;
     @FXML
     Button submitButton;
 
+    /**
+     * Create the welcome panel internals.
+     */
     public WelcomePanel() {
         currentUser = null;
         name = "Welcome";
     }
 
 
-    // Get rid of those two with new class "updatableMainframeContentPanel"
+    /**
+     * Implements the abstract method in MainframeContentPanel.
+     * Gives this panel a reference to the listings and the current user to get/manipulate data.
+     * @param listings The listings.
+     * @param currentUser The currently logged in user.
+     */
     @Override
-    public void initializeList(Listings listings, Account currentUser) {
+    public void initializeData(Listings listings, Account currentUser) {
     }
 
+    /**
+     * Update the current panel. The welcome panel does not display anything related to the user or the the statistics
+     * and therefore no action is performed here.
+     */
     @Override
     public void updatePanel() {};
 
@@ -86,8 +98,7 @@ public class WelcomePanel extends MainframeContentPanel {
     @FXML
     private void setDate(ActionEvent e)
     {
-        if (e.getSource().getClass() == DatePicker.class)
-        {
+        if (e.getSource().getClass() == DatePicker.class) {
             DatePicker datePicker = (DatePicker) e.getSource();
 
             if (datePicker.getId().equalsIgnoreCase("checkIn")) { // The chosen checkIn date is in the past
@@ -98,8 +109,7 @@ public class WelcomePanel extends MainframeContentPanel {
             }
             else { // CheckOut was selected
 
-                if (checkOut.getValue() != null && checkOut.getValue().isBefore(LocalDate.now())) // The chosen checkout date is in the past
-                {
+                if (checkOut.getValue() != null && checkOut.getValue().isBefore(LocalDate.now())) { // The chosen checkout date is in the past
                     checkOut.setValue(null);
                     pastDateAlert();
                 }
@@ -164,7 +174,9 @@ public class WelcomePanel extends MainframeContentPanel {
         alert.setContentText("Your booking details have been saved.");
         alert.showAndWait();
     }
-
+    /**
+     * An alert which occurs when an invalid string has been entered for the number of people
+     */
     private void setNumberOfPeopleAlert() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -173,6 +185,9 @@ public class WelcomePanel extends MainframeContentPanel {
         alert.showAndWait();
     }
 
+    /**
+     * An alert which occurs when information is missing.
+     */
     private void missingInformationAlert()
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);

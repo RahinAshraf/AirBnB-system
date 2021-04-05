@@ -69,7 +69,7 @@ public class RegisterController {
         } else {
             try {
                 Account newAccount = new Account(OfflineData.getAccounts().size() + 1, nameField.getText(), hashPW(pwField.getText()), emailField.getText());
-                accounts.add(newAccount);
+                accounts.add(newAccount); // add new account to the offline data
                 createFeedback("Successful registration!", 1);
             } catch (Exception e) {
 

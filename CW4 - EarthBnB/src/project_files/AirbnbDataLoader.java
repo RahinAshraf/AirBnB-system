@@ -1,26 +1,30 @@
 package project_files;
 
+import com.opencsv.CSVReader;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-
-import com.opencsv.CSVReader;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Class AirbnbDataLoader - Loads a csv file storing information about airbnb listings.
+ * @author Structure supplied by Micheal Kölling, edited by Valentin Magis
+ * @version 1.1
+ * @since 2021-03-11
+ */
 public class AirbnbDataLoader {
 
     /** 
      * Return an ArrayList containing the rows in the AirBnB London data set csv file.
      */
     public ArrayList<AirbnbListing> load(String filename) {
-        System.out.print("Begin loading Airbnb london dataset...");
         ArrayList<AirbnbListing> listings = new ArrayList<>();
         try{
             URL url = getClass().getResource(filename);
@@ -68,10 +72,8 @@ public class AirbnbDataLoader {
                 listings.add(listing);
             }
         } catch(IOException | URISyntaxException e){
-            System.out.println("Failure! Something went wrong");
             e.printStackTrace();
         }
-        System.out.println("Success! Number of loaded records: " + listings.size());
         return listings;
     }
 
@@ -96,7 +98,7 @@ public class AirbnbDataLoader {
     }
 
     /**
-     *
+     * Convert a String to a Double
      * @param doubleString the string to be converted to Double type
      * @return the Double value of the string, or -1.0 if the string is 
      * either empty or just whitespace
@@ -123,9 +125,9 @@ public class AirbnbDataLoader {
     }
 
     /**
-     *
+     * Convert an Integer to a String,
      * @param intString the string to be converted to Integer type
-     * @return the Integer value of the string, or -1 if the string is 
+     * @return the Integer value of the string, or 0 if the string is
      * either empty or just whitespace
      */
     private Integer convertInt(String intString){
@@ -149,9 +151,10 @@ public class AirbnbDataLoader {
     }
 
     /**
+     * Convert a string into an url
      * @param urlString The string to be converted into an url
      * @return The url or null if the link is invalid.
-     * @throws MalformedURLException
+     * @throws MalformedURLException if the link is invalid
      */
     private URL convertURL(String urlString) throws MalformedURLException {
         if (urlString != null && !urlString.trim().equals("")) {
@@ -160,7 +163,6 @@ public class AirbnbDataLoader {
                 URL url = uri.toURL();
                 return url;
             } catch (Exception e) {
-                System.out.println("URL could not be loaded");
                 e.printStackTrace();
             }
         }

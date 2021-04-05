@@ -2,20 +2,36 @@ package project_files;
 
 import javafx.scene.Parent;
 
+/**
+ *
+ * @author Valentin Magis, Barnabas Szalai
+ * @version 1.0
+ * @since 2021-03-11
+ */
 public abstract class MainframeContentPanel {
 
-    public abstract void initializeList(Listings listings, Account currentAccount);
+    /**
+     * Pass on the loaded listings and the current user to this contentPanel.
+     * Every contentPanel needs either both or one of them to run correctly.
+     * @param listings The listings.
+     * @param currentAccount The currently logged in user.
+     */
+    public abstract void initializeData(Listings listings, Account currentAccount);
+
+    /**
+     * Call this to update the contents of the current panel. Used when the filters applied on the listings are changed.
+     */
     public abstract void updatePanel();
 
-    protected MainFrameController mainFrameController;
-    protected Parent panelRoot;
+    protected MainFrameController mainFrameController; // Used to communicate back to the main frame.
+    protected Parent panelRoot; // The root of this panel. Put into the center of the mainframe to display this panel.
     protected Listings listings;
     protected Account currentUser;
-    protected String name;
+    protected String name; // The name of the panel.
 
     /**
      * Receive the root of the panel.
-     * @return
+     * @return The root of the panel.
      */
     public Parent getPanelRoot(){
         return panelRoot;
@@ -23,9 +39,9 @@ public abstract class MainframeContentPanel {
 
     /**
      * @param controller The main window controller. Used to communicate back to the mainframe.
-     * @param currentUser
+     * @param currentUser The user currently logged in.
      * @param panelRoot The root of a panel. This is the top node of the view which can be received to be displayed in the mainframe.
-     * @param listings
+     * @param listings The listings.
      */
     public void initialize(MainFrameController controller, Account currentUser, Parent panelRoot, Listings listings) {
         this.mainFrameController = controller;
@@ -44,7 +60,4 @@ public abstract class MainframeContentPanel {
         this.currentUser = currentUser;
     }
 
-    public void updateListings(Listings listings) {
-        this.listings = listings;
-    }
 }

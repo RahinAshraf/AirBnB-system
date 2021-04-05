@@ -34,18 +34,26 @@ public class StatisticsPanelController extends MainframeContentPanel {
     @FXML
     private BorderPane statsBP1, statsBP2, statsBP3, statsBP4; // Invoke .setCenter on these to show a statistic
 
+    /**
+     * Create a new
+     */
     public StatisticsPanelController() {
         currentUser = null;
         name = "Statistics";
     }
 
+    /**
+     * Initialize the statistics panel.
+     * @param listings The listings to be used for the statistics initially.
+     * @param currentUser The current user.
+     */
     @Override
-    public void initializeList(Listings listings, Account currentUser)
+    public void initializeData(Listings listings, Account currentUser)
     {
         this.listings = listings;
         ArrayList<AirbnbListing> filteredListings = listings.getFilteredListings();
-        // Create and load the statistics
         this.currentUser = currentUser;
+        // Create and load the statistics
         accommodationType = new StatAccommodationType(filteredListings);
         availableProperties = new StatAvailableProperties(filteredListings);
         averageNumReviews = new StatAverageNumReviews(filteredListings);
