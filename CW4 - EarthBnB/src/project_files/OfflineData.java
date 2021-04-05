@@ -8,11 +8,17 @@ public class OfflineData {
 
     private static ArrayList<Reservation> dummyReservations = new ArrayList<>();
 
+    /**
+     *
+     */
     public OfflineData(Listings listings)
     {
         generateBookings(listings);
     }
 
+    /**
+     *
+     */
     private void generateBookings(Listings listings) {
         LocalDate currentDate = LocalDate.now().plusDays(365);
         Random rand = new Random();
@@ -28,6 +34,10 @@ public class OfflineData {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<Reservation> getDummyReservations() {
         return dummyReservations;
     }

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * The filters are invoked by the previous filters or by a public changeXY method.
  *
  * @version 01-04-2021
- * @author Valentin Magis
+ * @author Valentin Magis - Vandad Vafai Tabrizi
  */
 
 public class Listings {
@@ -269,6 +269,13 @@ public class Listings {
         return activeFilters;
     }
 
+    /**
+     * A method to help us with the Test Class.
+     * @return   The size of the active filter hash set.
+     */
+    public int getActiveFilterSize(){
+        return activeFilters.size();
+    }
 
     /**
      * Filter the given list by an amenity.
