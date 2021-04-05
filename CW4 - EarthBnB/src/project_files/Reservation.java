@@ -2,6 +2,15 @@ package project_files;
 
 import java.time.LocalDate;
 
+
+/**
+ * A blueprint for reservations created by the user. Reservations are created from the database, but are also created
+ * when the database is not used.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class Reservation {
 
     private int reservationID;
@@ -12,6 +21,9 @@ public class Reservation {
     private double price;
     private String listingID;
 
+    /**
+     * A constructor which is used to initialize the instance variables of the class
+     */
     Reservation(int reservationID, LocalDate arrival, LocalDate departure, int bookerID,
                 int numberOfGuests, double price, String listingID) {
         this.reservationID = reservationID;

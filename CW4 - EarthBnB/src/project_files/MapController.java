@@ -184,11 +184,10 @@ public class MapController extends MainframeContentPanel implements Initializabl
         System.out.println(borough);
     }
 
-    public void updateFilter(MouseEvent mouseEvent) {
-        filterValue = filterSlider.getValue();
-    }
-
-    private void updateBoroughs() // !! Change to only save the first word of the borough
+    /**
+     * Stores the number of properties for each of the boroughs. Also calls a method to shorten the borough names.
+     */
+    private void updateBoroughs() //
     {
         resizePropertyNeighbourhood();
         propertyCount = listings.getFilteredListings().stream()

@@ -41,10 +41,6 @@ public class RegisterController {
 
     MainFrameController mainFrameController;
 
-
-
-
-
     /**
      * Checks whether the entered register information's syntax is valid. Also calls either the database or offline
      * register validation to validate, create and store the newly created Account.
