@@ -31,7 +31,7 @@ public class MainFrameController extends Application implements Initializable {
     private ArrayList<Account> offlineAccounts;
     private ArrayList<Reservation> offlineReservations;
 
-    private boolean usingDatabase;
+    private static boolean usingDatabase;
 
     private int currentPage = 0;
 
@@ -81,8 +81,6 @@ public class MainFrameController extends Application implements Initializable {
         loadListings("airbnb-listings.csv");
         if (!usingDatabase)
             new OfflineData(listings); // Loads the offline bookingdata (is static)
-        //teagenerateBookings();
-        //generateUsers();
         try {
             createPanels();
         } catch (IOException e) {
@@ -95,7 +93,7 @@ public class MainFrameController extends Application implements Initializable {
         // Fill the dropdown with selectable price ranges
         initializePriceRangeDropDown();
         initializeFiltersComboBox();
-        usingDatabase = false;
+        //usingDatabase = false;
         offlineAccounts = new ArrayList<>();
         offlineReservations = new ArrayList<>();
     }
@@ -301,7 +299,7 @@ public class MainFrameController extends Application implements Initializable {
         loginPanelController.setMainWindowController(this);
     }
 
-    public boolean isUsingDatabase() {
+    public static boolean isUsingDatabase() {
         return usingDatabase;
     }
 
@@ -496,36 +494,35 @@ public class MainFrameController extends Application implements Initializable {
 
 
 
+*/
 
-
+    /*
     private void generateBookings() {
         ArrayList<AirbnbListing> listing = listings.getFilteredListings();
-
         ArrayList<String> users = getUsers();
 
         try {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
             Statement statement = connectDB.createStatement();
-
+            LocalDate currentDate = LocalDate.now().plusDays(365);
             Random rand = new Random();
-            for (int i=0; i < listing.size(); i+=70)
+            for (int i = 0; i < 1000; i++)
             {
                 AirbnbListing l = listing.get(i);
+                int daysOfStay = rand.nextInt(l.getMaximumNights() % 30 + 1);
 
-                createRandomBooking(l, users.get(rand.nextInt(users.size()-1)));
 
-                String insert = "INSERT INTO booking VALUES (NULL, '" + usersData.getCheckIn() + "', '" + usersData.getCheckOut() + "', '" + users.get(rand.nextInt(users.size()-1)) + "', '" +
-                        l.getMaxGuests() + "', '" + l.getPrice() *  + "', '" + l.getId() + "')" + ";";
+                String insert = "INSERT INTO booking VALUES (NULL, '" + currentDate.minusDays(i+daysOfStay) + "', '" + currentDate.minusDays(i) + "', '" + users.get(rand.nextInt(users.size()-1)) + "', '" +
+                        l.getMaxGuests() + "', '" + l.getPrice() * daysOfStay + "', '" + l.getId() + "','" +  currentDate.minusDays(i+ + daysOfStay + rand.nextInt(45)) + "');";
+                System.out.println(insert);
                 statement.executeUpdate(insert);
             }
         } catch (Exception e) {
         }
     }
 
-    private void createRandomBooking(AirbnbListing l, String s) {
 
-    }
 
     private ArrayList<String> getUsers() {
         ArrayList<String> userIds = new ArrayList<>();
@@ -546,7 +543,6 @@ public class MainFrameController extends Application implements Initializable {
     }
 
      */
-
 
 }
 

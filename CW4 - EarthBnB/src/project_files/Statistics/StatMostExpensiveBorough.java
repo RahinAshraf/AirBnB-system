@@ -35,6 +35,6 @@ public class StatMostExpensiveBorough extends StatisticAsText {
             statLabel.setText(mostExpensiveBorough);
         }
         else
-            statLabel.setText("No properties fit the request.");
+            statLabel.setText("No properties fit Your search.");
     }
 }

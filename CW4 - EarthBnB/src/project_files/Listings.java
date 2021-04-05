@@ -139,11 +139,6 @@ public class Listings {
         listingsFilteredByPrice = listingsFilteredByBookingData.stream()
                 .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
                 .collect(Collectors.toCollection(ArrayList::new));
-
-        System.out.println("Wrong counted price " + listingsFilteredByPrice.stream()
-                .filter(l -> l.getPrice() < priceRange[0] && l.getPrice() > priceRange[1])
-                .count());
-
         filterBoroughs();
     }
 
