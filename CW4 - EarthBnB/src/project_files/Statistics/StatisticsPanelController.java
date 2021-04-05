@@ -50,7 +50,7 @@ public class StatisticsPanelController extends MainframeContentPanel {
         closestListingToAttraction = new StatClosestListingToAttraction(filteredListings);
         StatMostLuxurious = new StatBookingsScatterChart(filteredListings);
         StatBestOffer = new StatBookingDevelopmentGraph(filteredListings);
-        statD = new StatD(filteredListings);
+        statD = new AverageRevenuePerListingLastYear(filteredListings);
 
         // Just a temporary list, specifies all elements that are not being shown.
         // Would be better to derive them from the ones being displayed, making sure no bs can happen.

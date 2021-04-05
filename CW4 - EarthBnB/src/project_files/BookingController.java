@@ -101,7 +101,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     public void updateCalendar() {
         System.out.println("updatecalendar called");
         if(!usingDatabase) {
-            reservations = mainFrameController.getOfflineReservations();
+            reservations = OfflineData.getReservations();
         } else {
             reservations = new ArrayList<>();
             String getReservations = "SELECT * FROM booking";
@@ -274,7 +274,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                     }
                 } else {
                     if(!violation) {
-                        ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
+                        ArrayList<Reservation> reservations = OfflineData.getReservations();
                         Reservation reservation = new Reservation(reservations.size() + 1, checkInDate.getValue(), checkOutDate.getValue(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
                                 selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
                         reservations.add(reservation);

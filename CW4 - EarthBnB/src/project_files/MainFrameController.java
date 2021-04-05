@@ -29,9 +29,6 @@ public class MainFrameController extends Application implements Initializable {
     private boolean firstRequestSubmitted = false;
     private boolean initialPriceRangeSelected = false;
 
-    private ArrayList<Account> offlineAccounts;
-    private ArrayList<Reservation> offlineReservations;
-
     private static boolean usingDatabase;
 
     private int currentPage = 0;
@@ -91,8 +88,6 @@ public class MainFrameController extends Application implements Initializable {
         // Fill the dropdown with selectable price ranges
         initializePriceRangeDropDown();
         initializeFiltersComboBox();
-        offlineAccounts = new ArrayList<>();
-        offlineReservations = new ArrayList<>();
     }
 
 
@@ -158,20 +153,6 @@ public class MainFrameController extends Application implements Initializable {
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = new Listings(loader.load(filename));
     }
-
-    public void addOfflineAccount(Account account) {
-        offlineAccounts.add(account);
-    }
-    public void addOfflineReservation(Reservation reservation) {
-        offlineReservations.add(reservation);
-    }
-    public ArrayList<Account> getOfflineAccounts() {
-        return offlineAccounts;
-    }
-    public ArrayList<Reservation> getOfflineReservations() {
-        return offlineReservations;
-    }
-
 
     @FXML
     public void navigateToAccount(ActionEvent e) throws IOException {
