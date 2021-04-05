@@ -14,19 +14,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * This class provides the controller for the accountView. It is used to display information about the current user,
+ * and show the upcoming trips that are reserved by the user.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class AccountPanelController implements Initializable {
 
     //private ArrayList<AirbnbListing> filteredListings; = new ArrayList<>();
@@ -53,6 +54,14 @@ public class AccountPanelController implements Initializable {
     @FXML
     ContextMenu checkBookingCMenu;
 
+
+    /**
+     * This method is used to initialize the fields that store information about the user. It also creates the columns
+     * for the tableview that displays the upcoming reservations and adds the personal details to the list.
+     * @param currentUser the Account of the current user
+     * @param mainFrameController the instance of the MainFrameController that instantiated the accountView
+     * @param listings  the Listings object containing all of the properties
+     */
     public void initializeAccount(Account currentUser, MainFrameController mainFrameController, Listings listings) {
         //this.listings = listings;
         //filteredListings = listings.getFilteredListings();
@@ -64,7 +73,6 @@ public class AccountPanelController implements Initializable {
         loadData();
         informationList.setItems(userInformationList);
         tripsTable.setItems(upcomingTrips);
-
 
         TableColumn bookingIDCol = new TableColumn<>("ID");
         bookingIDCol.setMinWidth(40);
@@ -88,19 +96,16 @@ public class AccountPanelController implements Initializable {
         checkOutCol.setCellValueFactory(checkOutTemp);
 
         tripsTable.getColumns().addAll(bookingIDCol, checkInCol, checkOutCol);
-
-
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {}
 
 
-    }
-
-
-
-
+    /**
+     * A simple method to store basic personal information about the current user into an observable list that can be
+     * displayed by a listview.
+     */
     public void loadUserInformation() {
         userInformationList.add("Account ID: " + (currentUser.getAccountID()));
         userInformationList.add("Username: " + currentUser.getUsername());
@@ -108,10 +113,13 @@ public class AccountPanelController implements Initializable {
     }
 
 
+    /**
+     * This method is used to load all of the reservations that have been made by the current user. If the application
+     * is using the database, these reservations are requested from the database. Otherwise, they are loaded from an
+     * instance variable of the user Account.
+     */
     public void loadData() {
         // Generate an arraylist of all of the bookings of the currentUser
-
-
         if(mainFrameController.isUsingDatabase()) {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
@@ -123,19 +131,8 @@ public class AccountPanelController implements Initializable {
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getPropertiesBooked);
                 while (queryResult.next()) {
-                    LocalDate arrivalDate = new java.sql.Date(queryResult.getDate(2).getTime()).toLocalDate();
-                    LocalDate departureDate = new java.sql.Date(queryResult.getDate(3).getTime()).toLocalDate();
-                    Reservation reservation = new Reservation(
-                            queryResult.getInt(1),
-                            arrivalDate,
-                            departureDate,
-                            queryResult.getInt(4),
-                            queryResult.getInt(5),
-                            queryResult.getInt(6),
-                            queryResult.getString(7)
-                    );
                     System.out.println("loaded data to account panel");
-                    upcomingTrips.add(reservation);
+                    upcomingTrips.add(createReservation(queryResult));
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -152,23 +149,38 @@ public class AccountPanelController implements Initializable {
 
     }
 
+    static Reservation createReservation(ResultSet queryResult) throws SQLException {
+        LocalDate arrivalDate = new Date(queryResult.getDate(2).getTime()).toLocalDate();
+        LocalDate departureDate = new Date(queryResult.getDate(3).getTime()).toLocalDate();
+        Reservation reservation = new Reservation(
+                queryResult.getInt(1),
+                arrivalDate,
+                departureDate,
+                queryResult.getInt(4),
+                queryResult.getInt(5),
+                queryResult.getInt(6),
+                queryResult.getString(7)
+        );
+        return reservation;
+    }
+
+
+    /**
+     * This method is called when the user right clicks on a row when selecting an upcoming reservation. When this
+     * occurs, a contextmenu appears near the user's mouse location displaying some menuitems.
+     */
     @FXML
     private void rowClicked(MouseEvent e) throws IOException {
         if (e.isSecondaryButtonDown()) {
-
-//            Object chosenObject = propertiesTable.getSelectionModel().getSelectedItem();
-//            if (chosenObject.getClass() == AirbnbListing.class) { // Safety check for cast
-//                AirbnbListing chosenProperty = (AirbnbListing) chosenObject;
-//                openPropertyDisplayView(chosenProperty);
-//            }
-
             checkBookingCMenu.show(tripsTable, e.getScreenX(), e.getScreenY());
-
         }
-
-
     }
 
+    /**
+     * This method is called when the user clicks on the menuItem inside the contextmenu upon right clicking on an
+     * upcoming reservation. It instantiates a new fxml view and displays it in a new window. It also passes on some
+     * information about the selected property to the controller of the instantiated view.
+     */
     @FXML
     private void checkBooking(ActionEvent e) throws IOException {
             //if (chosenObject.getClass() == Reservation.class) { // Safety check for cast
@@ -188,6 +200,12 @@ public class AccountPanelController implements Initializable {
             //}
     }
 
+    /**
+     * This method is called when the user clicks on the button to show information about the property in the
+     * accountBookingView. It instantiates a new fxml view of type PropertyDisplayerView, which displays information
+     * about the property. It also passes on some data to the controller of the newly created view, and disables the
+     * saving and booking options from the new window.
+     */
     public void checkProperty() throws IOException {
         FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("PropertyDisplayerView.fxml"));
         Parent root = displayerLoader.load();
@@ -203,29 +221,15 @@ public class AccountPanelController implements Initializable {
         newStage.show();
     }
 
+    /**
+     * This method searches for a property in the listings using the property ID of the selected reservation
+     * in the tableview. It calls another method that executes a binary search.
+     * @return  AirbnbListing   the AirbnbListing that the ID corresponds to. Returns null if not found.
+     */
     private AirbnbListing findListingByID() {
         System.out.println("chosenpropertyID: " + chosenProperty.getListingID());
         ArrayList<AirbnbListing> originalListings = listings.getOriginalListings();
 
-
-//        for(int i=0; i<originalListings.size(); i++) {
-//            if(originalListings.get(i).getId().equals(chosenProperty.getListingID())) {
-//                System.out.println("Listing found");
-//                return originalListings.get(i);
-//            }
-//        }
         return Listings.iterativeSearch(originalListings, chosenProperty.getListingID());
-
-        //Also has to return null
-    }
-
-
-
-    private String hashPW(String password) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-        messageDigest.reset();
-        messageDigest.update(password.getBytes(StandardCharsets.UTF_8));
-
-        return String.format("%0128x", new BigInteger(1, messageDigest.digest()));
     }
 }

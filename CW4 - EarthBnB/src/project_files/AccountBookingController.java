@@ -10,6 +10,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+
+
+/**
+ * This class provides the controller for the accountBookingView. It displays information about an upcoming reservation
+ * that the user has made. The user can also view details about the particular property using a button on the view that
+ * is handled by this controller.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class AccountBookingController implements Initializable {
 
     @FXML
@@ -25,6 +37,13 @@ public class AccountBookingController implements Initializable {
     }
 
 
+
+    /**
+     * This method is called by the class that instantiated the accountBookingView. It is used to load the ListView
+     * with data about the reservation that is perceived.
+     * @param reservation the reservation that the user is inspecting
+     * @param accountPanelController the instance of the accountPanelController that instantiated the accountBookinView
+     */
     public void LoadData(Reservation reservation, AccountPanelController accountPanelController) {
 
         this.accountPanelController = accountPanelController;
