@@ -108,7 +108,7 @@ public class LoginPanelController implements Initializable {
 
 
     public void validateLogin() {
-        if(mainFrameController.isUsingDatabase()) {
+        if(MainFrameController.isUsingDatabase()) {
             DatabaseConnection connection = new DatabaseConnection();
             Connection connectDB = connection.getConnection();
 

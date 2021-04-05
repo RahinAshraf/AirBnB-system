@@ -35,11 +35,13 @@ public class StatClosestListingToAttraction extends StatisticAsText {
     protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
         String result = "";
-        for (Map.Entry<String, double[]> location : locationsList.entrySet())
-        {
-            Pair<AirbnbListing, Integer> currentResult = getClosestTo(listings, location.getValue()[0], location.getValue()[1]); //Pass in the boroughListings and the two location values stored in the array
-            result += location.getKey() + ": " + "\n" + currentResult.getKey().getName() + " " + currentResult.getValue() + "m\n"; // Get the name of the original location, the nearest apartment and the distance in meters
+        if (!listings.isEmpty()) {
+            for (Map.Entry<String, double[]> location : locationsList.entrySet()) {
+                Pair<AirbnbListing, Integer> currentResult = getClosestTo(listings, location.getValue()[0], location.getValue()[1]); //Pass in the boroughListings and the two location values stored in the array
+                result += location.getKey() + ": " + "\n" + currentResult.getKey().getName() + " " + currentResult.getValue() + "m\n"; // Get the name of the original location, the nearest apartment and the distance in meters
+            }
         }
+        else result = "No properties fit Your search.";
         statLabel.setText(result);
     }
 

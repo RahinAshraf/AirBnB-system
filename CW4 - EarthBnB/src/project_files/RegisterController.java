@@ -10,12 +10,12 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterController {
 
@@ -40,7 +40,7 @@ public class RegisterController {
         if (nameField.getText().length() != 0 && pwField.getText().length() != 0 && pwField.getText().length() != 0 && pwConfField.getText().length() != 0) {
             if ((pwField.getText().equals(pwConfField.getText()))) {
                 if(validateEmail(emailField.getText())) {
-                    if(mainFrameController.isUsingDatabase()) {
+                    if(MainFrameController.isUsingDatabase()) {
                         validateDatabaseRegister();
                     } else {
                         validateOfflineRegister();
