@@ -185,19 +185,22 @@ public class AccountPanelController implements Initializable {
     private void checkBooking(ActionEvent e) throws IOException {
             //if (chosenObject.getClass() == Reservation.class) { // Safety check for cast
             chosenObject = tripsTable.getSelectionModel().getSelectedItem();
+        if (chosenObject != null) {
             chosenProperty = (Reservation) chosenObject;
 
-                FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("accountBookingView.fxml"));
-                Parent root = displayerLoader.load();
-                Stage newStage = new Stage();
-                newStage.setTitle("Reservation");
-                newStage.setScene(new Scene(root, 400, 300));
-                AccountBookingController accountBookingController = displayerLoader.getController();
-                accountBookingController.LoadData(chosenProperty, this);
-                newStage.show();
+            FXMLLoader displayerLoader = new FXMLLoader(getClass().getResource("accountBookingView.fxml"));
+            Parent root = displayerLoader.load();
+            Stage newStage = new Stage();
+            newStage.setTitle("Reservation");
+            newStage.setScene(new Scene(root, 400, 300));
+            AccountBookingController accountBookingController = displayerLoader.getController();
+            accountBookingController.LoadData(chosenProperty, this);
+            newStage.show();
 
-                System.out.println("MenuItem clicked");
+            System.out.println("MenuItem clicked");
             //}
+        }
+
     }
 
     /**
