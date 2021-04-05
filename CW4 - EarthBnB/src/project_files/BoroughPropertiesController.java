@@ -19,7 +19,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-
+/**
+ * This class displays a list of properties that are available in the selected boroughs. It also allows the user to
+ * filter the tableview for price, hostname and # of reviews. It also allows the user to inspect a particular
+ * property from the list.
+ *
+ * @author  Valentin Magis, Rahin Ashraf, Vandad Vafai Tabrizi, Barnabas Szalai
+ * @version 1.0
+ * @since   2021-03-11
+ */
 public class BoroughPropertiesController implements Initializable {
 
     //
@@ -74,6 +82,9 @@ public class BoroughPropertiesController implements Initializable {
 
     }
 
+    /**
+     * This method updates the ids and text of the filter checkboxes based on a static method in the FilterNames class.
+     */
     private void setFilterCheckBoxIds() {
         wifiBox.setId(FilterNames.WIFI_FILTER.name());
         poolBox.setId(FilterNames.POOL_FILTER.name());
@@ -86,6 +97,9 @@ public class BoroughPropertiesController implements Initializable {
         roomBox.setText(FilterNames.ROOM_FILTER.toString());
     }
 
+    /**
+     * This method creates the columns of the TableView and loads the rows, displaying the properties.
+     */
     private void buildTable() {
         // Creates a table column which contains the hosts' names.
         boroughHostCol = new TableColumn("Host Name");
@@ -161,7 +175,11 @@ public class BoroughPropertiesController implements Initializable {
     }
 
     /**
-     *
+     * This method is used to pass on default fields which the object can use later. It also initializes some of the
+     * class's instance variables.
+     * @param   listings    the filtered listings that are displayed after filtering for the borough
+     * @param   selectedBoroughs    the list of boroughs that the user selected from the map
+     * @param currentUser   the current logged in user
      */
     public void initializeListing(Listings listings, ArrayList<String> selectedBoroughs, Account currentUser)
     {
@@ -195,7 +213,8 @@ public class BoroughPropertiesController implements Initializable {
     }
 
     /**
-     *
+     * This method is called when the back button is pressed. It closes the current window and opens a new stage
+     * showing the map
      */
     public void backNavigation() {
         try {
@@ -235,6 +254,9 @@ public class BoroughPropertiesController implements Initializable {
     }
 
 
+    /**
+     * This method loads the filtered listings into the tableview.
+     */
     private void displayList()
     {
         propertiesTable.setItems(listings.getObservableFilteredListings());
@@ -281,6 +303,9 @@ public class BoroughPropertiesController implements Initializable {
         newStage.show();
     }
 
+    /**
+     * This method initiates the mainFrameController. It is called from the MapController.
+     */
     public void setMainWindowController(MainFrameController mainFrameController) {
         this.mainFrameController = mainFrameController;
     }
