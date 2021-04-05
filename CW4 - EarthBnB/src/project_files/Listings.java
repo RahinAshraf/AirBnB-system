@@ -186,6 +186,14 @@ public class Listings {
     }
 
     /**
+     * A method to help us with the Test Class.
+     * @return   The size of the active filter hash set.
+     */
+    public int getActiveFilterSize(){
+        return activeFilters.size();
+    }
+
+    /**
      * Add/Remove a filter depending if it is in the list of active filters or not.
      * @param filter The filter to be added/removed
      */
@@ -219,7 +227,6 @@ public class Listings {
             }
             filteredListings.clear();
             filteredListings.addAll(listingsFilteredByCheckboxes);
-
     }
 
     /**
@@ -252,9 +259,6 @@ public class Listings {
                 }
             }
         }
-
-
-
     }
 
     /**
