@@ -9,6 +9,9 @@ import java.util.Map;
 
 /**
  * Class StatClosestListingToAttraction retrieves the closest apartments to given points. Creates a printable list.
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public class StatClosestListingToAttraction extends StatisticAsText {
 

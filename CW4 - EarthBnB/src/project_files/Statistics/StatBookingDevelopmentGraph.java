@@ -17,23 +17,30 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
+ * Class StatBookingDevelopmentGraph - Creates a Linegraph of the all monthly bookings of all users,
+ * either from the online database or from the offline generated dummy data.
  *
+ * Differentiates between bookings of listings where the host is a superhost and where he is not.
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public class StatBookingDevelopmentGraph extends StatisticAsText {
 
-    final private CategoryAxis xAxis = new CategoryAxis();
-    final private NumberAxis yAxis = new NumberAxis();
+    final private CategoryAxis xAxis = new CategoryAxis(); // Months
+    final private NumberAxis yAxis = new NumberAxis(); // Number of bookings
     final private LineChart<String, Number> bookingsGraph = new LineChart<>(xAxis, yAxis);
     final private XYChart.Series monthlySuperhostBookings = new XYChart.Series();
     final private XYChart.Series monthlyNonSuperhostBookings = new XYChart.Series();
     /**
-     * Create an object for the statistic counting the number of entire home and apartments listed.
+     * Create an object for the statistic and create the first graph.
+     * @param listings The listings to create the graph for.
      */
     public StatBookingDevelopmentGraph(ArrayList<AirbnbListing> listings)
     {
         name = "Development of Bookings";
         statistic = bookingsGraph;
-        bookingsGraph.setAnimated(false); // Animation is buggy.
+        bookingsGraph.setAnimated(false); // JavaFX live-animation is buggy.
         xAxis.setLabel("Time");
         yAxis.setLabel("Bookings");
         monthlySuperhostBookings.setName("Bookings for Superhosts");
@@ -48,14 +55,15 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
      */
     protected void updateStatistic(ArrayList<AirbnbListing> listings)
     {
-        monthlySuperhostBookings.getData().clear(); // empty bookings
+        // empty bookings
+        monthlySuperhostBookings.getData().clear();
         monthlyNonSuperhostBookings.getData().clear();
 
         HashSet<IdDatePair> allBookings = getArrivalDates();
         ArrayList<IdDatePair> superhostPairs = new ArrayList<>();
         ArrayList<IdDatePair> notSuperhostPairs = new ArrayList<>();
 
-        // Sort the pairs to above and below median
+        // Sort the pairs to superhost and not-superhost
         for (IdDatePair pair : allBookings) {
             AirbnbListing listing = Listings.iterativeSearch(listings, pair.getId());
             if (listing != null) {
@@ -67,9 +75,6 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
             }
         }
 
-        System.out.println("superhost" + superhostPairs.size());
-        System.out.println("not superhost" + notSuperhostPairs.size());
-
         // Count the occurrences and put them in a treemap sorted by the year and month.
         TreeMap<YearMonth, Long> superhostCounter = superhostPairs.stream()
                 .collect(Collectors.groupingBy(IdDatePair::getYearMonth, TreeMap::new, Collectors.counting()));
@@ -77,7 +82,7 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
         TreeMap<YearMonth, Long> notSuperhostCounter = notSuperhostPairs.stream()
                 .collect(Collectors.groupingBy(IdDatePair::getYearMonth, TreeMap::new, Collectors.counting()));
 
-        // Populate the series
+        // Populate the series utilizing the sorting mechanism of the tree map
         for (Map.Entry<YearMonth, Long> entry : superhostCounter.entrySet()) {
             monthlySuperhostBookings.getData().add(new XYChart.Data(entry.getKey().toString(), entry.getValue()));
         }
@@ -86,14 +91,18 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
             monthlyNonSuperhostBookings.getData().add(new XYChart.Data(entry.getKey().toString(), entry.getValue()));
         }
 
-        // Add the series and display it
+        // Add both series
         bookingsGraph.getData().setAll(monthlySuperhostBookings, monthlyNonSuperhostBookings);
     }
 
+    /**
+     * Return the arrival dates and listingsId of all Bookings, either from offline or from the database.
+     * @return A set of IDDatePair specifying all bookings that have been made in the system.
+     */
     private HashSet<IdDatePair> getArrivalDates() {
         HashSet<IdDatePair> allBookings = new HashSet<>();
         if (!MainFrameController.isUsingDatabase()) {
-            for (Reservation r : OfflineData.getDummyReservations()) {
+            for (Reservation r : OfflineData.getReservations()) {
                 allBookings.add(new IdDatePair(r.getListingID(), YearMonth.from(r.getArrival())));
             }
         }
@@ -118,12 +127,17 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
 
 
     /**
-     *
+     * Nested class IdDatePair - Specifies the datatype needed tp store a list of ids connected to the month their booking was made.
      */
     private class IdDatePair {
         private String id;
         private YearMonth yearMonth;
 
+        /**
+         * Create a pair of an ID and a Date.
+         * @param id The id of the listing in the database
+         * @param yearMonth The year and month this listing was booked in.
+         */
         public IdDatePair(String id, YearMonth yearMonth)
         {
             this.id = id;

@@ -14,10 +14,8 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -264,7 +262,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         Connection connectDB = connection.getConnection();
                         System.out.println("violation: " + violation);
                         Statement statement = connectDB.createStatement();
-                        if (violation == false) {
+                        if (!violation) {
                             System.out.println("executed");
                             statement.executeUpdate(createBooking);
                             System.out.println("removed");
@@ -275,12 +273,13 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
                     }
                 } else {
-                    if(violation == false) {
+                    if(!violation) {
                         ArrayList<Reservation> reservations = mainFrameController.getOfflineReservations();
                         Reservation reservation = new Reservation(reservations.size() + 1, checkInDate.getValue(), checkOutDate.getValue(), currentUser.getAccountID(), usersData.getNumberOfPeople(),
                                 selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
                         reservations.add(reservation);
                         currentUser.addOfflineReservation(reservation);
+                        OfflineData.addReservation(reservation);
                         System.out.println("Created offline reservation");
                         favoritesTable.getSelectionModel().clearSelection();
                         selectedListing = null;

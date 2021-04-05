@@ -26,7 +26,8 @@ public class MainFrameController extends Application implements Initializable {
 
     private Account currentUser; // null if not logged in.
     private boolean accountOpen; // If the account window has been opened
-    private boolean firstRequestSubmitted;
+    private boolean firstRequestSubmitted = false;
+    private boolean initialPriceRangeSelected = false;
 
     private ArrayList<Account> offlineAccounts;
     private ArrayList<Reservation> offlineReservations;
@@ -75,25 +76,21 @@ public class MainFrameController extends Application implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle bundle)
     {
-        firstRequestSubmitted = false;
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("airbnb-listings.csv");
         if (!usingDatabase)
             new OfflineData(listings); // Loads the offline bookingdata (is static)
-        try {
-            createPanels();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        try { createPanels(); } catch (IOException e) { e.printStackTrace(); }
+
         contentPane.setCenter(contentPanels[0].getPanelRoot());
         setLoggedIn(false); //Disables the submit-button in the welcome panel.
-        setFrameSwitchingButtonsActive(false); // Disables the buttons for switching frames. They stay
+        setFrameSwitchingButtonsActive(false); // Disables the buttons for switching frames (if a price range has already been selected)
 
         // Fill the dropdown with selectable price ranges
         initializePriceRangeDropDown();
         initializeFiltersComboBox();
-        //usingDatabase = false;
         offlineAccounts = new ArrayList<>();
         offlineReservations = new ArrayList<>();
     }
@@ -308,8 +305,14 @@ public class MainFrameController extends Application implements Initializable {
      * @param areEnabled
      */
     public void setFrameSwitchingButtonsActive(boolean areEnabled) {
-        prevPaneBtn.setDisable(!areEnabled);
-        nextPaneBtn.setDisable(!areEnabled);
+        if (areEnabled && initialPriceRangeSelected && firstRequestSubmitted) {
+            prevPaneBtn.setDisable(false);
+            nextPaneBtn.setDisable(false);
+        }
+        else {
+            prevPaneBtn.setDisable(true);
+            nextPaneBtn.setDisable(true);
+        }
     }
 
 
@@ -346,6 +349,8 @@ public class MainFrameController extends Application implements Initializable {
                 }
             }
         }
+        if (contentPanels[0].getClass() == WelcomePanel.class)
+            ((WelcomePanel) contentPanels[0]).setPriceRangeLabels(minPrice, maxPrice);
         applyPriceRange(minPrice, maxPrice);
     }
 
@@ -379,6 +384,10 @@ public class MainFrameController extends Application implements Initializable {
         {
             listings.changePriceRange(minPrice, maxPrice);
             updateCurrentPanel();
+            if (!initialPriceRangeSelected) {
+                initialPriceRangeSelected = true;
+                setFrameSwitchingButtonsActive(true);
+            }
         }
     }
 
@@ -405,9 +414,8 @@ public class MainFrameController extends Application implements Initializable {
      */
     public void setLoggedIn(boolean isLoggedIn)
     {
-        //minPriceChoiceBox.setDisable(!isLoggedIn);
-        //maxPriceChoiceBox.setDisable(!isLoggedIn);
-
+        minPriceChoiceBox.setDisable(!isLoggedIn);
+        maxPriceChoiceBox.setDisable(!isLoggedIn);
         if (contentPanels[0].getClass() == WelcomePanel.class) {
             WelcomePanel welcomePanel = (WelcomePanel) contentPanels[0];
             welcomePanel.submitButton.setDisable(!isLoggedIn);
@@ -426,8 +434,8 @@ public class MainFrameController extends Application implements Initializable {
      */
     public void setFirstRequestSubmitted(boolean submitted)
     {
-        setFrameSwitchingButtonsActive(true);
         firstRequestSubmitted = submitted;
+        setFrameSwitchingButtonsActive(firstRequestSubmitted);
     }
 
     /*

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * Class AccommodationTypeStat is the statistic of how many properties in the set of data are of the type "entire home and apartments"
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public class StatD extends StatisticAsText {
 

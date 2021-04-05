@@ -118,7 +118,7 @@ public class Listings {
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();
 
         if (!MainFrameController.isUsingDatabase()) {
-            ArrayList<Reservation> reservations = OfflineData.getDummyReservations();
+            ArrayList<Reservation> reservations = OfflineData.getReservations();
             //System.out.println("Filterdates: dummy reservations " + reservations.size());
 
             unavailableReservationIDs = reservations.stream()

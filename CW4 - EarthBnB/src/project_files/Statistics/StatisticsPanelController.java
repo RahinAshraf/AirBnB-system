@@ -12,7 +12,11 @@ import project_files.MainframeContentPanel;
 
 import java.util.ArrayList;
 
-
+/**
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
+ */
 public class StatisticsPanelController extends MainframeContentPanel {
     private Statistic accommodationType, availableProperties, averageNumReviews, mostExpensiveBorough,
             closestListingToAttraction, StatMostLuxurious, StatBestOffer, statD;

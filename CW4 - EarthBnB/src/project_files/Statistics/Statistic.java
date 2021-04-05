@@ -8,6 +8,9 @@ import java.util.ArrayList;
 /**
  * Class Statistic - Represents a type of statistic.
  * The specific implementations of the statistics are provided in the inheriting subclasses.
+ * @author Valentin Magis
+ * @version 1.0
+ * @since 2021-03-11
  */
 public abstract class Statistic {
     protected String name; // The name of the statistic. Displayed as the label of each statistic.
