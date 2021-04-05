@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * The filters are invoked by the previous filters or by a public changeXY method.
  *
  * @version 01-04-2021
- * @author Valentin Magis
+ * @author Valentin Magis - Vandad Vafai Tabrizi
  */
 
 public class Listings {
@@ -95,7 +95,7 @@ public class Listings {
      * Checked values are: Minimum and maximum nights, number of guests, price range, availability according to the database.
      * @return
      */
-    private void filterBookingData() throws SQLException {
+    public void filterBookingData() throws SQLException {
         listingsFilteredByBookingData = originalListings.stream()
                 .filter(l -> l.getMinimumNights() <= bookingData.getDaysOfStay() && l.getMaximumNights() >= bookingData.getDaysOfStay())
                 .filter(l -> l.getMaxGuests() >= bookingData.getNumberOfPeople())
@@ -125,7 +125,7 @@ public class Listings {
      * Second filter in the filter-chain
      * Separate method so the user can change price range at any time without having filter for booking data again.
      */
-    private void filterPriceRange()
+    public void filterPriceRange()
     {
         listingsFilteredByPrice = listingsFilteredByBookingData.stream()
                 .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
@@ -152,7 +152,7 @@ public class Listings {
      * Filters the list for the searched boroughs.
      * Just a temporary filter and not part of the further filtering process.
      */
-    private void filterBoroughs() {
+    public void filterBoroughs() {
         if (!selectedBoroughs.isEmpty()) {
             listingsFilteredBySelectedBoroughs = listingsFilteredByPrice.stream()
                     .filter(l -> selectedBoroughs.contains(l.getNeighbourhood()))
@@ -198,8 +198,6 @@ public class Listings {
             listingsFilteredByCheckboxes.addAll(listingsFilteredBySelectedBoroughs);
             if (!activeFilters.isEmpty()) {
                 for (FilterNames filter : activeFilters) {
-                    //System.out.println("Filtering for checkbox: " + filter.getId());
-
                     if (filter.name().equals(FilterNames.WIFI_FILTER.name()))
                         listingsFilteredByCheckboxes = filterAmenity(listingsFilteredByCheckboxes, "Wifi");
                     else if (filter.name().equals(FilterNames.POOL_FILTER.name()))
@@ -220,7 +218,7 @@ public class Listings {
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
      */
-    private void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
+    public void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
 
 
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();

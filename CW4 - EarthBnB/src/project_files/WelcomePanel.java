@@ -8,7 +8,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.sql.SQLException;
 import java.time.LocalDate;
 /**
- * The WelcomePanelClass -
+ * The WelcomePanelClass - The class for the panel which welcomes you to the app
+ * and saves your data and information for the dates, price, number of guests , etc.
+ *
+ * @author Vandad Vafai Tabrizi - add your names
  */
 
 public class WelcomePanel extends MainframeContentPanel {

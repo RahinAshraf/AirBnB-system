@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.*?>
 
-<BorderPane id="contentPane" fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.MainFrameController">
+<BorderPane id="contentPane" fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.MainFrameController">
    <bottom>
       <BorderPane BorderPane.alignment="CENTER">
          <left>
@@ -45,14 +42,14 @@
          <right>
             <HBox alignment="CENTER_RIGHT" prefWidth="220.0" spacing="7.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="From" />
-                  <ChoiceBox id="minPriceChoiceBox" fx:id="minPriceChoiceBox" minHeight="-Infinity" onAction="#applyPriceRange" prefHeight="26.0">
+                  <Label prefHeight="17.0" prefWidth="35.0" text="From" />
+                  <ChoiceBox id="minPriceChoiceBox" fx:id="minPriceChoiceBox" minHeight="-Infinity" onAction="#applyPriceRange" prefHeight="25.0" prefWidth="58.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </ChoiceBox>
                   <Label text="To" />
-                  <ChoiceBox id="maxPriceChoiceBox" fx:id="maxPriceChoiceBox" minHeight="-Infinity" onAction="#applyPriceRange" prefHeight="26.0">
+                  <ChoiceBox id="maxPriceChoiceBox" fx:id="maxPriceChoiceBox" minHeight="-Infinity" onAction="#applyPriceRange" prefHeight="25.0" prefWidth="50.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
@@ -67,10 +64,10 @@
             </HBox>
          </right>
          <left>
-            <HBox alignment="CENTER_LEFT" prefWidth="220.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="237.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="accountButton" fx:id="accountButton" minHeight="-Infinity" mnemonicParsing="false" onAction="#navigateToAccount" prefHeight="26.0" text="Account" />
-                  <CheckComboBox fx:id="filtersComboBox" minHeight="-Infinity" prefHeight="26.0" showCheckedCount="true" title="Filters" />
+                  <Button id="accountButton" fx:id="accountButton" minHeight="-Infinity" mnemonicParsing="false" onAction="#navigateToAccount" prefHeight="26.0" prefWidth="88.0" text="Account" />
+                  <CheckComboBox fx:id="filtersComboBox" minHeight="-Infinity" prefHeight="26.0" prefWidth="127.0" showCheckedCount="true" title="Filters" />
                </children>
                <padding>
                   <Insets left="15.0" />
