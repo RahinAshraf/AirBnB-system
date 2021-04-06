@@ -110,10 +110,10 @@ public class Listings {
 
         ArrayList<String> unavailableReservationIDs;
 
-        if (MainFrameController.isUsingDatabase())
+         if (MainFrameController.isUsingDatabase())
             unavailableReservationIDs = filterDBDates(bookingData.getCheckIn(), bookingData.getCheckOut());
-        else
-            unavailableReservationIDs = filterOfflineDates(bookingData.getCheckIn(), bookingData.getCheckOut());
+          else
+             unavailableReservationIDs = filterOfflineDates(bookingData.getCheckIn(), bookingData.getCheckOut());
 
         // Remove the found reservations from the listings. The user wont be able to book them.
         for (String id : unavailableReservationIDs)
@@ -129,7 +129,7 @@ public class Listings {
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
      */
-    private ArrayList<String> filterOfflineDates(LocalDate checkIn, LocalDate checkOut) {
+    public ArrayList<String> filterOfflineDates(LocalDate checkIn, LocalDate checkOut) {
         ArrayList<String> unavailableReservationIDs;
         ArrayList<Reservation> reservations = OfflineData.getReservations();
 
