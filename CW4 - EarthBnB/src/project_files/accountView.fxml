@@ -20,7 +20,7 @@
                         <Font name="Montserrat Medium" size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="416.0" layoutY="23.0" text="Account Information">
+                  <Label layoutX="370.0" layoutY="23.0" text="Account Information">
                      <font>
                         <Font name="Montserrat Medium" size="16.0" />
                      </font>
@@ -42,7 +42,7 @@
             </TableView>
          </left>
          <right>
-            <ListView id="informationList" fx:id="informationList" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <ListView id="informationList" fx:id="informationList" prefHeight="233.0" prefWidth="300.0" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
    </children>
