@@ -164,7 +164,8 @@ public class ListingsTest {
      */
     @Test
     public void filterDates() throws SQLException {
-        listings.filterDates(checkIn, checkOut);
+        //OfflineData.addReservation(new Reservation(0, new LocalDate(2021, 05, 01), new));
+        //.filterDates(checkIn, checkOut);
     }
 
     /**

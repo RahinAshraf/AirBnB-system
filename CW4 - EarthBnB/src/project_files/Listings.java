@@ -99,66 +99,71 @@ public class Listings {
 
     /**
      * Filter for entered booking data. Uses to original listings to avoid loss of data.
-     * Checked values are: Minimum and maximum nights, number of guests, price range, availability according to the database.
+     * Checked values are: Minimum and maximum nights, number of guests, availability according to the database.
      * @return The list filtered by the booking data and all following filters.
      */
     private void filterBookingData() throws SQLException {
         listingsFilteredByBookingData = originalListings.stream()
                 .filter(l -> l.getMinimumNights() <= bookingData.getDaysOfStay() && l.getMaximumNights() >= bookingData.getDaysOfStay())
                 .filter(l -> l.getMaxGuests() >= bookingData.getNumberOfPeople())
-                .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
-        filterPriceRange();
-    }
+        ArrayList<String> unavailableReservationIDs;
 
-    /**
-     * Filter for the properties which have not been booked by other users in the specified timeframe.
-     * Uses the database or offline generated data depending on the users selection at the beginning.
-     * @param checkIn The checkin date (inclusive)
-     * @param checkOut The checkout date (inclusive)
-     */
-    public void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
-
-        ArrayList<String> unavailableReservationIDs = new ArrayList<>();
-
-        // Offline Filter
-        if (!MainFrameController.isUsingDatabase()) {
-            ArrayList<Reservation> reservations = OfflineData.getReservations();
-            //System.out.println("Filterdates: dummy reservations " + reservations.size());
-
-            unavailableReservationIDs = reservations.stream()
-                    .filter(r -> r.getArrival().isAfter(checkIn.minusDays(1))
-                            && r.getArrival().isBefore(checkOut)
-                            || r.getDeparture().isAfter(checkIn)
-                            && r.getDeparture().isBefore(checkOut.plusDays(1)))
-                    .map(Reservation::getListingID)
-                    .collect(Collectors.toCollection(ArrayList::new));
-            System.out.println("Found reservations" + unavailableReservationIDs.size());
-        }
-
-        // Online Filter
-        else {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-            Statement statement = connectDB.createStatement();
-
-            // Returns all of the booking IDs that are in between the checkIn and checkOut dates
-            String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut + "' ) OR (DEPARTURE BETWEEN '"
-                    + checkIn + "' AND '" + checkOut + "' + INTERVAL 1 DAY ) GROUP BY listingID";
-
-            ResultSet queryResult = statement.executeQuery(filteredReservations);
-            while (queryResult.next()) {
-                unavailableReservationIDs.add(queryResult.getString(1));
-            }
-        }
+        if (MainFrameController.isUsingDatabase())
+            unavailableReservationIDs = filterDBDates(bookingData.getCheckIn(), bookingData.getCheckOut());
+        else
+            unavailableReservationIDs = filterOfflineDates(bookingData.getCheckIn(), bookingData.getCheckOut());
 
         // Remove the found reservations from the listings. The user wont be able to book them.
         for (String id : unavailableReservationIDs)
         {
             listingsFilteredByBookingData.remove(iterativeSearch(listingsFilteredByBookingData, id));
         }
+        filterPriceRange();
+    }
+
+    /**
+     * Filter for the properties which have not been booked by other users in the specified timeframe.
+     * Uses the database or offline generated data.
+     * @param checkIn The checkin date (inclusive)
+     * @param checkOut The checkout date (inclusive)
+     */
+    private ArrayList<String> filterOfflineDates(LocalDate checkIn, LocalDate checkOut) {
+        ArrayList<String> unavailableReservationIDs;
+        ArrayList<Reservation> reservations = OfflineData.getReservations();
+
+        unavailableReservationIDs = reservations.stream()
+                .filter(r -> r.getArrival().isAfter(checkIn.minusDays(1))
+                        && r.getArrival().isBefore(checkOut)
+                        || r.getDeparture().isAfter(checkIn)
+                        && r.getDeparture().isBefore(checkOut.plusDays(1)))
+                .map(Reservation::getListingID)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return unavailableReservationIDs;
+    }
+
+    /**
+     * Filter for the properties which have not been booked by other users in the specified timeframe.
+     * Uses the database or online database.
+     * @param checkIn The checkin date (inclusive)
+     * @param checkOut The checkout date (inclusive)
+     */
+    private ArrayList<String> filterDBDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
+        ArrayList<String> unavailableReservationIDs = new ArrayList<>();
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection connectDB = connection.getConnection();
+        Statement statement = connectDB.createStatement();
+
+        // Returns all of the booking IDs that are in between the checkIn and checkOut dates
+        String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut + "' ) OR (DEPARTURE BETWEEN '"
+                + checkIn + "' AND '" + checkOut + "' + INTERVAL 1 DAY ) GROUP BY listingID";
+
+        ResultSet queryResult = statement.executeQuery(filteredReservations);
+        while (queryResult.next()) {
+            unavailableReservationIDs.add(queryResult.getString(1));
+        }
+        return unavailableReservationIDs;
     }
 
     /**
