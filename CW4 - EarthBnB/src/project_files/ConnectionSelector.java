@@ -1,7 +1,6 @@
 package project_files;
 
 import javafx.application.Application;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,13 +20,17 @@ import java.io.IOException;
  * @version 1.0
  * @since   2021-03-11
  */
-public class ConnectionSelector {
 public class ConnectionSelector extends Application {
 
     @FXML
-    Button dbSelectButton, offlineSelectButton;
+    private Button dbSelectButton, offlineSelectButton;
 
-
+    /**
+     * Start the program with displaying the connectionSelector.
+     * The user here is able to choose whether to use the program with or without the online database.
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("connectionSelectorView.fxml"));

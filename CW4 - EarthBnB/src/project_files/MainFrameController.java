@@ -1,6 +1,5 @@
 package project_files;
 
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.controlsfx.control.CheckComboBox;
 
@@ -49,21 +49,21 @@ public class MainFrameController implements Initializable {
     private Listings listings;   // Filters the list according to the input the user gives.
 
     @FXML
-    Button nextPaneBtn, prevPaneBtn;
+    private Button nextPaneBtn, prevPaneBtn;
     @FXML
-    BorderPane contentPane;
+    private BorderPane contentPane;
 
     @FXML
-    Button accountButton;
+    private Button accountButton;
 
     @FXML
-    ChoiceBox minPriceChoiceBox, maxPriceChoiceBox;
+    private ChoiceBox minPriceChoiceBox, maxPriceChoiceBox;
 
     @FXML
-    CheckComboBox filtersComboBox;
+    private CheckComboBox filtersComboBox;
 
     @FXML
-    Label nameOfCurrent;
+    private Label nameOfCurrent;
 
 
     @Override
@@ -89,9 +89,10 @@ public class MainFrameController implements Initializable {
 
     private void initializeFiltersComboBox()
     {
+        // Create a list of Strings of the names of the filters to be displayed to the user using the enums.
         ObservableList<FilterNames> filterNamesObservableList = FXCollections.observableArrayList(FilterNames.WIFI_FILTER, FilterNames.SUPER_FILTER, FilterNames.ROOM_FILTER, FilterNames.POOL_FILTER);
         filtersComboBox.getItems().addAll(filterNamesObservableList);
-        filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> activatedFilters(event));
+        filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> activatedFilters(event)); // Initiate updating the filters when to box is closed
     }
 
     private void activatedFilters(Event event)
@@ -107,10 +108,13 @@ public class MainFrameController implements Initializable {
         updateCurrentPanel();
     }
 
+    /**
+     * Set the selection of the filterComboBox.
+     * Used to mirror the changes to filters in the boroughpropertiescontroller in the main frame.
+     */
     public void setChoiceComboBoxFilters()
     {
         filtersComboBox.getCheckModel().clearChecks();
-
         for (FilterNames filter : listings.getActiveFilters()) {
             filtersComboBox.getCheckModel().check(filter);
         }
@@ -145,6 +149,10 @@ public class MainFrameController implements Initializable {
     }
 
 
+    /**
+     * Load the listings from the csv file.
+     * @param filename
+     */
     public void loadListings(String filename){
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = new Listings(loader.load(filename));
@@ -292,6 +300,15 @@ public class MainFrameController implements Initializable {
         }
     }
 
+    /**
+     * Get a random node. Can be used to get the
+     * @return
+     */
+    public Window getWindow()
+    {
+        return contentPane.getScene().getWindow();
+    }
+
 
     // Code for setting the price range.
 
@@ -305,24 +322,22 @@ public class MainFrameController implements Initializable {
         Integer minPrice = convertChoiceBoxToInteger(minPriceChoiceBox);
         Integer maxPrice = convertChoiceBoxToInteger(maxPriceChoiceBox);
 
-        // DO SAFETY CHECK BEFORE CAST
-
-        // Checking validity
-        if (((ChoiceBox) e.getSource()).getId().equals("minPriceChoiceBox")) {
-            if (maxPrice != null) {
-                if (minPrice >= maxPrice) {
-                    minPriceChoiceBox.getSelectionModel().clearSelection();
-                    minPrice = null;
-                    priceRangeAlert();
+        if (e.getSource().getClass() == ChoiceBox.class) {
+            if (((ChoiceBox) e.getSource()).getId().equals("minPriceChoiceBox")) {
+                if (maxPrice != null) {
+                    if (minPrice >= maxPrice) {
+                        minPriceChoiceBox.getSelectionModel().clearSelection();
+                        minPrice = null;
+                        priceRangeAlert();
+                    }
                 }
-            }
-        }
-        else if (((ChoiceBox) e.getSource()).getId().equals("maxPriceChoiceBox")){
-            if (minPrice != null) {
-                if (maxPrice <= minPrice) {
-                    maxPriceChoiceBox.getSelectionModel().clearSelection();
-                    maxPrice = null;
-                    priceRangeAlert();
+            } else if (((ChoiceBox) e.getSource()).getId().equals("maxPriceChoiceBox")) {
+                if (minPrice != null) {
+                    if (maxPrice <= minPrice) {
+                        maxPriceChoiceBox.getSelectionModel().clearSelection();
+                        maxPrice = null;
+                        priceRangeAlert();
+                    }
                 }
             }
         }
@@ -353,8 +368,8 @@ public class MainFrameController implements Initializable {
 
     /**
      * Set the current chosen price range of objects to be shown.
-     * @param minPrice
-     * @param maxPrice
+     * @param minPrice The minimum price range to be filtered for.
+     * @param maxPrice The maximum price range to be filtered for.
      */
     private void applyPriceRange(Integer minPrice, Integer maxPrice) {
         if (minPrice != null && maxPrice != null && currentUser != null)
@@ -368,6 +383,9 @@ public class MainFrameController implements Initializable {
         }
     }
 
+    /**
+     * Update the contents of the panel currently being displayed.
+     */
     public void updateCurrentPanel()
     {
         contentPanels[currentPage].updatePanel();
@@ -387,7 +405,7 @@ public class MainFrameController implements Initializable {
     /**
      * Disable the selection of the price range and the submitButton in the welcomePanel if the user is not logged in.
      * The user can only use the program if logged in.
-     * @param isLoggedIn
+     * @param isLoggedIn Whether the user is logged in.
      */
     public void setLoggedIn(boolean isLoggedIn)
     {
@@ -399,6 +417,10 @@ public class MainFrameController implements Initializable {
         }
     }
 
+    /**
+     * Get the listings.
+     * @return The listings.
+     */
     public Listings getListings()
     {
         return listings;
@@ -407,7 +429,7 @@ public class MainFrameController implements Initializable {
     /**
      * If a request for checkin, checkout and number of guests has been performed already.
      * Has an effect on how buttons for switching panels behave.
-     * @param submitted
+     * @param submitted Whether the first request has been submitted.
      */
     public void setFirstRequestSubmitted(boolean submitted)
     {

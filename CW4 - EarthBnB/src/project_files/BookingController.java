@@ -35,22 +35,22 @@ import java.util.ResourceBundle;
 public class BookingController extends MainframeContentPanel implements Initializable {
 
 
-    TableColumn propertyNameCol;
-    TableColumn propertyBoroughCol;
+    private TableColumn propertyNameCol;
+    private TableColumn propertyBoroughCol;
     private ObservableList<AirbnbListing> data = FXCollections.observableArrayList();
-    List<LocalDate> reservedDates = new ArrayList<>();
+    private List<LocalDate> reservedDates = new ArrayList<>();
 
-    AirbnbListing selectedListing;
-    ArrayList<Reservation> reservations;
-
-    @FXML
-    TableView favoritesTable;
+    private AirbnbListing selectedListing;
+    private ArrayList<Reservation> reservations;
 
     @FXML
-    Label totalLabel, calculationLabel;
+    private TableView favoritesTable;
 
     @FXML
-    DatePicker checkInDate, checkOutDate;
+    private Label totalLabel, calculationLabel;
+
+    @FXML
+    private DatePicker checkInDate, checkOutDate;
 
     private boolean usingDatabase;
 

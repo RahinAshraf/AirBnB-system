@@ -35,24 +35,24 @@ public class AccountPanelController implements Initializable {
     private Account currentUser;
     private ObservableList<String> userInformationList = FXCollections.observableArrayList();
     private ObservableList<Reservation> upcomingTrips = FXCollections.observableArrayList();
-    Listings listings;
+    private Listings listings;
 
-    MainFrameController mainFrameController;
+    private MainFrameController mainFrameController;
 
-    Object chosenObject;
-    Reservation chosenProperty;
-
-    @FXML
-    ListView informationList;
+    private Object chosenObject;
+    private Reservation chosenProperty;
 
     @FXML
-    MenuItem checkBookingItem;
+    private ListView informationList;
 
     @FXML
-    TableView tripsTable;
+    private MenuItem checkBookingItem;
 
     @FXML
-    ContextMenu checkBookingCMenu;
+    private TableView tripsTable;
+
+    @FXML
+    private ContextMenu checkBookingCMenu;
 
 
     /**
