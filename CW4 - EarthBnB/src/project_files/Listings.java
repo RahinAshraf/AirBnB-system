@@ -30,18 +30,18 @@ import java.util.stream.Collectors;
 public class Listings {
 
     // The different stages the listing can take. Stored so not every filter needs to be applied newly in case something is changed.
-    private static ArrayList<AirbnbListing> originalListings;
-    private static ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
-    private static ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
-    private static ArrayList<AirbnbListing> listingsFilteredBySelectedBoroughs = new ArrayList<>();
-    private static ArrayList<AirbnbListing> listingsFilteredByCheckboxes = new ArrayList<>();
-    private static ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
+    private ArrayList<AirbnbListing> originalListings;
+    private ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
+    private ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
+    private ArrayList<AirbnbListing> listingsFilteredBySelectedBoroughs = new ArrayList<>();
+    private ArrayList<AirbnbListing> listingsFilteredByCheckboxes = new ArrayList<>();
+    private ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
 
     // The filters that can be applied.
-    private static BookingData bookingData; // Checkin, checkout, number of people
-    private static int[] priceRange = new int[2]; // Min, max
-    private static ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
-    private static HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
+    private BookingData bookingData; // Checkin, checkout, number of people
+    private int[] priceRange = new int[2]; // Min, max
+    private ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
+    private HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
 
     /**
      * Create a new Listings object. Initializes the different lists so the user can add any filter at the beginning.
@@ -100,7 +100,6 @@ public class Listings {
     /**
      * Filter for entered booking data. Uses to original listings to avoid loss of data.
      * Checked values are: Minimum and maximum nights, number of guests, availability according to the database.
-     * @return The list filtered by the booking data and all following filters.
      */
     private void filterBookingData() throws SQLException {
         listingsFilteredByBookingData = originalListings.stream()
@@ -124,7 +123,7 @@ public class Listings {
     }
 
     /**
-     * Filter for the properties which have not been booked by other users in the specified timeframe.
+     * Filter for the properties which have been booked by other users in the specified timeframe.
      * Uses the database or offline generated data.
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
@@ -144,7 +143,7 @@ public class Listings {
     }
 
     /**
-     * Filter for the properties which have not been booked by other users in the specified timeframe.
+     * Filter for the properties which have been booked by other users in the specified timeframe.
      * Uses the database or online database.
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
@@ -219,14 +218,6 @@ public class Listings {
             listingsFilteredBySelectedBoroughs.addAll(listingsFilteredByPrice);
         }
         filterForActiveFilters();
-    }
-
-    /**
-     * A method which helps us for the test class.
-     * @return the size of the listingsFilteredBySelectedBoroughs array list
-     */
-    public int getlistingsFilteredByBoroughSize(){
-        return listingsFilteredBySelectedBoroughs.size();
     }
 
     /**
@@ -306,7 +297,7 @@ public class Listings {
      */
     public ArrayList<AirbnbListing> filterSuperHost(ArrayList<AirbnbListing> list){
         return list.stream()
-                .filter(airbnbListing -> airbnbListing.isHostSuperhost())
+                .filter(AirbnbListing::isHostSuperhost)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -373,6 +364,11 @@ public class Listings {
      */
     public ArrayList<AirbnbListing> getListingsFilteredBySelectedBoroughs(){
         return listingsFilteredBySelectedBoroughs;
+    }
+
+    public ArrayList<AirbnbListing> getListingsFilteredByCheckboxes()
+    {
+        return listingsFilteredByCheckboxes;
     }
 
     /**
