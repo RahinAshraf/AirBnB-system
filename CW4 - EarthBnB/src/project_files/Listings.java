@@ -119,7 +119,7 @@ public class Listings {
      * @param checkIn The checkin date (inclusive)
      * @param checkOut The checkout date (inclusive)
      */
-    private void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
+    public void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
 
         ArrayList<String> unavailableReservationIDs = new ArrayList<>();
 
@@ -188,6 +188,7 @@ public class Listings {
         filterBoroughs();
     }
 
+
     /**
      * Change the boroughs filtered for. The filter is only activated when a borough is selected and the user searches for the properties.
      * Other panels in the mainframecontroller should not be affected by this filter.
@@ -213,6 +214,14 @@ public class Listings {
             listingsFilteredBySelectedBoroughs.addAll(listingsFilteredByPrice);
         }
         filterForActiveFilters();
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the size of the listingsFilteredBySelectedBoroughs array list
+     */
+    public int getlistingsFilteredByBoroughSize(){
+        return listingsFilteredBySelectedBoroughs.size();
     }
 
     /**
@@ -269,14 +278,6 @@ public class Listings {
     public HashSet<FilterNames> getActiveFilters()
     {
         return activeFilters;
-    }
-
-    /**
-     * Helper method for the Unit Test.
-     * @return  The size of the active filter hash set.
-     */
-    public int getActiveFilterSize(){
-        return activeFilters.size();
     }
 
     /**
@@ -343,5 +344,37 @@ public class Listings {
             }
         }
         return null;
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the list filtered by the filterBookingData
+     */
+    public ArrayList<AirbnbListing> getListingsFilteredByBookingData(){
+        return listingsFilteredByBookingData;
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the list filtered by the filterPriceRange
+     */
+    public ArrayList<AirbnbListing> getListingsFilteredByPrice(){
+        return listingsFilteredByPrice;
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the list filtered by the filterSelectedBoroughs
+     */
+    public ArrayList<AirbnbListing> getListingsFilteredBySelectedBoroughs(){
+        return listingsFilteredBySelectedBoroughs;
+    }
+
+    /**
+     * Helper method for the Unit Test.
+     * @return  The size of the active filter hash set.
+     */
+    public int getActiveFilterSize(){
+        return activeFilters.size();
     }
 }

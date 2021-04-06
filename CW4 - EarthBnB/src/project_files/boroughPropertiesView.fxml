@@ -21,7 +21,7 @@
    <left>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
          <children>
-            <VBox layoutY="313.0" style="-fx-border-color: red;" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+            <VBox layoutX="5.0" layoutY="167.0" prefHeight="166.0" prefWidth="132.0" style="-fx-border-color: red;" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                <children>
                   <Label text="Filters:">
                      <font>
@@ -68,17 +68,10 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
-            <VBox alignment="CENTER" layoutX="29.0" layoutY="21.0" spacing="13.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
-               <children>
-                  <Button id="backNavigation" fx:id="backNavigation" mnemonicParsing="false" onAction="#backNavigation" text="Back To Map" VBox.vgrow="NEVER">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Button>
-               </children>
-            </VBox>
-            <Label layoutX="64.0" layoutY="104.0" text="Sort By" />
-            <ComboBox fx:id="comboBox" layoutX="10.0" layoutY="122.0" onAction="#updateSort" prefWidth="150.0" />
+            <VBox alignment="CENTER" layoutX="29.0" layoutY="21.0" spacing="13.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Label layoutX="64.0" layoutY="104.0" />
+            <ComboBox fx:id="comboBox" layoutX="12.0" layoutY="21.0" onAction="#updateSort" prefHeight="27.0" prefWidth="118.0" promptText="Sort by" />
+            <Button id="backNavigation" fx:id="backNavigation" layoutX="22.0" layoutY="424.0" mnemonicParsing="false" onAction="#backNavigation" text="Back To Map" />
          </children>
       </AnchorPane>
    </left>
