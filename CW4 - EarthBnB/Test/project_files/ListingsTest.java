@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * A test class for the class Listings.
  * This class tests all the methods called in the Listings class.
  *
- * @author Vandad Vafai Tabrizi, Valentin Magis
+ * @author Vandad Vafai Tabrizi
  */
 public class ListingsTest {
 
@@ -43,7 +43,7 @@ public class ListingsTest {
     private final ArrayList<String> amenities = new ArrayList<>();
 
     // The first object type of AirbnbListing.
-    private final AirbnbListing listing1 = new AirbnbListing("13914", "Holiday London DB Room Let-on going", "Not so nice place"
+    private final AirbnbListing data0 = new AirbnbListing("13914", "Holiday London DB Room Let-on going", "Not so nice place"
             , urlPic, "54730", "Alina", "within a few hours", false, urlHost
             , urlPic1, 3, "Kensington", 51.56802, -0.11121, "Entire home/apt", 4
             , "1 shared bath", 1,
@@ -56,7 +56,7 @@ public class ListingsTest {
     private final ArrayList<String> amenities1 = new ArrayList<>();
 
     // The second object type of AirbnbListing.
-    private final AirbnbListing listing2 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Nice place"
+    private final AirbnbListing data1 = new AirbnbListing("13913", "Holiday London DB Room Let-on going", "Nice place"
             , urlPic3, "54730", "Alina", "within a few hours", true, urlHost1
             , urlPic4, 3, "Islington", 51.56802, -0.11121, "Private room", 1
             , "1 shared bath", 1,
@@ -64,7 +64,7 @@ public class ListingsTest {
             5, 5, 5, 0.16);
 
     // The third object type of AirbnbListing.
-    private final AirbnbListing listing3 = new AirbnbListing("13915", "Holiday London DB Room Let-on going", "You will be happy here"
+    private final AirbnbListing data2 = new AirbnbListing("13915", "Holiday London DB Room Let-on going", "You will be happy here"
             , urlPic3, "54730", "Alina", "within a few hours", false, urlHost1
             , urlPic4, 3, "Hammersmith", 51.56802, -0.11121, "Entire home/apt", 7
             , "1 shared bath", 1,
@@ -72,7 +72,7 @@ public class ListingsTest {
             5, 5, 5, 0.16);
 
     // The fourth object type of AirbnbListing.
-    private final AirbnbListing listing4 = new AirbnbListing("13916", "Holiday London DB Room Let-on going", "Calm and nice."
+    private final AirbnbListing data3 = new AirbnbListing("13916", "Holiday London DB Room Let-on going", "Calm and nice."
             , urlPic3, "54730", "Alina", "within a few hours", false, urlHost1
             , urlPic4, 3, "Waterloo", 51.56802, -0.11121, "Entire home/apt", 1
             , "1 shared bath", 1,
@@ -105,16 +105,16 @@ public class ListingsTest {
     @Before
     public void init(){
 
-        originalListing.add(listing1);
-        originalListing.add(listing2);
-        originalListing.add(listing3);
-        originalListing.add(listing4);
+        originalListing.add(data0);
+        originalListing.add(data1);
+        originalListing.add(data2);
+        originalListing.add(data3);
         listings = new Listings(originalListing);
 
         // Adding the listing1 to the check box list.
         checkBoxFilters = new ArrayList<>();
-        checkBoxFilters.add(listing1);
-        checkBoxFilters.add(listing2);
+        checkBoxFilters.add(data0);
+        checkBoxFilters.add(data1);
         filteredList = new ArrayList<>();
     }
 
@@ -138,7 +138,7 @@ public class ListingsTest {
     @Test
     public void filterBookingData() throws SQLException {
         listings.changeBookingData(bookingData);
-        Assert.assertEquals(listing3, listings.getListingsFilteredByBookingData().get(0));
+        Assert.assertEquals(data2, listings.getListingsFilteredByBookingData().get(0));
 
         // Making sure this is the only property because of the filters applied.
         // One property gets removed because of the length of stay, one because
@@ -153,7 +153,7 @@ public class ListingsTest {
     @Test
     public void filterPriceRange(){
         listings.changePriceRange(20,50);
-        Assert.assertEquals(listing2, listings.getListingsFilteredByPrice().get(0));
+        Assert.assertEquals(data1, listings.getListingsFilteredByPrice().get(0));
     }
 
     /**
@@ -169,7 +169,7 @@ public class ListingsTest {
         for (AirbnbListing boroughs: listings.getListingsFilteredBySelectedBoroughs()){
             System.out.println(boroughs.getId() + " " + boroughs.getNeighbourhood());
         }
-        Assert.assertEquals(listing2.getId(), listings.getListingsFilteredBySelectedBoroughs().get(0).getId());
+        Assert.assertEquals(data1.getId(), listings.getListingsFilteredBySelectedBoroughs().get(0).getId());
         Assert.assertEquals(1, listings.getListingsFilteredBySelectedBoroughs().size());
     }
 
@@ -252,7 +252,7 @@ public class ListingsTest {
     @Test
     public void filterPrivateRoom(){
         filteredList =  new ArrayList<>();
-        filteredList.add(listing2);
+        filteredList.add(data1);
 
         Assert.assertEquals(filteredList, listings.filterPrivateRoom(originalListing));
     }
@@ -263,7 +263,7 @@ public class ListingsTest {
     @Test
     public void filterAmenities() throws MalformedURLException {
         filteredList =  new ArrayList<>();
-        filteredList.add(listing2);
+        filteredList.add(data1);
 
         Assert.assertEquals(filteredList, listings.filterAmenity(originalListing, "Wifi"));
 
@@ -313,7 +313,7 @@ public class ListingsTest {
     @Test
     public void filterSuperHost(){
         filteredList = new ArrayList<>();
-        filteredList.add(listing2);
+        filteredList.add(data1);
 
         Assert.assertEquals(filteredList, listings.filterSuperHost(originalListing));
     }

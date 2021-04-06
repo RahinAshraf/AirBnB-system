@@ -83,8 +83,7 @@ public class AverageRevenuePerListingLastYear extends StatisticAsText {
                     long duration = getDuration(queryResult.getDate(2).toLocalDate(), queryResult.getDate(3).toLocalDate());
                     lastYearBookings.add(new BookingIDDuration(queryResult.getString(1), duration));
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception e) { e.printStackTrace();}
         }
         return lastYearBookings;
     }
