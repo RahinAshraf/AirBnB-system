@@ -25,9 +25,9 @@ import java.util.ResourceBundle;
 public class AccountBookingController implements Initializable {
 
     @FXML
-    ListView fieldList;
+    private ListView fieldList;
 
-    AccountPanelController accountPanelController;
+    private AccountPanelController accountPanelController;
 
     private ObservableList<String> reservationInfoList = FXCollections.observableArrayList();
 

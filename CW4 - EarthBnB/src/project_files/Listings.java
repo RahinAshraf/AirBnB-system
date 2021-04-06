@@ -30,18 +30,18 @@ import java.util.stream.Collectors;
 public class Listings {
 
     // The different stages the listing can take. Stored so not every filter needs to be applied newly in case something is changed.
-    private static ArrayList<AirbnbListing> originalListings;
-    private static ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
-    private static ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
-    private static ArrayList<AirbnbListing> listingsFilteredBySelectedBoroughs = new ArrayList<>();
-    private static ArrayList<AirbnbListing> listingsFilteredByCheckboxes = new ArrayList<>();
-    private static ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
+    private ArrayList<AirbnbListing> originalListings;
+    private ArrayList<AirbnbListing> listingsFilteredByBookingData = new ArrayList<>();
+    private ArrayList<AirbnbListing> listingsFilteredByPrice = new ArrayList<>();
+    private ArrayList<AirbnbListing> listingsFilteredBySelectedBoroughs = new ArrayList<>();
+    private ArrayList<AirbnbListing> listingsFilteredByCheckboxes = new ArrayList<>();
+    private ArrayList<AirbnbListing> filteredListings = new ArrayList<>();
 
     // The filters that can be applied.
-    private static BookingData bookingData; // Checkin, checkout, number of people
-    private static int[] priceRange = new int[2]; // Min, max
-    private static ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
-    private static HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
+    private BookingData bookingData; // Checkin, checkout, number of people
+    private int[] priceRange = new int[2]; // Min, max
+    private ArrayList<String> selectedBoroughs = new ArrayList<>(); // The boroughs the user has searched for. Does not affect contents of main window.
+    private HashSet<FilterNames> activeFilters = new HashSet<>(); // Wifi, Pool, Superhost, Private Room
 
     /**
      * Create a new Listings object. Initializes the different lists so the user can add any filter at the beginning.
@@ -99,66 +99,70 @@ public class Listings {
 
     /**
      * Filter for entered booking data. Uses to original listings to avoid loss of data.
-     * Checked values are: Minimum and maximum nights, number of guests, price range, availability according to the database.
-     * @return The list filtered by the booking data and all following filters.
+     * Checked values are: Minimum and maximum nights, number of guests, availability according to the database.
      */
     private void filterBookingData() throws SQLException {
         listingsFilteredByBookingData = originalListings.stream()
                 .filter(l -> l.getMinimumNights() <= bookingData.getDaysOfStay() && l.getMaximumNights() >= bookingData.getDaysOfStay())
                 .filter(l -> l.getMaxGuests() >= bookingData.getNumberOfPeople())
-                .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        filterDates(bookingData.getCheckIn(), bookingData.getCheckOut()); // Checked through the database. Filter from and store in listingsFilteredByBookingData
-        filterPriceRange();
-    }
+        ArrayList<String> unavailableReservationIDs;
 
-    /**
-     * Filter for the properties which have not been booked by other users in the specified timeframe.
-     * Uses the database or offline generated data depending on the users selection at the beginning.
-     * @param checkIn The checkin date (inclusive)
-     * @param checkOut The checkout date (inclusive)
-     */
-    private void filterDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
-
-        ArrayList<String> unavailableReservationIDs = new ArrayList<>();
-
-        // Offline Filter
-        if (!MainFrameController.isUsingDatabase()) {
-            ArrayList<Reservation> reservations = OfflineData.getReservations();
-            //System.out.println("Filterdates: dummy reservations " + reservations.size());
-
-            unavailableReservationIDs = reservations.stream()
-                    .filter(r -> r.getArrival().isAfter(checkIn.minusDays(1))
-                            && r.getArrival().isBefore(checkOut)
-                            || r.getDeparture().isAfter(checkIn)
-                            && r.getDeparture().isBefore(checkOut.plusDays(1)))
-                    .map(Reservation::getListingID)
-                    .collect(Collectors.toCollection(ArrayList::new));
-            System.out.println("Found reservations" + unavailableReservationIDs.size());
-        }
-
-        // Online Filter
-        else {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-            Statement statement = connectDB.createStatement();
-
-            // Returns all of the booking IDs that are in between the checkIn and checkOut dates
-            String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut + "' ) OR (DEPARTURE BETWEEN '"
-                    + checkIn + "' AND '" + checkOut + "' + INTERVAL 1 DAY ) GROUP BY listingID";
-
-            ResultSet queryResult = statement.executeQuery(filteredReservations);
-            while (queryResult.next()) {
-                unavailableReservationIDs.add(queryResult.getString(1));
-            }
-        }
+         if (MainFrameController.isUsingDatabase())
+            unavailableReservationIDs = filterDBDates(bookingData.getCheckIn(), bookingData.getCheckOut());
+          else
+             unavailableReservationIDs = filterOfflineDates(bookingData.getCheckIn(), bookingData.getCheckOut());
 
         // Remove the found reservations from the listings. The user wont be able to book them.
         for (String id : unavailableReservationIDs)
         {
             listingsFilteredByBookingData.remove(iterativeSearch(listingsFilteredByBookingData, id));
         }
+        filterPriceRange();
+    }
+
+    /**
+     * Filter for the properties which have been booked by other users in the specified timeframe.
+     * Uses the database or offline generated data.
+     * @param checkIn The checkin date (inclusive)
+     * @param checkOut The checkout date (inclusive)
+     */
+    public ArrayList<String> filterOfflineDates(LocalDate checkIn, LocalDate checkOut) {
+        ArrayList<String> unavailableReservationIDs;
+        ArrayList<Reservation> reservations = OfflineData.getReservations();
+
+        unavailableReservationIDs = reservations.stream()
+                .filter(r -> r.getArrival().isAfter(checkIn.minusDays(1))
+                        && r.getArrival().isBefore(checkOut)
+                        || r.getDeparture().isAfter(checkIn)
+                        && r.getDeparture().isBefore(checkOut.plusDays(1)))
+                .map(Reservation::getListingID)
+                .collect(Collectors.toCollection(ArrayList::new));
+        return unavailableReservationIDs;
+    }
+
+    /**
+     * Filter for the properties which have been booked by other users in the specified timeframe.
+     * Uses the database or online database.
+     * @param checkIn The checkin date (inclusive)
+     * @param checkOut The checkout date (inclusive)
+     */
+    private ArrayList<String> filterDBDates(LocalDate checkIn, LocalDate checkOut) throws SQLException {
+        ArrayList<String> unavailableReservationIDs = new ArrayList<>();
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection connectDB = connection.getConnection();
+        Statement statement = connectDB.createStatement();
+
+        // Returns all of the booking IDs that are in between the checkIn and checkOut dates
+        String filteredReservations = "SELECT listingID FROM booking WHERE (Arrival BETWEEN '" + checkIn + "'- INTERVAL 1 DAY AND '" + checkOut + "' ) OR (DEPARTURE BETWEEN '"
+                + checkIn + "' AND '" + checkOut + "' + INTERVAL 1 DAY ) GROUP BY listingID";
+
+        ResultSet queryResult = statement.executeQuery(filteredReservations);
+        while (queryResult.next()) {
+            unavailableReservationIDs.add(queryResult.getString(1));
+        }
+        return unavailableReservationIDs;
     }
 
     /**
@@ -187,6 +191,7 @@ public class Listings {
                 .collect(Collectors.toCollection(ArrayList::new));
         filterBoroughs();
     }
+
 
     /**
      * Change the boroughs filtered for. The filter is only activated when a borough is selected and the user searches for the properties.
@@ -272,14 +277,6 @@ public class Listings {
     }
 
     /**
-     * Helper method for the Unit Test.
-     * @return  The size of the active filter hash set.
-     */
-    public int getActiveFilterSize(){
-        return activeFilters.size();
-    }
-
-    /**
      * Filter the given list by an amenity.
      * @param list The list to be filtered.
      * @param filterString The amenity to be filtered by.
@@ -300,7 +297,7 @@ public class Listings {
      */
     public ArrayList<AirbnbListing> filterSuperHost(ArrayList<AirbnbListing> list){
         return list.stream()
-                .filter(airbnbListing -> airbnbListing.isHostSuperhost())
+                .filter(AirbnbListing::isHostSuperhost)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -343,5 +340,42 @@ public class Listings {
             }
         }
         return null;
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the list filtered by the filterBookingData
+     */
+    public ArrayList<AirbnbListing> getListingsFilteredByBookingData(){
+        return listingsFilteredByBookingData;
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the list filtered by the filterPriceRange
+     */
+    public ArrayList<AirbnbListing> getListingsFilteredByPrice(){
+        return listingsFilteredByPrice;
+    }
+
+    /**
+     * A method which helps us for the test class.
+     * @return the list filtered by the filterSelectedBoroughs
+     */
+    public ArrayList<AirbnbListing> getListingsFilteredBySelectedBoroughs(){
+        return listingsFilteredBySelectedBoroughs;
+    }
+
+    public ArrayList<AirbnbListing> getListingsFilteredByCheckboxes()
+    {
+        return listingsFilteredByCheckboxes;
+    }
+
+    /**
+     * Helper method for the Unit Test.
+     * @return  The size of the active filter hash set.
+     */
+    public int getActiveFilterSize(){
+        return activeFilters.size();
     }
 }

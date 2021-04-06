@@ -152,10 +152,10 @@ public class PropertyDisplayerController implements Initializable {
                 Stage thisStage = (Stage) saveButton.getScene().getWindow(); // Get the stage of this window from a random control
                 thisStage.close(); // Close the stage.
 
-                Stage boroughsStage = (Stage) boroughPropertiesController.propertiesTable.getScene().getWindow();
+                Stage boroughsStage = (Stage) boroughPropertiesController.getWindow();
                 boroughsStage.close();
 
-                Stage mainWindowStage = (Stage) mainFrameController.contentPane.getScene().getWindow();
+                Stage mainWindowStage = (Stage) mainFrameController.getWindow().getScene().getWindow();
                 mainWindowStage.show();
 
             } catch (IOException e) { e.printStackTrace(); }

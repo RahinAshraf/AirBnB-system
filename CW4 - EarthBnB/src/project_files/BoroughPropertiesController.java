@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
 import java.net.URL;
@@ -30,32 +31,19 @@ import java.util.ResourceBundle;
  */
 public class BoroughPropertiesController implements Initializable {
 
-    //
-    TableColumn boroughHostCol;
-    //
-    TableColumn<AirbnbListing, Integer> boroughPriceCol;
-    //
-    TableColumn<AirbnbListing, Integer> reviewsCountCol;
-
-
+    private TableColumn boroughHostCol;
+    private TableColumn<AirbnbListing, Integer> boroughPriceCol;
+    private TableColumn<AirbnbListing, Integer> reviewsCountCol;
     private MainFrameController mainFrameController;
-
-    //
     private boolean isDropClicked;
-
-    //
     @FXML
-    Button backNavigation;
-
+    private Button backNavigation;
     @FXML
-    ComboBox comboBox;
-    //
+    private ComboBox comboBox;
     @FXML
-    TableView propertiesTable;
-
+    private TableView propertiesTable;
     @FXML
-    CheckBox wifiBox, poolBox, superBox, roomBox;
-
+    private CheckBox wifiBox, poolBox, superBox, roomBox;
 
     // The new data which will be set if any of the filters are chosen.
     private ObservableList<AirbnbListing> displayData = FXCollections.observableArrayList();
@@ -219,7 +207,7 @@ public class BoroughPropertiesController implements Initializable {
     public void backNavigation() {
         try {
             listings.changeSelectedBoroughs(new ArrayList<>()); // Reset the selected boroughs
-            Stage stage = (Stage) mainFrameController.contentPane.getScene().getWindow();
+            Stage stage = (Stage) mainFrameController.getWindow();
             stage.show();
             mainFrameController.updateCurrentPanel(); // make sure any modification made to filters are immediately loaded
             Stage thisStage = (Stage) propertiesTable.getScene().getWindow();
@@ -308,5 +296,10 @@ public class BoroughPropertiesController implements Initializable {
      */
     public void setMainWindowController(MainFrameController mainFrameController) {
         this.mainFrameController = mainFrameController;
+    }
+
+    public Window getWindow()
+    {
+        return propertiesTable.getScene().getWindow();
     }
 }
