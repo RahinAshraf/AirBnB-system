@@ -109,7 +109,7 @@ public class AccountPanelController implements Initializable {
     public void loadUserInformation() {
         userInformationList.add("Account ID: " + (currentUser.getAccountID()));
         userInformationList.add("Username: " + currentUser.getUsername());
-        userInformationList.add("Email Address: " + currentUser.getEmailAddress());
+        userInformationList.add("Email: " + currentUser.getEmailAddress());
     }
 
 
