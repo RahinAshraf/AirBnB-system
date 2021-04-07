@@ -127,7 +127,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
     @Override
     public void updatePanel() {
         updateBoroughs();
-        System.out.println("called update");
         for(int i=0; i<33; i++) {
             Button button = (Button) mapView.getChildren().get(i);
             if(selectedBoroughs.contains(button)) {
@@ -178,8 +177,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
             selectedBoroughs.add(button);
             button.setStyle("-fx-background-color: #50B4D4");
         }
-        String borough = button.getId();
-        System.out.println(borough);
     }
 
     /**

@@ -66,7 +66,7 @@ public class WelcomePanel extends MainframeContentPanel {
             currentUser.setBookingData(checkIn.getValue(), checkOut.getValue(), people, currentUser.getAccountID());
             mainFrameController.getListings().changeBookingData(currentUser.getBookingData());
             mainFrameController.setFirstRequestSubmitted(true);
-            submitAlert();
+            Alerts.informationAlert("Successful!", "Details saved successfully!", "Your booking details have been saved.");
         }
     }
 
@@ -81,12 +81,12 @@ public class WelcomePanel extends MainframeContentPanel {
             if (NumberUtils.isParsable(numberOfPeople.getText()) && Integer.parseInt(numberOfPeople.getText()) > 0)
                 return true;
             else {
-                setNumberOfPeopleAlert();
+                Alerts.warningAlert("Warning", "Invalid number of people entered", "You have to book for at least one person.");
                 return false;
             }
         }
         else {
-            missingInformationAlert();
+            Alerts.errorAlerts("", "Missing Information", "Please enter all information before searching.");
             return false;
         }
     }
@@ -104,18 +104,18 @@ public class WelcomePanel extends MainframeContentPanel {
             if (datePicker.getId().equalsIgnoreCase("checkIn")) { // The chosen checkIn date is in the past
                 if (checkIn.getValue() != null && checkIn.getValue().isBefore(LocalDate.now())) {
                     checkIn.setValue(null);
-                    pastDateAlert();
+                    Alerts.warningAlert("Warning", "Error while choosing date.", "You can't book before today!");
                 }
             }
             else { // CheckOut was selected
 
                 if (checkOut.getValue() != null && checkOut.getValue().isBefore(LocalDate.now())) { // The chosen checkout date is in the past
                     checkOut.setValue(null);
-                    pastDateAlert();
+                    Alerts.warningAlert("Warning", "Error while choosing date.", "You can't book before today!");
                 }
                 if (checkIn.getValue() != null && checkOut.getValue() != null && (!checkIn.getValue().isBefore(checkOut.getValue()))) { // There is a checkIn Date entered and the chosen checkOut date is before that.
                     checkOut.setValue(null);
-                    checkOutDateAlert();
+                    Alerts.warningAlert("Warning", "Error while choosing date.", "Make sure that you are entering the check out date after the check in date!");
                 }
             }
         }
@@ -126,8 +126,7 @@ public class WelcomePanel extends MainframeContentPanel {
      * @param min The String of the minimum price range.
      * @param max The String of the maximum price range.
      */
-    public void setPriceRangeLabels(Integer min, Integer max)
-    {
+    public void setPriceRangeLabels(Integer min, Integer max) {
         if (min != null)
             minPriceRangeLabel.setText(min.toString());
         else
@@ -138,62 +137,4 @@ public class WelcomePanel extends MainframeContentPanel {
             maxPriceRangeLabel.setText("-");
     }
 
-
-
-    // Alerts for wrong user interaction
-
-    /**
-     * An alert which occurs when the check-out date is not valid.
-     */
-    private void checkOutDateAlert(){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Error while choosing date.");
-        alert.setContentText("Make sure that you are entering the check out date after the check in date!");
-        alert.showAndWait();
-    }
-
-    /**
-     * An alert which occurs when the check-in date is not valid.
-     */
-    private void pastDateAlert(){
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Error while choosing date.");
-        alert.setContentText("You can't book before today!");
-        alert.showAndWait();
-    }
-
-    /**
-     * An alert which occurs when the check-in date is not valid.
-     */
-    private void submitAlert(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Successful!");
-        alert.setHeaderText("Details saved successfully!");
-        alert.setContentText("Your booking details have been saved.");
-        alert.showAndWait();
-    }
-    /**
-     * An alert which occurs when an invalid string has been entered for the number of people
-     */
-    private void setNumberOfPeopleAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning");
-        alert.setHeaderText("Invalid number of people entered");
-        alert.setContentText("You have to book for at least one person.");
-        alert.showAndWait();
-    }
-
-    /**
-     * An alert which occurs when information is missing.
-     */
-    private void missingInformationAlert()
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("");
-        alert.setHeaderText("Missing Information");
-        alert.setContentText("Please enter all information before searching..");
-        alert.showAndWait();
-    }
 }
