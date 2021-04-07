@@ -107,7 +107,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
         for (int i = 0; i < listings.getFilteredListings().size(); i++) {
             if (currentUser.getSavedProperties().contains(listings.getFilteredListings().get(i))) {
                 data.add(listings.getFilteredListings().get(i));
-                System.out.println("added");
             }
         }
     }
@@ -119,7 +118,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
      * reservations are loaded from the user.
      */
     public void updateCalendar() {
-        System.out.println("updatecalendar called");
         if (!usingDatabase) {
             reservations = OfflineData.getReservations();
         } else {
@@ -172,7 +170,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
      * reservedDates.
      */
     public void updateDate() {
-        System.out.println("total reservations: " + reservations.size());
         reservedDates.clear();
         for (int i = 0; i < reservations.size(); i++) {
             Reservation reservation = reservations.get(i);
@@ -206,8 +203,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 loadFromFavouritesTable(chosenProperty);
             }
             updateCalendar();
-        } else {
-            System.out.println("selected item is null");
         }
     }
 
@@ -277,7 +272,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 int index = 0;
 
                 while (index < reservedDates.size() && !violation) {
-                    System.out.println("# of reserved dates: " + reservedDates.size());
                     if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
                         System.out.println("Some days are reserved in between your selection");
                         feedbackLabel.setText("Some days are reserved in between your selection!");
@@ -293,14 +287,10 @@ public class BookingController extends MainframeContentPanel implements Initiali
                     try {
                         DatabaseConnection connection = new DatabaseConnection();
                         Connection connectDB = connection.getConnection();
-                        System.out.println("violation: " + violation);
                         Statement statement = connectDB.createStatement();
                         if (!violation) {
-                            System.out.println("executed");
                             statement.executeUpdate(createBooking);
                             feedbackLabel.setText("Successful reservation!");
-                            System.out.println("removed");
-
                             favoritesTable.getSelectionModel().clearSelection();
                         }
                     } catch (Exception e) {
@@ -313,8 +303,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
                                 selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
                         reservations.add(reservation);
                         currentUser.addOfflineReservation(reservation);
-                        //OfflineData.addReservation(reservation);
-                        System.out.println("Created offline reservation");
                         feedbackLabel.setText("Successful offline reservation!");
                         favoritesTable.getSelectionModel().clearSelection();
                         selectedListing = null;
@@ -400,7 +388,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
     @Override
     public void updatePanel() {
-        // invoked when price range is changed
+
     }
 
 

@@ -114,6 +114,8 @@ public class StatBookingsScatterChart extends Statistic {
             } catch (Exception e) {
             }
         }
+
+
         return bookedPropertyIds;
     }
 }
