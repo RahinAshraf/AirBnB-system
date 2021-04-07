@@ -31,5 +31,6 @@ public class StatAverageNumReviews extends StatisticAsText {
     {
         long average = Math.round(listings.stream().mapToInt(listing -> listing.getNumberOfReviews()).average().orElse(Double.NEGATIVE_INFINITY)); // Calculate the rounded average. If the given list is empty, the result is negative infinity
         statLabel.setText("" + average);
+        System.out.println();
     }
 }
