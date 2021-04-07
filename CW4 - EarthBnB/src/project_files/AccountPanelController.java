@@ -30,8 +30,6 @@ import java.util.ResourceBundle;
  */
 public class AccountPanelController implements Initializable {
 
-    //private ArrayList<AirbnbListing> filteredListings; = new ArrayList<>();
-    //private Listings listings;
     private Account currentUser;
     private ObservableList<String> userInformationList = FXCollections.observableArrayList();
     private ObservableList<Reservation> upcomingTrips = FXCollections.observableArrayList();
@@ -44,9 +42,6 @@ public class AccountPanelController implements Initializable {
 
     @FXML
     private ListView informationList;
-
-    @FXML
-    private MenuItem checkBookingItem;
 
     @FXML
     private TableView tripsTable;
@@ -63,8 +58,6 @@ public class AccountPanelController implements Initializable {
      * @param listings  the Listings object containing all of the properties
      */
     public void initializeAccount(Account currentUser, MainFrameController mainFrameController, Listings listings) {
-        //this.listings = listings;
-        //filteredListings = listings.getFilteredListings();
 
         this.currentUser = currentUser;
         this.mainFrameController = mainFrameController;
@@ -77,21 +70,21 @@ public class AccountPanelController implements Initializable {
         TableColumn bookingIDCol = new TableColumn<>("ID");
         bookingIDCol.setMinWidth(40);
         bookingIDCol.setMaxWidth(50);
-        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         PropertyValueFactory bookingTemp = new PropertyValueFactory<AirbnbListing, Integer> (("reservationID"));
         bookingIDCol.setCellValueFactory(bookingTemp);
 
         TableColumn checkInCol = new TableColumn<>("Check In");
         checkInCol.setMinWidth(60);
         checkInCol.setMaxWidth(80);
-        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         PropertyValueFactory checkInTemp = new PropertyValueFactory<AirbnbListing, Integer> (("arrival"));
         checkInCol.setCellValueFactory(checkInTemp);
 
         TableColumn checkOutCol = new TableColumn<>("Check Out");
         checkOutCol.setMinWidth(60);
         checkOutCol.setMaxWidth(80);
-        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         PropertyValueFactory checkOutTemp = new PropertyValueFactory<AirbnbListing, Integer> (("departure"));
         checkOutCol.setCellValueFactory(checkOutTemp);
 
@@ -189,7 +182,6 @@ public class AccountPanelController implements Initializable {
      */
     @FXML
     private void checkBooking(ActionEvent e) throws IOException {
-            //if (chosenObject.getClass() == Reservation.class) { // Safety check for cast
             chosenObject = tripsTable.getSelectionModel().getSelectedItem();
         if (chosenObject != null) {
             chosenProperty = (Reservation) chosenObject;
@@ -204,7 +196,6 @@ public class AccountPanelController implements Initializable {
             newStage.show();
 
             System.out.println("MenuItem clicked");
-            //}
         }
 
     }
@@ -226,7 +217,7 @@ public class AccountPanelController implements Initializable {
         propertyDisplayer.loadData(findListingByID(), currentUser); // Load the data into the window.
         propertyDisplayer.setMainWindowController(mainFrameController);
         propertyDisplayer.hideNavigationButtons();
-        //propertyDisplayer.setBoroughPropertiesController(this);
+
         newStage.show();
     }
 

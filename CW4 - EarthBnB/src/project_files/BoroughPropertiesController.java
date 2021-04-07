@@ -108,7 +108,6 @@ public class BoroughPropertiesController implements Initializable {
         boroughPriceCol = new TableColumn<>("Price");
         boroughPriceCol.setMinWidth(100);
         boroughPriceCol.setMaxWidth(120);
-        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
         PropertyValueFactory temp = new PropertyValueFactory<AirbnbListing, Integer> (("price"));
         boroughPriceCol.setCellValueFactory(temp);
 
@@ -116,7 +115,7 @@ public class BoroughPropertiesController implements Initializable {
         reviewsCountCol = new TableColumn<>("# of Reviews");
         reviewsCountCol.setMinWidth(100);
         reviewsCountCol.setMaxWidth(120);
-        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         PropertyValueFactory reviewsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("numberOfReviews"));
         reviewsCountCol.setCellValueFactory(reviewsTemp);
 
@@ -125,7 +124,7 @@ public class BoroughPropertiesController implements Initializable {
         TableColumn<AirbnbListing, Integer> minimumNightsCol = new TableColumn<>("Minimum Nights");
         minimumNightsCol.setMinWidth(100);
         minimumNightsCol.setMaxWidth(120);
-        //boroughPriceCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
         PropertyValueFactory nightsTemp = new PropertyValueFactory<AirbnbListing, Integer> (("minimumNights"));
         minimumNightsCol.setCellValueFactory(nightsTemp);
 
@@ -150,15 +149,6 @@ public class BoroughPropertiesController implements Initializable {
                 superBox.setSelected(true);
             else if (filter.name().equals(FilterNames.ROOM_FILTER.name()))
                 roomBox.setSelected(true);
-            /*
-            switch (box.getId())
-            {
-                case FilterNames.WIFI_FILTER.toString(): wifiBox.setSelected(true); break;
-                case "poolBox": poolBox.setSelected(true); break;
-                case "superBox": superBox.setSelected(true); break;
-                case "roomBox": roomBox.setSelected(true); break;
-            }
-             */
         }
     }
 

@@ -33,8 +33,6 @@ public class DatabaseConnection {
         try {
             conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
             System.out.println("Successful connection");
-            //String sql = "select * from account";
-            //ResultSet rs = myStm.executeQuery();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             System.out.println("Database connection error!");

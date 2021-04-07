@@ -81,7 +81,7 @@ public class LoginPanelController implements Initializable {
     public void goBack() {
         try {
             if(user != null) {
-                //mainWindowController.initializeListings(listings, user);
+
                 mainFrameController.setCurrentUser(user);
                 mainFrameController.setLoggedIn(true);
             }

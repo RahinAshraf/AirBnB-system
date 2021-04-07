@@ -18,7 +18,11 @@ public class BookingData {
     private int bookerID;
 
     /**
-     *
+     * A constructor for the class BookingData.
+     * @param checkIn the date the user checks in
+     * @param checkOut the date the user checks out
+     * @param numberOfPeople the number of guests the user enters
+     * @param bookerID the user's ID
      */
     public BookingData(LocalDate checkIn, LocalDate checkOut, int numberOfPeople, int bookerID) throws InvalidParameterException {
         if (numberOfPeople < 0)
@@ -29,55 +33,33 @@ public class BookingData {
         this.bookerID = bookerID;
     }
 
-    /**
-     *
-     */
     public BookingData() {}
 
-    /**
-     *
-     * @return
-     */
     public LocalDate getCheckIn() {
         return checkIn;
     }
 
-    /**
-     *
-     * @param checkIn
-     */
     public void setCheckIn(LocalDate checkIn) {
         this.checkIn = checkIn;
     }
 
-    /**
-     *
-     * @return
-     */
     public LocalDate getCheckOut() {
         return checkOut;
     }
 
-    /**
-     *
-     * @param checkOut
-     */
     public void setCheckOut(LocalDate checkOut) {
         this.checkOut = checkOut;
     }
 
-    /**
-     *
-     * @return
-     */
     public int getNumberOfPeople() {
         return numberOfPeople;
     }
 
     /**
+     * Sets the number of guests the user has entered.
      *
-     * @param numberOfPeople
-     * @throws InvalidParameterException
+     * @param numberOfPeople  the number of guests the user enters
+     * @throws InvalidParameterException  if the number of guests are negative numbers
      */
     public void setNumberOfPeople(int numberOfPeople) throws InvalidParameterException {
         if (numberOfPeople < 0)
@@ -85,26 +67,10 @@ public class BookingData {
         this.numberOfPeople = numberOfPeople;
     }
 
-    /**
-     *
-     * @return
-     */
-    public int getBookerID() {
-        return bookerID;
-    }
-
-    /**
-     *
-     * @param bookerID
-     */
     public void setBookerID(int bookerID) {
         this.bookerID = bookerID;
     }
 
-    /**
-     *
-     * @return
-     */
     public int getDaysOfStay()
     {
         return (int) ChronoUnit.DAYS.between(checkIn, checkOut);

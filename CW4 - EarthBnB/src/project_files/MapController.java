@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
  */
 public class MapController extends MainframeContentPanel implements Initializable {
 
-    //private Button selectedBorough;
     private Double filterValue;
     private Map<String, Long> propertyCount = new HashMap<String, Long>();
     private String boroughs[] = new String[32];
@@ -99,7 +98,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
             for(int i = 0; i<selectedBoroughs.size(); i++) {
                 selectedBoroughsStrings.add(selectedBoroughs.get(i).getId());
             }
-            // Look at this. Not sure about it!
             boroughController.initializeListing(listings, selectedBoroughsStrings, currentUser);
             boroughController.setMainWindowController(mainFrameController); // Passing on the mainWindowController Object
             mapView.getScene().getWindow().hide();
@@ -187,7 +185,7 @@ public class MapController extends MainframeContentPanel implements Initializabl
     /**
      * Stores the number of properties for each of the boroughs. Also calls a method to shorten the borough names.
      */
-    private void updateBoroughs() //
+    private void updateBoroughs()
     {
         resizePropertyNeighbourhood();
         propertyCount = listings.getFilteredListings().stream()

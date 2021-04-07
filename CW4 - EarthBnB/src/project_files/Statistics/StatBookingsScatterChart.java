@@ -109,7 +109,7 @@ public class StatBookingsScatterChart extends Statistic {
 
                 ResultSet queryResult = statement.executeQuery(checkSignup);
                 while (queryResult.next()) {
-                    bookedPropertyIds.add(queryResult.getString(1)); // Unsafe operation?
+                    bookedPropertyIds.add(queryResult.getString(1));
                 }
             } catch (Exception e) {
             }

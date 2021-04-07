@@ -184,7 +184,7 @@ public class Listings {
      * Second filter in the filter-chain
      * Separate method so the user can change price range at any time without having filter for booking data again.
      */
-    private void filterPriceRange()
+    public void filterPriceRange()
     {
         listingsFilteredByPrice = listingsFilteredByBookingData.stream()
                 .filter(l -> l.getPrice() >= priceRange[0] && l.getPrice() <= priceRange[1])

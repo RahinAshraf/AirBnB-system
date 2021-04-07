@@ -71,7 +71,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //currentUser = null;
+
         selectedListing = null;
     }
 
@@ -226,7 +226,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     private void userCalendarChange(ActionEvent e) {
 
         if(selectedListing != null) {
-            //AirbnbListing listing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
+
             long daysBetween = ChronoUnit.DAYS.between(checkInDate.getValue(), checkOutDate.getValue());
 
             if (daysBetween <= 0) {
@@ -274,7 +274,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
                 BookingData usersData = currentUser.getBookingData();
                 String createBooking = "INSERT INTO booking VALUES (NULL, '" + checkInDate.getValue() + "', '" + checkOutDate.getValue() + "', '" + currentUser.getAccountID() + "', '" +
                         usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()) + "', '" + selectedListing.getId() + "', '" + currentDate + "')";
-                //String checkSignup = "SELECT * FROM account WHERE username = '"+ nameField.getText() + "'";
 
                     boolean violation = false;
                     int index = 0;
@@ -303,7 +302,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                             statement.executeUpdate(createBooking);
                             feedbackLabel.setText("Successful reservation!");
                             System.out.println("removed");
-                            //data.remove(favoritesTable.getSelectionModel().getSelectedItem());
+
                             favoritesTable.getSelectionModel().clearSelection();
                         }
                     } catch (Exception e) {
@@ -352,7 +351,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
         return property.getMinimumNights() <= bookingData.getDaysOfStay()
                 && property.getMaximumNights() >= bookingData.getDaysOfStay()
                 && property.getMaxGuests() >= bookingData.getNumberOfPeople();
-                // && database.isFree();
     }
 
 
@@ -403,4 +401,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
     public void updatePanel() {
         // invoked when price range is changed
     }
+
+
 }

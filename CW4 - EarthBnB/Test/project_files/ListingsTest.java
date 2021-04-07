@@ -140,9 +140,6 @@ public class ListingsTest {
         listings.changeBookingData(bookingData);
         Assert.assertEquals(data2, listings.getListingsFilteredByBookingData().get(0));
 
-        // Making sure this is the only property because of the filters applied.
-        // One property gets removed because of the length of stay, one because
-        // the maximum guests are exceeded, and one because of both.
         Assert.assertEquals(1, listings.getListingsFilteredByBookingData().size());
     }
 
