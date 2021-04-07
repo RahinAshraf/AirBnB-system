@@ -39,40 +39,16 @@ public class Reservation {
         return reservationID;
     }
 
-    public void setReservationID(int reservationID) {
-        this.reservationID = reservationID;
-    }
-
     public LocalDate getArrival() {
         return arrival;
-    }
-
-    public void setArrival(LocalDate arrival) {
-        this.arrival = arrival;
     }
 
     public LocalDate getDeparture() {
         return departure;
     }
 
-    public void setDeparture(LocalDate departure) {
-        this.departure = departure;
-    }
-
-    public int getBookerAccount() {
-        return bookerID;
-    }
-
-    public void setBookerAccount(int bookerID) {
-        this.bookerID = bookerID;
-    }
-
     public int getNumberOfGuests() {
         return numberOfGuests;
-    }
-
-    public void setNumberOfGuests(int numberOfGuests) {
-        this.numberOfGuests = numberOfGuests;
     }
 
     public double getPrice() {
@@ -87,7 +63,4 @@ public class Reservation {
         return listingID;
     }
 
-    public void setListingID(String listingID) {
-        this.listingID = listingID;
-    }
 }
