@@ -47,7 +47,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
     private TableView favoritesTable;
 
     @FXML
-    private Label totalLabel, calculationLabel;
+    private Label totalLabel, calculationLabel, feedbackLabel;
 
     @FXML
     private DatePicker checkInDate, checkOutDate;
@@ -283,9 +283,11 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         System.out.println("# of reserved dates: " + reservedDates.size());
                         if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
                             System.out.println("Some days are reserved in between your selection");
+                            feedbackLabel.setText("Some days are reserved in between your selection!");
                             violation = true;
                         } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
                             System.out.println("Some days are reserved at your selections");
+                            feedbackLabel.setText("Some days are reserved at your selections!");
                             violation = true;
                         }
                         index++;
@@ -299,6 +301,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         if (!violation) {
                             System.out.println("executed");
                             statement.executeUpdate(createBooking);
+                            feedbackLabel.setText("Successful reservation!");
                             System.out.println("removed");
                             //data.remove(favoritesTable.getSelectionModel().getSelectedItem());
                             favoritesTable.getSelectionModel().clearSelection();
@@ -315,6 +318,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         currentUser.addOfflineReservation(reservation);
                         //OfflineData.addReservation(reservation);
                         System.out.println("Created offline reservation");
+                        feedbackLabel.setText("Successful offline reservation!");
                         favoritesTable.getSelectionModel().clearSelection();
                         selectedListing = null;
                     }

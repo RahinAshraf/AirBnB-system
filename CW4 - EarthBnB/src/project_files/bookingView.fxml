@@ -74,6 +74,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
+            <Label fx:id="feedbackLabel" />
             <Button mnemonicParsing="false" onAction="#reserveProperty" prefWidth="200.0" style="-fx-background-color: red;" text="RESERVE">
                <VBox.margin>
                   <Insets top="20.0" />
