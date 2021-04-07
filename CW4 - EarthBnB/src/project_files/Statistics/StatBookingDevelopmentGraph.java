@@ -64,7 +64,7 @@ public class StatBookingDevelopmentGraph extends StatisticAsText {
         listings.sort(AirbnbListing::compareTo); // Make sure listings are in order for the following binary search.
         // Sort the pairs to superhost and not-superhost
         for (IdDatePair pair : allBookings) {
-            AirbnbListing listing = Listings.iterativeSearch(listings, pair.getId());
+            AirbnbListing listing = Listings.binarySearch(listings, pair.getId());
             if (listing != null) {
                 if (listing.isHostSuperhost()) { // Check whether the booking was contained in the currently displayed list and then where it belongs
                     superhostPairs.add(pair);

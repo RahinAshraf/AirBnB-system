@@ -72,7 +72,7 @@ public class StatBookingsScatterChart extends Statistic {
         if (!listings.isEmpty()) {
             HashSet<String> bookedPropertyIds = getBookedProperties();
             for (String id : bookedPropertyIds) {
-                AirbnbListing listing = Listings.iterativeSearch(listings, id);
+                AirbnbListing listing = Listings.binarySearch(listings, id);
                 if (listing != null) {
                     if (listing.getRoomType().equals("Private room"))
                         locationsPrivateRooms.getData().add(new XYChart.Data(listing.getLongitude(),listing.getLatitude()));
