@@ -313,7 +313,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
                                 selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()), selectedListing.getId());
                         reservations.add(reservation);
                         currentUser.addOfflineReservation(reservation);
-                        OfflineData.addReservation(reservation);
+                        //OfflineData.addReservation(reservation);
                         System.out.println("Created offline reservation");
                         favoritesTable.getSelectionModel().clearSelection();
                         selectedListing = null;
