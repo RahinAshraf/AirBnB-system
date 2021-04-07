@@ -67,15 +67,18 @@ public class MainFrameController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle bundle)
-    {
+    public void initialize(URL url, ResourceBundle bundle) {
         currentUser = null; // set to null if the user is not logged in
         accountOpen = false;
         loadListings("airbnb-listings.csv");
         if (!usingDatabase)
             new OfflineData(listings); // Loads the offline bookingdata (is static)
 
-        try { createPanels(); } catch (IOException e) { e.printStackTrace(); }
+        try {
+            createPanels();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         contentPane.setCenter(contentPanels[0].getPanelRoot());
         setLoggedIn(false); //Disables the submit-button in the welcome panel.
@@ -87,16 +90,14 @@ public class MainFrameController implements Initializable {
     }
 
 
-    private void initializeFiltersComboBox()
-    {
+    private void initializeFiltersComboBox() {
         // Create a list of Strings of the names of the filters to be displayed to the user using the enums.
         ObservableList<FilterNames> filterNamesObservableList = FXCollections.observableArrayList(FilterNames.WIFI_FILTER, FilterNames.SUPER_FILTER, FilterNames.ROOM_FILTER, FilterNames.POOL_FILTER);
         filtersComboBox.getItems().addAll(filterNamesObservableList);
         filtersComboBox.addEventHandler(ComboBox.ON_HIDDEN, event -> activatedFilters(event)); // Initiate updating the filters when to box is closed
     }
 
-    private void activatedFilters(Event event)
-    {
+    private void activatedFilters(Event event) {
         ArrayList<FilterNames> checkedList = new ArrayList<>();
         for (Object s : filtersComboBox.getCheckModel().getCheckedItems()) {
             if (s.getClass() == FilterNames.class) {
@@ -112,8 +113,7 @@ public class MainFrameController implements Initializable {
      * Set the selection of the filterComboBox.
      * Used to mirror the changes to filters in the boroughpropertiescontroller in the main frame.
      */
-    public void setChoiceComboBoxFilters()
-    {
+    public void setChoiceComboBoxFilters() {
         filtersComboBox.getCheckModel().clearChecks();
         for (FilterNames filter : listings.getActiveFilters()) {
             filtersComboBox.getCheckModel().check(filter);
@@ -127,17 +127,16 @@ public class MainFrameController implements Initializable {
     }
 
     private void createPanels() throws IOException {
-       // Names of all views that should be displayed in the main frame. Displayed in the order added.
-       String[] panelViewsStrings = new String[] {"welcomePanelView.fxml", "mapView.fxml", "Statistics/statisticsView.fxml", "bookingView.fxml"};
-       contentPanels = new MainframeContentPanel[panelViewsStrings.length];
-       for (int i = 0; i < panelViewsStrings.length; i++)
-       {
-           FXMLLoader panelLoader = new FXMLLoader(getClass().getResource(panelViewsStrings[i]));
-           Parent loadedPanel = panelLoader.load();
-           MainframeContentPanel controller = panelLoader.getController();
-           controller.initialize(this, currentUser, loadedPanel, listings);
-           contentPanels[i] = controller;
-       }
+        // Names of all views that should be displayed in the main frame. Displayed in the order added.
+        String[] panelViewsStrings = new String[]{"welcomePanelView.fxml", "mapView.fxml", "Statistics/statisticsView.fxml", "bookingView.fxml"};
+        contentPanels = new MainframeContentPanel[panelViewsStrings.length];
+        for (int i = 0; i < panelViewsStrings.length; i++) {
+            FXMLLoader panelLoader = new FXMLLoader(getClass().getResource(panelViewsStrings[i]));
+            Parent loadedPanel = panelLoader.load();
+            MainframeContentPanel controller = panelLoader.getController();
+            controller.initialize(this, currentUser, loadedPanel, listings);
+            contentPanels[i] = controller;
+        }
     }
 
     /**
@@ -151,18 +150,19 @@ public class MainFrameController implements Initializable {
 
     /**
      * Load the listings from the csv file.
+     *
      * @param filename
      */
-    public void loadListings(String filename){
+    public void loadListings(String filename) {
         AirbnbDataLoader loader = new AirbnbDataLoader();
         listings = new Listings(loader.load(filename));
     }
 
     @FXML
     public void navigateToAccount(ActionEvent e) throws IOException {
-        if(currentUser != null) {
+        if (currentUser != null) {
             Parent nextPanel;
-            if(!accountOpen) {
+            if (!accountOpen) {
                 FXMLLoader accountLoader = new FXMLLoader(getClass().getResource("accountView.fxml"));
                 nextPanel = accountLoader.load();
                 AccountPanelController accountPanelController = accountLoader.getController();
@@ -176,7 +176,7 @@ public class MainFrameController implements Initializable {
                 accountOpen = false;
                 accountButton.setText(currentUser.getUsername());
                 if (firstRequestSubmitted)
-                setFrameSwitchingButtonsActive(true);
+                    setFrameSwitchingButtonsActive(true);
             }
 
         } else {
@@ -186,13 +186,13 @@ public class MainFrameController implements Initializable {
 
     /**
      * Switched the panel when next or previous have been clicked.
+     *
      * @param e
      * @throws IOException When loading the new panel was unsuccessful.
      */
     @FXML
     private void switchPanel(ActionEvent e) {
-        if (e.getSource().getClass() == Button.class)
-        {
+        if (e.getSource().getClass() == Button.class) {
             Button btn = (Button) e.getSource();
             String direction = btn.getId();
 
@@ -205,11 +205,11 @@ public class MainFrameController implements Initializable {
 
     /**
      * Get the next panel to be shown in the center of the mainframe.
+     *
      * @param direction If the "next" or the "previous" button has been clicked.
      * @return Name of the next fxml file.
      */
-    private MainframeContentPanel getNextView(String direction)
-    {
+    private MainframeContentPanel getNextView(String direction) {
         // Loop forwards
         if (direction.equalsIgnoreCase("nextPaneBtn")) {
             if (currentPage < contentPanels.length - 1)
@@ -230,6 +230,7 @@ public class MainFrameController implements Initializable {
     /**
      * Sets the current user in the mainframe and initializes to the currently displayed content panel.
      * Added to all other panels automatically when switching.
+     *
      * @param user The user who has just logged in.
      */
     public void setCurrentUser(Account user) {
@@ -242,6 +243,7 @@ public class MainFrameController implements Initializable {
      * Maybe redo.
      * Loads the booking panel and passes in a listing to be displayed in combination with the search the user applied.
      * Used for communication between the propertyDisplayer and the booking panel.
+     *
      * @param listing
      * @throws IOException
      */
@@ -274,14 +276,14 @@ public class MainFrameController implements Initializable {
 
     /**
      * Activates the buttons for switching the frame to be active.
+     *
      * @param areEnabled
      */
     public void setFrameSwitchingButtonsActive(boolean areEnabled) {
         if (areEnabled && initialPriceRangeSelected && firstRequestSubmitted) {
             prevPaneBtn.setDisable(false);
             nextPaneBtn.setDisable(false);
-        }
-        else {
+        } else {
             prevPaneBtn.setDisable(true);
             nextPaneBtn.setDisable(true);
         }
@@ -289,10 +291,10 @@ public class MainFrameController implements Initializable {
 
     /**
      * Get a random node. Can be used to get the
+     *
      * @return
      */
-    public Window getWindow()
-    {
+    public Window getWindow() {
         return contentPane.getScene().getWindow();
     }
 
@@ -301,11 +303,11 @@ public class MainFrameController implements Initializable {
 
     /**
      * Set a price range. Checks for validity.
+     *
      * @param e
      */
     @FXML
-    public void applyPriceRange(ActionEvent e)
-    {
+    public void applyPriceRange(ActionEvent e) {
         Integer minPrice = convertChoiceBoxToInteger(minPriceChoiceBox);
         Integer maxPrice = convertChoiceBoxToInteger(maxPriceChoiceBox);
 
@@ -335,11 +337,11 @@ public class MainFrameController implements Initializable {
 
     /**
      * Converts the selected item of a choicebox into an integer if possible.
+     *
      * @param box Contents of this box will be converted.
      * @return The integer. If the conversion was not possible, return null.
      */
-    private Integer convertChoiceBoxToInteger(ChoiceBox box)
-    {
+    private Integer convertChoiceBoxToInteger(ChoiceBox box) {
         Object selection = box.getSelectionModel().getSelectedItem();
         String selectionString = null;
         if (selection != null)
@@ -355,12 +357,12 @@ public class MainFrameController implements Initializable {
 
     /**
      * Set the current chosen price range of objects to be shown.
+     *
      * @param minPrice The minimum price range to be filtered for.
      * @param maxPrice The maximum price range to be filtered for.
      */
     private void applyPriceRange(Integer minPrice, Integer maxPrice) {
-        if (minPrice != null && maxPrice != null && currentUser != null)
-        {
+        if (minPrice != null && maxPrice != null && currentUser != null) {
             listings.changePriceRange(minPrice, maxPrice);
             updateCurrentPanel();
             if (!initialPriceRangeSelected) {
@@ -373,18 +375,17 @@ public class MainFrameController implements Initializable {
     /**
      * Update the contents of the panel currently being displayed.
      */
-    public void updateCurrentPanel()
-    {
+    public void updateCurrentPanel() {
         contentPanels[currentPage].updatePanel();
     }
 
     /**
      * Disable the selection of the price range and the submitButton in the welcomePanel if the user is not logged in.
      * The user can only use the program if logged in.
+     *
      * @param isLoggedIn Whether the user is logged in.
      */
-    public void setLoggedIn(boolean isLoggedIn)
-    {
+    public void setLoggedIn(boolean isLoggedIn) {
         minPriceChoiceBox.setDisable(!isLoggedIn);
         maxPriceChoiceBox.setDisable(!isLoggedIn);
         if (contentPanels[0].getClass() == WelcomePanel.class) {
@@ -395,141 +396,21 @@ public class MainFrameController implements Initializable {
 
     /**
      * Get the listings.
+     *
      * @return The listings.
      */
-    public Listings getListings()
-    {
+    public Listings getListings() {
         return listings;
     }
 
     /**
      * If a request for checkin, checkout and number of guests has been performed already.
      * Has an effect on how buttons for switching panels behave.
+     *
      * @param submitted Whether the first request has been submitted.
      */
-    public void setFirstRequestSubmitted(boolean submitted)
-    {
+    public void setFirstRequestSubmitted(boolean submitted) {
         firstRequestSubmitted = submitted;
         setFrameSwitchingButtonsActive(firstRequestSubmitted);
     }
-
-
-
-
-    /*
-
-    // Code for populating database
-    private void generateUsers() {
-        ArrayList<String> names = loadNames();
-        try {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-            Statement statement = connectDB.createStatement();
-
-            for (int i=1; i < 300; i++)
-            {
-                String insert1 = "INSERT INTO account VALUES (NULL," + "'" + names.get(i) + "' , '" + givenUsingJava8_whenGeneratingRandomAlphanumericString_thenCorrect() + "', '" +
-                        names.get(i).replaceAll("\\s", "" + "") + "@gmail.com', '" + generateRandomDate() + "')" + ";";
-                statement.executeUpdate(insert1);
-            }
-        } catch (Exception e) {
-            System.out.println("failed");
-            e.printStackTrace();
-        }
-    }
-    //https://www.baeldung.com/java-random-string
-    private String givenUsingJava8_whenGeneratingRandomAlphanumericString_thenCorrect() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 6;
-        Random random = new Random();
-
-        return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-    }
-
-    private ArrayList<String> loadNames() {
-        ArrayList<String> names = new ArrayList<>();
-        try{
-            URL url = getClass().getResource("names.csv");
-            CSVReader reader = new CSVReader(new FileReader(new File(url.toURI()).getAbsolutePath()));
-            String [] line;
-            reader.readNext();
-            while ((line = reader.readNext()) != null) {
-                String name = line[0];
-                names.add(name);
-            }
-        } catch(IOException | URISyntaxException e){
-            System.out.println("Failure! Something went wrong");
-            e.printStackTrace();
-        }
-        return names;
-    }
-
-    // https://stackoverflow.com/questions/34051291/generate-a-random-localdate-with-java-time
-    public Date generateRandomDate() {
-        long minDay = LocalDate.of(2018, 1, 1).toEpochDay();
-        long maxDay = LocalDate.of(2021, 4, 30).toEpochDay();
-        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
-        LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
-        return java.sql.Date.valueOf(randomDate);
-    }
-
-
-
-*/
-
-    /*
-    private void generateBookings() {
-        ArrayList<AirbnbListing> listing = listings.getFilteredListings();
-        ArrayList<String> users = getUsers();
-
-        try {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-            Statement statement = connectDB.createStatement();
-            LocalDate currentDate = LocalDate.now().plusDays(365);
-            Random rand = new Random();
-            for (int i = 0; i < 1000; i++)
-            {
-                AirbnbListing l = listing.get(i);
-                int daysOfStay = rand.nextInt(l.getMaximumNights() % 30 + 1);
-
-
-                String insert = "INSERT INTO booking VALUES (NULL, '" + currentDate.minusDays(i+daysOfStay) + "', '" + currentDate.minusDays(i) + "', '" + users.get(rand.nextInt(users.size()-1)) + "', '" +
-                        l.getMaxGuests() + "', '" + l.getPrice() * daysOfStay + "', '" + l.getId() + "','" +  currentDate.minusDays(i+ + daysOfStay + rand.nextInt(45)) + "');";
-                System.out.println(insert);
-                statement.executeUpdate(insert);
-            }
-        } catch (Exception e) {
-        }
-    }
-
-
-
-    private ArrayList<String> getUsers() {
-        ArrayList<String> userIds = new ArrayList<>();
-        try {
-            DatabaseConnection connection = new DatabaseConnection();
-            Connection connectDB = connection.getConnection();
-            Statement statement = connectDB.createStatement();
-
-            String checkSignup = "SELECT accountID FROM account";
-
-            ResultSet queryResult = statement.executeQuery(checkSignup);
-            while (queryResult.next()) {
-                userIds.add(queryResult.getString(1)); // Unsafe operation?
-            }
-        } catch (Exception e) {
-        }
-        return userIds;
-    }
-
-     */
-
 }
-
-

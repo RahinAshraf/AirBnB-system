@@ -220,7 +220,7 @@ public class BoroughPropertiesController implements Initializable {
         if (e.getSource().getClass() == CheckBox.class) {
             checkBox = (CheckBox) e.getSource();
             if (FilterNames.getFilter(checkBox.getId()) != null)
-            listings.toggleActiveFilter(FilterNames.getFilter(checkBox.getId())); // get the filternames object from the previously stored names. (risky stuff, bad code?)
+            listings.toggleActiveFilter(FilterNames.getFilter(checkBox.getId())); // get the filternames object from the previously stored names.
             System.out.println("Toggled filter: ");
             for (FilterNames f : listings.getActiveFilters())
             {
