@@ -124,7 +124,6 @@ public class AccountPanelController implements Initializable {
                 Statement statement = connectDB.createStatement();
                 ResultSet queryResult = statement.executeQuery(getPropertiesBooked);
                 while (queryResult.next()) {
-                    System.out.println("loaded data to account panel");
                     upcomingTrips.add(createReservation(queryResult));
                 }
             } catch (Exception exception) {
@@ -195,7 +194,6 @@ public class AccountPanelController implements Initializable {
             accountBookingController.LoadData(chosenProperty, this);
             newStage.show();
 
-            System.out.println("MenuItem clicked");
         }
 
     }
@@ -227,7 +225,6 @@ public class AccountPanelController implements Initializable {
      * @return  AirbnbListing   the AirbnbListing that the ID corresponds to. Returns null if not found.
      */
     private AirbnbListing findListingByID() {
-        System.out.println("chosenpropertyID: " + chosenProperty.getListingID());
         ArrayList<AirbnbListing> originalListings = listings.getOriginalListings();
         originalListings.sort(AirbnbListing::compareTo); // make sure its in the right order
         return Listings.binarySearch(originalListings, chosenProperty.getListingID());

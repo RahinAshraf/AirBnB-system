@@ -73,10 +73,6 @@ public class MapController extends MainframeContentPanel implements Initializabl
      */
     @FXML
     public void searchProperties(javafx.event.ActionEvent actionEvent) {
-        for(int i = 0; i<selectedBoroughs.size(); i++) {
-            System.out.println(selectedBoroughs.get(i));
-        }
-
         try {
             FXMLLoader boroughLoader = new FXMLLoader(getClass().getResource("boroughPropertiesView.fxml"));
             Parent root = boroughLoader.load();

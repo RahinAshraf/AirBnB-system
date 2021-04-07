@@ -221,11 +221,6 @@ public class BoroughPropertiesController implements Initializable {
             checkBox = (CheckBox) e.getSource();
             if (FilterNames.getFilter(checkBox.getId()) != null)
             listings.toggleActiveFilter(FilterNames.getFilter(checkBox.getId())); // get the filternames object from the previously stored names.
-            System.out.println("Toggled filter: ");
-            for (FilterNames f : listings.getActiveFilters())
-            {
-                System.out.println(f.name() + " ");
-            }
         }
         displayList();
         mainFrameController.setChoiceComboBoxFilters(); // Update the filter selection in the main frame. Would be enough to check when "back is clicked" but safer this way.
@@ -238,7 +233,6 @@ public class BoroughPropertiesController implements Initializable {
     private void displayList()
     {
         propertiesTable.setItems(listings.getObservableFilteredListings());
-        System.out.println(listings.getObservableFilteredListings().size());
     }
 
 

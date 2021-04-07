@@ -175,11 +175,11 @@ public class BookingController extends MainframeContentPanel implements Initiali
             Reservation reservation = reservations.get(i);
             System.out.println(reservation.getArrival());
             if (reservation.getListingID().equals(selectedListing.getId())) {
-                System.out.println("there is reservation for this property");
+                Alerts.errorAlerts("Error", "Cannot reserve property", "there is reservation for this property");
                 LocalDate date = reservation.getArrival();
                 while (date.isBefore(reservation.getDeparture().plusDays(1))) {
                     reservedDates.add(date);
-                    System.out.println("added" + date);
+                    Alerts.informationAlert("Resereved", "", "You're reservation for the date " + date + "has been added.");
                     date = date.plusDays(1);
                 }
             }
@@ -263,7 +263,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
             selectedListing = (AirbnbListing) favoritesTable.getSelectionModel().getSelectedItem();
             LocalDate currentDate = LocalDate.now();
             if (selectedListing != null) {
-                System.out.println(currentUser.getAccountID());
                 BookingData usersData = currentUser.getBookingData();
                 String createBooking = "INSERT INTO booking VALUES (NULL, '" + checkInDate.getValue() + "', '" + checkOutDate.getValue() + "', '" + currentUser.getAccountID() + "', '" +
                         usersData.getNumberOfPeople() + "', '" + selectedListing.getPrice() * daysBetween(checkInDate.getValue(), checkOutDate.getValue()) + "', '" + selectedListing.getId() + "', '" + currentDate + "')";
@@ -273,11 +272,9 @@ public class BookingController extends MainframeContentPanel implements Initiali
 
                 while (index < reservedDates.size() && !violation) {
                     if (checkInDate.getValue().isBefore(reservedDates.get(index)) && checkOutDate.getValue().isAfter(reservedDates.get(index))) {
-                        System.out.println("Some days are reserved in between your selection");
                         feedbackLabel.setText("Some days are reserved in between your selection!");
                         violation = true;
                     } else if (checkInDate.getValue().equals(reservedDates.get(index)) || checkOutDate.getValue().equals(reservedDates.get(index))) {
-                        System.out.println("Some days are reserved at your selections");
                         feedbackLabel.setText("Some days are reserved at your selections!");
                         violation = true;
                     }
@@ -308,8 +305,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
                         selectedListing = null;
                     }
                 }
-            } else {
-
             }
         }
 
@@ -326,7 +321,7 @@ public class BookingController extends MainframeContentPanel implements Initiali
         if (canBeBooked(chosenProperty))
             initializeWithProperty(chosenProperty);
         else
-            incompatibleBooking();
+            Alerts.errorAlerts("Error" ,"Incompatible Property", "The selected property does not match your search request.");
     }
 
     /**
@@ -352,7 +347,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
      */
     @Override
     public void initializeData(Listings listings, Account currentUser) {
-        System.out.println("called");
         this.currentUser = currentUser;
         this.listings = listings;
         loadSavedProperties();
@@ -372,18 +366,6 @@ public class BookingController extends MainframeContentPanel implements Initiali
         favoritesTable.getColumns().clear();
         favoritesTable.getColumns().addAll(propertyNameCol, propertyBoroughCol);
         favoritesTable.setItems(data);
-    }
-
-
-    /**
-     * An alert which occurs when the check-in date is not valid.
-     */
-    private void incompatibleBooking() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Error");
-        alert.setHeaderText("Incompatible Property");
-        alert.setContentText("The selected property does not match your search request.");
-        alert.showAndWait();
     }
 
     @Override
