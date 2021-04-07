@@ -87,7 +87,7 @@ public class LoginPanelController implements Initializable {
             }
             loginpagePane.getScene().getWindow().hide();
         } catch (Exception e) {
-            System.out.println("mainWindowController is null");
+            Alerts.errorAlerts("Error", "mainWindowController is null", "Please try agian");
         }
     }
 
@@ -165,10 +165,9 @@ public class LoginPanelController implements Initializable {
                             queryResult.getString(3),
                             queryResult.getString(4)
                     );
-                    System.out.println("Email: " + user.getEmailAddress());
                     goBack();
                 } else {
-                    System.out.println("Incorrect Login Details");
+                    Alerts.errorAlerts("Error!", "Incorrect Login Details", "Make sure you are entering your username and password correctly.");
                 }
 
 
@@ -190,10 +189,10 @@ public class LoginPanelController implements Initializable {
                 }
             }
             if (found) {
-                System.out.println("Logged In");
+                Alerts.informationAlert("Login successful!", "", "You have been logged in to your account successfully.");
                 goBack();
             } else {
-                System.out.println("Incorrect Login Details");
+                Alerts.errorAlerts("Error!", "Incorrect Login Details", "Make sure you are entering your username and password correctly.");
             }
 
         }
