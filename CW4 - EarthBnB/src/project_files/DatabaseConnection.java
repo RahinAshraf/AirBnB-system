@@ -32,9 +32,8 @@ public class DatabaseConnection {
 
         try {
             conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-            System.out.println("Successful connection");
-            Alerts.informationAlertShowQuick("Successful!", "", "Connection successful!");
-        } catch (SQLException | InterruptedException throwables) {
+
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
             Alerts.errorAlerts("Error", "Connection failed", "please try again");
         }

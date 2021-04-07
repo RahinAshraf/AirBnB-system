@@ -59,19 +59,4 @@ public class Alerts {
         alert.showAndWait();
     }
 
-    /**
-     * A method which creates an information alert and just shows it for a few seconds.
-     *
-     * @param titleText The text which is set for the title
-     * @param headerText The text which is set for the header
-     * @param contentText The text which is set for the content
-     */
-    public static void informationAlertShowQuick(String titleText, String headerText, String contentText) throws InterruptedException {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titleText);
-        alert.setHeaderText(headerText);
-        alert.setContentText(contentText);
-
-        alert.wait(2000);
-    }
 }

@@ -157,7 +157,6 @@ public class LoginPanelController implements Initializable {
                 ResultSet queryResult = statement.executeQuery(verifyLogin);
 
                 if (queryResult.next()) {
-                    System.out.println("Logged In");
                     accountID = queryResult.getInt(1);
                     user = new Account(
                             queryResult.getInt(1),
