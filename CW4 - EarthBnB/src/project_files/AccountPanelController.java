@@ -230,6 +230,6 @@ public class AccountPanelController implements Initializable {
         System.out.println("chosenpropertyID: " + chosenProperty.getListingID());
         ArrayList<AirbnbListing> originalListings = listings.getOriginalListings();
         originalListings.sort(AirbnbListing::compareTo); // make sure its in the right order
-        return Listings.iterativeSearch(originalListings, chosenProperty.getListingID());
+        return Listings.binarySearch(originalListings, chosenProperty.getListingID());
     }
 }

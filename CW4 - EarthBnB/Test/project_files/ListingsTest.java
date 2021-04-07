@@ -311,7 +311,16 @@ public class ListingsTest {
     public void filterSuperHost(){
         filteredList = new ArrayList<>();
         filteredList.add(data1);
-
         Assert.assertEquals(filteredList, listings.filterSuperHost(originalListing));
+    }
+
+    /**
+     * Checks if the binary search is performed correctly.
+     */
+    @Test
+    public void binarySearch()
+    {
+        originalListing.sort(AirbnbListing::compareTo);
+        Assert.assertEquals(data1, listings.binarySearch(originalListing, data1.getId()));
     }
 }

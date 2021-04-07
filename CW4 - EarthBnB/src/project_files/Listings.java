@@ -117,7 +117,7 @@ public class Listings {
         // Remove the found reservations from the listings. The user wont be able to book them.
         for (String id : unavailableReservationIDs)
         {
-            listingsFilteredByBookingData.remove(iterativeSearch(listingsFilteredByBookingData, id));
+            listingsFilteredByBookingData.remove(binarySearch(listingsFilteredByBookingData, id));
         }
         filterPriceRange();
     }
@@ -318,7 +318,7 @@ public class Listings {
      * @param element The element to be searched for in the array.
      * @return The Airbnblisting if found, otherwise null.
      */
-    public static AirbnbListing iterativeSearch(ArrayList<AirbnbListing> arrayToSearch, String element) {
+    public static AirbnbListing binarySearch(ArrayList<AirbnbListing> arrayToSearch, String element) {
         int lowIndex = 0;
         int highIndex = arrayToSearch.size()-1;
 
