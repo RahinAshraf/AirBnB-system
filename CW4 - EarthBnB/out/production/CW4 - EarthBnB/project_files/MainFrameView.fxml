@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.*?>
+
+<BorderPane id="contentPane" fx:id="contentPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.MainFrameController">
+   <bottom>
+      <BorderPane BorderPane.alignment="CENTER">
+         <left>
+            <Button id="prevPaneBtn" fx:id="prevPaneBtn" mnemonicParsing="false" onAction="#switchPanel" text="&lt;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+               </padding></Button>
+         </left>
+         <right>
+            <Button id="nextPaneBtn" fx:id="nextPaneBtn" mnemonicParsing="false" onAction="#switchPanel" text="&gt;" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+               </padding></Button>
+         </right>
+         <center>
+            <Button id="loginNavigation" fx:id="loginNavigation" mnemonicParsing="false" onAction="#loginNavigationClicked" text="LOGIN" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin></Button>
+         </center>
+      </BorderPane>
+   </bottom>
+   <top>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <center>
+            <Label fx:id="nameOfCurrent" text="Main" BorderPane.alignment="CENTER" />
+         </center>
+         <right>
+            <HBox alignment="CENTER_RIGHT" prefWidth="220.0" spacing="7.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="35.0" text="From" />
+                  <ChoiceBox id="minPriceChoiceBox" fx:id="minPriceChoiceBox" minHeight="-Infinity" onAction="#applyPriceRange" prefHeight="25.0" prefWidth="58.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ChoiceBox>
+                  <Label text="To" />
+                  <ChoiceBox id="maxPriceChoiceBox" fx:id="maxPriceChoiceBox" minHeight="-Infinity" onAction="#applyPriceRange" prefHeight="25.0" prefWidth="58.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ChoiceBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets right="15.0" />
+               </padding>
+            </HBox>
+         </right>
+         <left>
+            <HBox alignment="CENTER_LEFT" prefHeight="26.0" prefWidth="237.0" spacing="20.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="accountButton" fx:id="accountButton" minHeight="-Infinity" mnemonicParsing="false" onAction="#navigateToAccount" prefHeight="26.0" prefWidth="88.0" text="Account" />
+                  <CheckComboBox fx:id="filtersComboBox" minHeight="-Infinity" prefHeight="26.0" prefWidth="127.0" showCheckedCount="true" title="Filters" />
+               </children>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
+            </HBox>
+         </left>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+         <BorderPane.margin>
+            <Insets bottom="5.0" />
+         </BorderPane.margin>
+      </BorderPane>
+   </top>
+</BorderPane>

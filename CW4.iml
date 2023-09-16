@@ -9,8 +9,8 @@
     </content>
     <orderEntry type="jdk" jdkName="15" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="+libs" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="library" exported="" name="+libs" level="project" />
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/CW4 - EarthBnB/+libs/mysql-connector-java-8.0.23.jar!/" />
@@ -19,7 +19,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" scope="TEST">
+    <orderEntry type="module-library" exported="" scope="TEST">
       <library name="JUnit4">
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
@@ -29,9 +29,9 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="FX 16" level="project" />
-    <orderEntry type="library" name="controlsfx-11.1.0" level="project" />
-    <orderEntry type="module-library" scope="TEST">
+    <orderEntry type="library" exported="" name="FX 16" level="project" />
+    <orderEntry type="library" exported="" name="controlsfx-11.1.0" level="project" />
+    <orderEntry type="module-library" exported="" scope="TEST">
       <library name="JUnit4">
         <CLASSES>
           <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
@@ -41,7 +41,9 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="mysql-connector-java-8.0.21" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="mysql-connector-java-8.0.21" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="bin" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
   </component>
 </module>

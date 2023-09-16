@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.BoroughPropertiesController">
+   <center>
+      <TableView id="propertiesTable" fx:id="propertiesTable" onMouseClicked="#rowClicked" prefHeight="499.0" prefWidth="642.0" style="-fx-border-color: red;">
+         <columns>
+                     </columns>
+      </TableView>
+   </center>
+   <left>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" BorderPane.alignment="CENTER">
+         <children>
+            <VBox layoutX="5.0" layoutY="167.0" prefHeight="166.0" prefWidth="132.0" style="-fx-border-color: red;" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+               <children>
+                  <Label text="Filters:">
+                     <font>
+                        <Font name="Arial" size="15.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <CheckBox id="wifiBox" fx:id="wifiBox" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#changeFilter" text="Wi-Fi">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox id="superBox" fx:id="superBox" mnemonicParsing="false" onAction="#changeFilter" text="Superhost">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox id="roomBox" fx:id="roomBox" mnemonicParsing="false" onAction="#changeFilter" text="Private Room">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </CheckBox>
+                  <CheckBox id="poolBox" fx:id="poolBox" mnemonicParsing="false" onAction="#changeFilter" text="Pool">
+                     <padding>
+                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                     </padding>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </CheckBox>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="29.0" layoutY="21.0" spacing="13.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            <Label layoutX="64.0" layoutY="104.0" />
+            <ComboBox fx:id="comboBox" layoutX="12.0" layoutY="21.0" onAction="#updateSort" prefHeight="27.0" prefWidth="118.0" promptText="Sort by" />
+            <Button id="backNavigation" fx:id="backNavigation" layoutX="22.0" layoutY="424.0" mnemonicParsing="false" onAction="#backNavigation" text="Back To Map" />
+         </children>
+      </AnchorPane>
+   </left>
+</BorderPane>

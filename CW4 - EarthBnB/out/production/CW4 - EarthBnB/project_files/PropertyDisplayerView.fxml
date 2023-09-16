@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: red;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.PropertyDisplayerController">
+   <left>
+      <VBox prefHeight="553.0" prefWidth="382.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane prefHeight="242.0" prefWidth="325.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="103.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints />
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <ProgressBar fx:id="cleanlinessBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ProgressBar fx:id="communicationBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ProgressBar fx:id="locationBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ProgressBar fx:id="totalBar" prefWidth="200.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="Cleanliness" GridPane.rowIndex="1" />
+                  <Label text="Communication" GridPane.rowIndex="2" />
+                  <Label text="Location" GridPane.rowIndex="3" />
+                  <Label text="Total" GridPane.rowIndex="4" />
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="92.0" style="-fx-border-color: red;" text="Reviews">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#loadMap" text="Show on map" textFill="RED" GridPane.rowIndex="6" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="10.0" top="20.0" />
+               </padding>
+            </GridPane>
+            <WebView fx:id="mapWebView" minHeight="-1.0" minWidth="-1.0" prefHeight="292.0" prefWidth="357.0" visible="false" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="481.0" prefWidth="408.0" style="-fx-border-color: red;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="propertyImg" fitHeight="287.0" fitWidth="410.0" pickOnBounds="true" preserveRatio="true" />
+            <Separator prefWidth="200.0" />
+            <HBox prefHeight="211.0" prefWidth="410.0">
+               <children>
+                  <VBox prefHeight="217.0" prefWidth="210.0">
+                     <children>
+                        <Label fx:id="propertyTypeLbl" prefHeight="37.0" prefWidth="147.0" text="TypesBedroomBaths">
+                           <padding>
+                              <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="hostNameLbl" text="Host">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="5.0" right="10.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="hostIsSuperHostLbl" text="Super host">
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="neighbourHoodDescriptionLbl" alignment="TOP_LEFT" prefHeight="81.0" prefWidth="239.0" text="Description" wrapText="true">
+                           <padding>
+                              <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="boroughLbl" text="Borough">
+                           <padding>
+                              <Insets bottom="10.0" left="5.0" right="10.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="bedsLbl" text="Bedrooms">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="10.0" />
+                           </padding>
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="bathroomsLbl" text="Bathrooms">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="pricePerNight" text="Price / Min Nights">
+                           <padding>
+                              <Insets left="5.0" top="5.0" />
+                           </padding>
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="maxNumberOfPeople" text="Max number of people">
+                           <padding>
+                              <Insets left="5.0" top="5.0" />
+                           </padding>
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Region maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="80.0" />
+                  <ImageView fx:id="hostLargeImg" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <Label fx:id="propertyNameLbl" style="-fx-text-fill: red;" text="Title" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets left="10.0" right="10.0" top="20.0" />
+         </padding>
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets bottom="50.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <right>
+      <AnchorPane>
+         <children>
+            <Label layoutX="39.0" layoutY="51.0" text="Amenities:" AnchorPane.topAnchor="51.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="amenitiesText" editable="false" layoutY="88.0" prefHeight="282.0" prefWidth="160.0" style="-fx-border-color: red; -fx-background-color: dd5a5a;" wrapText="true" AnchorPane.topAnchor="88.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </TextArea>
+            <HBox alignment="CENTER" layoutX="13.0" layoutY="474.0" AnchorPane.bottomAnchor="14.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <Button id="saveButton" fx:id="saveButton" mnemonicParsing="false" onAction="#saveProperty" text="Save">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button id="bookButton" fx:id="bookButton" mnemonicParsing="false" onAction="#goToBookingScreen" style="-fx-background-color: red;" text="Book">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>

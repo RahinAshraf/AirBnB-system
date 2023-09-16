@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_files.ConnectionSelector">
+   <children>
+      <BorderPane id="dbSelectorPane" fx:id="dbSelectorPane" layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <Button id="dbSelectButton" fx:id="dbSelectButton" mnemonicParsing="false" onAction="#selectDBConnection" style="-fx-background-color: #7AE272;" text="Connection to Online Database" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="50.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font name="Montserrat Regular" size="14.0" />
+               </font>
+            </Button>
+         </left>
+         <right>
+            <Button id="offlineSelectButton" fx:id="offlineSelectButton" mnemonicParsing="false" onAction="#selectDBConnection" style="-fx-background-color: F98B3A;" text="Offline (No DB Connection)" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets right="50.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font name="Montserrat Regular" size="14.0" />
+               </font>
+            </Button>
+         </right>
+         <top>
+            <Label text="Please select your preferred method of launching the program!" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="-50.0" top="80.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font name="Poppins Bold" size="15.0" />
+               </font>
+            </Label>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
